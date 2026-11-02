@@ -1,0 +1,11 @@
+{
+ "id": "phonon-perf6",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "base",
+ "threads": 6,
+ "hypothesis": "6 threads on the 6 perf cores: more parallel matmul throughput outweighs sync cost",
+ "cpu_mask": "3f"
+}

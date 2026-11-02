@@ -1,0 +1,15 @@
+{
+ "id": "pocket-perf6",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "base",
+ "threads": 6,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "6 threads on the 6 perf cores: more parallel matmul throughput outweighs sync cost",
+ "cpu_mask": "3f"
+}

@@ -446,6 +446,8 @@ def cmd_run(a):
     lane = st.setdefault(c["track"], {"since_keep": 0, "stalls": 0, "experiments": 0})
     lane["experiments"] += 1
     lane["since_keep"] = 0 if decision.startswith("KEEP") else lane["since_keep"] + 1
+    if decision.startswith("KEEP"):
+        st["_stall_streak"] = 0
     save("stall.json", st)
     ledger({"cmd": "run", "lane": c["track"], "id": c["id"], "decision": decision, "fails": fails, "need": need, "ci": ci,
             "hypothesis": c.get("hypothesis", ""), "cfg": {k: v for k, v in c.items() if k != "_slot"},

@@ -1,0 +1,14 @@
+{
+ "id": "pocket-t8",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "base",
+ "threads": 8,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "8 threads unpinned (all cores)"
+}

@@ -1,0 +1,11 @@
+{
+ "id": "phonon-prime2",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "base",
+ "threads": 2,
+ "hypothesis": "2 threads pinned to the 2 prime cores (4.47 GHz) beat 4 unpinned threads: batch-1 decode is latency bound and WALT may park threads on slower cores",
+ "cpu_mask": "c0"
+}

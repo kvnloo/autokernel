@@ -1,0 +1,15 @@
+{
+ "id": "pocket-mix4",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "base",
+ "threads": 4,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "4 threads on cpus 4-7 (2 perf + 2 prime) beat 4 unpinned",
+ "cpu_mask": "f0"
+}

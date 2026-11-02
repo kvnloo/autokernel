@@ -1,0 +1,15 @@
+{
+ "id": "pocket-prime2",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "base",
+ "threads": 2,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "2 threads pinned to the 2 prime cores (4.47 GHz) beat 4 unpinned threads: batch-1 decode is latency bound and WALT may park threads on slower cores",
+ "cpu_mask": "c0"
+}

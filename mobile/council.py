@@ -128,17 +128,48 @@ def convene(rounds, reason, timeout=1500):
     st = json.loads((STATE / "stall.json").read_text()) if (STATE / "stall.json").exists() else {}
     st.setdefault("_council", []).append({"at": d.name, "rounds": rounds, "reason": reason,
                                           "ok": [x["seat"] for x in manifest.get("r2", r1) if x["status"] == "ok"]})
+    tracks = {k: v for k, v in st.items() if not k.startswith("_")}
+    st["_experiments_at_last_council"] = sum(v.get("experiments", 0) for v in tracks.values())
+    stalled = any(v.get("since_keep", 0) >= 3 for v in tracks.values())
+    st["_stall_streak"] = st.get("_stall_streak", 0) + 1 if stalled else 0
     (STATE / "stall.json").write_text(json.dumps(st, indent=2))
     print(json.dumps({"dir": str(d), "seats": [(x["seat"], x["status"]) for x in manifest.get("r2", r1)]}, indent=1))
+
+
+def due():
+    """Stall policy (owner): council steps in when hill-climbing stalls, more often the longer it stalls.
+    A track stalls after 3 consecutive non-keeps. Level 1 (first stall since last council): 1 round.
+    Level 2: 2 rounds (cross-exam) + fresh profiling. Level 3: retarget or stop the track.
+    Independently, every 10 experiments overall get a 1-round check."""
+    st = json.loads((STATE / "stall.json").read_text()) if (STATE / "stall.json").exists() else {}
+    councils = st.get("_council", [])
+    last = councils[-1]["at"] if councils else ""
+    tracks = {k: v for k, v in st.items() if not k.startswith("_")}
+    stalled = {k: v for k, v in tracks.items() if v.get("since_keep", 0) >= 3}
+    total = sum(v.get("experiments", 0) for v in tracks.values())
+    since = total - st.get("_experiments_at_last_council", 0)
+    level = 0
+    if stalled:
+        streak = st.get("_stall_streak", 0) + 1  # consecutive councils without an intervening keep
+        level = min(streak, 3)
+    elif since >= 10:
+        level = 1
+    return {"level": level, "stalled": sorted(stalled), "experiments": total, "since_last_council": since, "last_council": last,
+            "rounds": {0: 0, 1: 1, 2: 2, 3: 2}[level],
+            "action": {0: "keep hill-climbing", 1: "convene 1 round", 2: "convene 2 rounds + fresh profiling + new research wave",
+                       3: "convene 2 rounds; retarget or stop stalled tracks; record null result"}[level]}
 
 
 def main():
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
+    sp.add_parser("due")
     c = sp.add_parser("convene"); c.add_argument("--rounds", type=int, default=1); c.add_argument("--reason", default="scheduled check")
     sp.add_parser("preflight")
     a = ap.parse_args()
-    if a.cmd == "convene":
+    if a.cmd == "due":
+        print(json.dumps(due(), indent=1))
+    elif a.cmd == "convene":
         convene(a.rounds, a.reason)
     else:
         d = STATE / "council" / "preflight"; d.mkdir(parents=True, exist_ok=True)
