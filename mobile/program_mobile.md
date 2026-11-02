@@ -47,7 +47,7 @@ resulting agenda to `research/agenda.md`, then continue the loop. A council opin
 
 ## Phone rules (owner: "use virtual display and adb, don't steal my focus")
 - adb shell CLI only from `/data/local/tmp/z0live-ar`. No app launch, UI, mic, speaker or focus change. The bench
-  aborts if focus changes without owner input and waits while the owner used the phone in the last 90 s.
+  aborts if focus changes without owner input and runs while the owner uses the phone (epoch 2); runs during owner activity are flagged, not dropped, and the A/A noise floor absorbs that noise.
 - Battery >= 30% or charging; AP <= 42 C, battery <= 38 C. `/data` has ~5 GB free: the bench evicts non-active models.
 - `flock /tmp/s25-bench.lock` (taken by the bench) serialises phone runs. Workers never touch the phone.
 - When done for good: `adb shell rm -rf /data/local/tmp/z0live-ar`.

@@ -18,14 +18,14 @@ before and after every block, and any change aborts the run.
 """
 import argparse, datetime, hashlib, json, os, pathlib, random, re, shlex, statistics, subprocess, sys, time, wave
 
-BENCH_EPOCH = 1
+BENCH_EPOCH = 2
 ROOT = pathlib.Path(__file__).resolve().parent
 STATE = ROOT / "state"
 ZLV = pathlib.Path(os.environ.get("ZLV_ROOT", "/mnt/zer0models/models/zlv-tts"))
 MODELS = ZLV / "acpp-models"
 VARIANTS = ZLV / "phone-bundle" / "variants"
 PD = "/data/local/tmp/z0live-ar"
-OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "90"))
+OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "0"))  # epoch 2: owner asked to run while he uses the phone
 MAX_AP_C, MAX_BAT_C, MIN_BATT = 42.0, 38.0, 30
 EVALSET = json.loads((ROOT / "evalset" / "v1.json").read_text())
 
@@ -91,7 +91,7 @@ def wait_for_gates(max_wait_s=1800, log=print):
             why.append(f"AP {t['AP']}C > {MAX_AP_C}")
         if t["batt_dC"] and t["batt_dC"] / 10 > MAX_BAT_C:
             why.append(f"battery {t['batt_dC']/10}C > {MAX_BAT_C}")
-        if t["owner_idle_s"] is None or t["owner_idle_s"] < OWNER_IDLE_S:
+        if OWNER_IDLE_S and (t["owner_idle_s"] is None or t["owner_idle_s"] < OWNER_IDLE_S):
             why.append(f"owner active {t['owner_idle_s']}s ago")
         if not why:
             return t
@@ -283,8 +283,9 @@ def q(xs, p):
 
 
 def summarize(rs, objective):
-    ok = [r for r in rs if not r["errs"] and r.get("audio_s") and not r["contaminated"]]
-    s = {"n": len(rs), "ok": len(ok)}
+    ok = [r for r in rs if not r["errs"] and r.get("audio_s") and not (OWNER_IDLE_S and r["contaminated"])]
+    s_busy = sum(1 for r in rs if r["contaminated"])
+    s = {"n": len(rs), "ok": len(ok), "owner_active_runs": s_busy}
     for k in ("load_to_first_ms", "start_to_first_ms", "rtf", "proc_ms"):
         v = [r[k] for r in ok if r.get(k) is not None]
         if v:
@@ -301,7 +302,7 @@ def paired_ratio_ci(inc, cand, key, n=4000, seed=7):
     by = {}
     for side, rs in (("i", inc), ("c", cand)):
         for r in rs:
-            if r.get(key) is not None and not r["errs"] and not r["contaminated"]:
+            if r.get(key) is not None and not r["errs"] and not (OWNER_IDLE_S and r["contaminated"]):
                 by.setdefault(r["item"], {"i": [], "c": []})[side].append(r[key])
     by = {k: v for k, v in by.items() if v["i"] and v["c"]}
     if not by:
