@@ -31,3 +31,5 @@ traces/
 
 # Workspace (runtime artifacts)
 workspace/
+mobile/state/
+mobile/state-*.log

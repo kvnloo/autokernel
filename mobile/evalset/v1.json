@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "frozen": "2026-11-02. Never edit in place: add v2 and re-baseline every incumbent.",
+  "tts": [
+    {"id": "ack", "text": "Yeah, got it. Give me one sec."},
+    {"id": "answer", "text": "It's about seventy two degrees right now, and it should stay clear through the evening."},
+    {"id": "empathy", "text": "Oh no, that sounds really frustrating. Do you want me to just retry it, or look at the logs first?"},
+    {"id": "laugh", "text": "Ha, okay, fair enough. That's actually a pretty good idea."},
+    {"id": "long", "text": "So here's the plan. First I'll check which branch is deployed, then I'll compare it with what you merged this morning, and if they don't match I'll tell you before changing anything."},
+    {"id": "question", "text": "Wait, do you mean the phone app, or the one on your desktop?"}
+  ],
+  "s2s": [
+    {"id": "capital", "audio": "ref/q-capital.wav", "question": "What is the capital of Australia?", "must_contain": ["canberra"]},
+    {"id": "joke", "audio": "ref/q-joke.wav", "question": "Tell me a short joke.", "must_contain": []}
+  ]
+}

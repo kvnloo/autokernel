@@ -1,0 +1,22 @@
+{
+  "probed": "2026-11-02 via adb shell (read-only)",
+  "device": "Samsung Galaxy S25 Ultra SM-S938U, Android 17 (SDK 37)",
+  "soc": "Snapdragon 8 Elite SM8750 (platform 'sun')",
+  "cpu": {
+    "isa_features": "fp asimd aes pmull sha1 sha2 crc32 atomics fphp asimdhp asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 asimdfhm i8mm bf16 frint flagm2 bti",
+    "no": ["sve", "sve2", "sme"],
+    "clusters": [
+      {"policy": 0, "cpus": [0, 1, 2, 3, 4, 5], "core": "Oryon v2 performance (implementer 0x51)", "max_khz": 3532800, "taskset_mask": "3f"},
+      {"policy": 6, "cpus": [6, 7], "core": "Oryon v2 prime", "max_khz": 4473600, "taskset_mask": "c0"}
+    ],
+    "governor": "walt",
+    "cpu_count": 8
+  },
+  "gpu": {"model": "Adreno 830 (Adreno830v2)", "apis": ["OpenCL (/vendor/lib64/libOpenCL_adreno.so)", "Vulkan"]},
+  "npu": {"hexagon": "HTP v79 (libSnpeHtpV79Stub.so present)", "sdks_on_device": ["SNPE (vendor libs)"], "note": "QNN/QAIRT runtime libs must be pushed by us; v79 not v75 (earlier briefs said v75: wrong)"},
+  "memory": {"total_mb": 11113, "note": "phone is the owner's daily driver; free RAM is usually low, budget <= ~2.5 GB resident for the voice stack"},
+  "storage": {"data_free_gb": 4.9, "note": "keep pushed assets <= 3 GB; evict non-incumbent models"},
+  "power_telemetry": {"readable": ["dumpsys battery: current now (uA), Charge counter (uAh), voltage, temperature"], "denied": ["/sys/class/power_supply/battery/*"]},
+  "thermal_telemetry": "dumpsys thermalservice: AP, BAT, SKIN, PA, USB (degC)",
+  "tools": ["/system/bin/taskset", "toybox 0.8.13"]
+}

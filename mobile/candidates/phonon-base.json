@@ -1,0 +1,10 @@
+{
+ "id": "phonon-base",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "base",
+ "threads": 4,
+ "hypothesis": "baseline: Phonon 31M q8, 4 unpinned threads"
+}
