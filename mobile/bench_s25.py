@@ -234,6 +234,7 @@ def measure(cfgs, rounds, run_dir, log=print):
     recs = {c["_slot"]: [] for c in cfgs}
     tele = []
     sync(cfgs)
+    sh(f"rm -rf {PD}/out && mkdir -p {PD}/out")  # stale WAVs from other tracks would be pulled into this run
     for r in range(rounds):
         order = cfgs if r % 2 == 0 else list(reversed(cfgs))
         for c in order:
