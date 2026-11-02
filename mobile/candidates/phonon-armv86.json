@@ -1,0 +1,10 @@
+{
+ "id": "phonon-armv86",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "armv86",
+ "threads": 4,
+ "hypothesis": "armv8.6-a+bf16 codegen"
+}

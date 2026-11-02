@@ -1,0 +1,10 @@
+{
+ "id": "phonon-kleidiai",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "kleidiai",
+ "threads": 4,
+ "hypothesis": "KleidiAI i8mm/dotprod micro-kernels for quantized matmul"
+}

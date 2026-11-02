@@ -1,0 +1,14 @@
+{
+ "id": "pocket-kleidiai",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "kleidiai",
+ "threads": 4,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "KleidiAI i8mm/dotprod micro-kernels for quantized matmul"
+}

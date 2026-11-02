@@ -1,0 +1,14 @@
+{
+ "id": "pocket-o3lto",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "o3lto",
+ "threads": 4,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "-O3 + ThinLTO"
+}

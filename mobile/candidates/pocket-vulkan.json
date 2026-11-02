@@ -1,0 +1,15 @@
+{
+ "id": "pocket-vulkan",
+ "track": "tts/pocket",
+ "lane": "tts",
+ "family": "pocket_tts",
+ "model": "PocketTTS-GGUF/english",
+ "variant": "vulkan",
+ "threads": 4,
+ "extra_args": [
+  "--voice-id",
+  "alba"
+ ],
+ "hypothesis": "Adreno 830 Vulkan backend (--backend best)",
+ "backend": "best"
+}

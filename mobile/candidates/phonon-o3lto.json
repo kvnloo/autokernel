@@ -1,0 +1,10 @@
+{
+ "id": "phonon-o3lto",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "o3lto",
+ "threads": 4,
+ "hypothesis": "-O3 + ThinLTO"
+}

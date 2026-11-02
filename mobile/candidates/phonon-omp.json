@@ -1,0 +1,10 @@
+{
+ "id": "phonon-omp",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "omp",
+ "threads": 4,
+ "hypothesis": "OpenMP threadpool (static libomp) instead of ggml threads"
+}

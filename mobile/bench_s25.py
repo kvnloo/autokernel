@@ -18,14 +18,17 @@ before and after every block, and any change aborts the run.
 """
 import argparse, datetime, hashlib, json, os, pathlib, random, re, shlex, statistics, subprocess, sys, time, wave
 
-BENCH_EPOCH = 2
+BENCH_EPOCH = 3
 ROOT = pathlib.Path(__file__).resolve().parent
 STATE = ROOT / "state"
 ZLV = pathlib.Path(os.environ.get("ZLV_ROOT", "/mnt/zer0models/models/zlv-tts"))
 MODELS = ZLV / "acpp-models"
 VARIANTS = ZLV / "phone-bundle" / "variants"
 PD = "/data/local/tmp/z0live-ar"
-OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "0"))  # epoch 2: owner asked to run while he uses the phone
+OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "90"))
+# Epoch 2 ran while the owner used the phone: an A/A test (same config both sides) differed by 1.38-1.73x,
+# so decisions need idle windows. Epoch 3 splits tiers: `--tier screen` runs any time (no idle gate) and only
+# nominates big wins (PROMISING); `confirm` (default) is idle-gated and is the only tier that can KEEP.
 MAX_AP_C, MAX_BAT_C, MIN_BATT = 42.0, 38.0, 30
 EVALSET = json.loads((ROOT / "evalset" / "v1.json").read_text())
 
@@ -131,6 +134,10 @@ def model_paths(cfg):
     return sorted(set(paths))
 
 
+def kill_phone_jobs():
+    sh("for p in $(ps -A -o PID,ARGS | grep -E 'block\\.s[h]|z0live-ar/bi[n]' | awk '{print $1}'); do kill $p; done", timeout=30)
+
+
 def sync(cfgs):
     sh(f"mkdir -p {PD}/bin {PD}/m {PD}/out", check=True)
     have = dict(l.split(" ", 1) for l in sh(f"cat {PD}/manifest 2>/dev/null").splitlines() if " " in l)
@@ -233,6 +240,7 @@ def measure(cfgs, rounds, run_dir, log=print):
     items = EVALSET[cfgs[0]["lane"]]
     recs = {c["_slot"]: [] for c in cfgs}
     tele = []
+    kill_phone_jobs()
     sync(cfgs)
     sh(f"rm -rf {PD}/out && mkdir -p {PD}/out")  # stale WAVs from other tracks would be pulled into this run
     for r in range(rounds):
@@ -426,6 +434,18 @@ def cmd_run(a):
     qual = quality(d, ["inc", "cand"], c["lane"])
     iq = (qual.get("slots") or {}).get("inc") or inc[c["track"]].get("quality")
     fails = gates(sc, qual, c["lane"], inc_qual=iq, slot="cand")
+    if a.tier == "screen":
+        bad = [f for f in fails if not f.startswith("rtf")]
+        decision = "PROMISING" if ci and not bad and ci["mid"] <= 0.85 else "SCREEN_NO"
+        if decision == "PROMISING":
+            with open(STATE / "confirm_queue.txt", "a") as f:
+                f.write(c["id"] + "\n")
+        ledger({"cmd": "screen", "lane": c["track"], "id": c["id"], "decision": decision, "fails": fails, "ci": ci,
+                "hypothesis": c.get("hypothesis", ""), "cfg": {k: v for k, v in c.items() if k != "_slot"}, "incumbent_id": i["id"],
+                "summary": {"inc": si, "cand": sc}, "quality": qual, "run": str(d), "telemetry": tele})
+        print(json.dumps({"decision": decision, "fails": fails, "ci_ratio": ci, "inc": si, "cand": sc}, indent=1))
+        print(f"METRIC {c['track']}.{c['objective']} screen inc={si['objective']} cand={sc['objective']} ratio={ci and ci['mid']}")
+        return
     noise = load("noise.json", {}).get(c["track"], {}).get("ratio_halfwidth", 0.05)
     need = max(0.03, noise)
     if ci is None:
@@ -487,18 +507,29 @@ def main():
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
     for n in ("baseline", "run"):
-        p = sp.add_parser(n); p.add_argument("--candidate", required=True); p.add_argument("--rounds", type=int, default=2)
+        p = sp.add_parser(n); p.add_argument("--candidate", required=True); p.add_argument("--rounds", type=int, default=0)
+        p.add_argument("--tier", choices=["confirm", "screen"], default="confirm")
         p.add_argument("--force", action="store_true")
     p = sp.add_parser("aa"); p.add_argument("--track", required=True); p.add_argument("--rounds", type=int, default=2)
     sp.add_parser("status")
     a = ap.parse_args()
+    global OWNER_IDLE_S
+    if getattr(a, "tier", "confirm") == "screen":
+        OWNER_IDLE_S = 0
+    if getattr(a, "rounds", 1) == 0:
+        a.rounds = 4 if getattr(a, "tier", "") == "screen" else 2
     if a.cmd == "status":
         return cmd_status(a)
     SER = serial()
     lock = open("/tmp/s25-bench.lock", "w")
     import fcntl
     fcntl.flock(lock, fcntl.LOCK_EX)
-    {"baseline": cmd_baseline, "run": cmd_run, "aa": cmd_aa}[a.cmd](a)
+    import signal
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
+    try:
+        {"baseline": cmd_baseline, "run": cmd_run, "aa": cmd_aa}[a.cmd](a)
+    finally:
+        kill_phone_jobs()
 
 
 if __name__ == "__main__":

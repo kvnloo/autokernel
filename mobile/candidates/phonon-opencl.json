@@ -1,0 +1,14 @@
+{
+ "id": "phonon-opencl",
+ "track": "tts/phonon",
+ "lane": "tts",
+ "family": "gradium_phonon",
+ "model": "phonon-31m-en",
+ "variant": "opencl",
+ "threads": 4,
+ "hypothesis": "Adreno 830 OpenCL backend (--backend best, vendor ICD)",
+ "backend": "best",
+ "env": {
+  "OCL_ICD_FILENAMES": "/vendor/lib64/libOpenCL.so"
+ }
+}
