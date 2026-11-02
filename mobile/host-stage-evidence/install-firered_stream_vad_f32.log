@@ -1,0 +1,5 @@
+selected firered_stream_vad_f32 (firered_vad)
+repo audio-cpp/audio.cpp-gguf@main
+target /mnt/zer0models/models/zlv-tts/acpp-models/FireRedVAD-GGUF
+file remote=FireRedVAD-GGUF/firered-stream-vad-f32.gguf local=FireRedVAD-GGUF/firered-stream-vad-f32.gguf
+installed firered_stream_vad_f32 -> /mnt/zer0models/models/zlv-tts/acpp-models/FireRedVAD-GGUF

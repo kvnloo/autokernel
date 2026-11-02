@@ -1,0 +1,13 @@
+[TRACE ts=20261102-113021] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json
+[TRACE ts=20261102-113021] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json
+[TRACE ts=20261102-113021] runtime.model.family lfm3_audio
+[TRACE ts=20261102-113021] runtime.model.variant LFM3-Audio
+[TRACE ts=20261102-113021] runtime.model.root ../acpp-models/LFM3-Audio-2B-GGUF
+[TRACE ts=20261102-113021] runtime.model.discovered_config_count 0
+[TRACE ts=20261102-113021] runtime.model.discovered_weight_count 2
+[TRACE ts=20261102-113021] runtime.model.task_count 3
+[TRACE ts=20261102-113021] runtime.model.language_count 18
+[TRACE ts=20261102-113021] runtime.model.supports_speaker_reference 0
+[TRACE ts=20261102-113021] runtime.model.supports_style_condition 0
+[TRACE ts=20261102-113021] runtime.model.supports_timestamps 0
+audiocpp_cli failed: LFM3-Audio supports the asr, tts and s2s tasks

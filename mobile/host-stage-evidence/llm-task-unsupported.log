@@ -1,0 +1,1 @@
+audiocpp_cli failed: unsupported task: llm (expected vad, asr, diar, sep, gen, tts, clon, vc, s2s, align, vdes, spk, svc, midi, turn, wake, or cls)

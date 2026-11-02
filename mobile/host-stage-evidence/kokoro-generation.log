@@ -1,0 +1,19 @@
+/mnt/zer0models/models/zlv-tts/.venv/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/mnt/zer0models/models/zlv-tts/.venv/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1013: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("LSTM", *args, **kwargs)
+/mnt/zer0models/models/zlv-tts/.venv/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+asr01 3.225
+asr02 3.075
+asr03 3.575
+asr04 3.0
+asr05 3.0
+asr06 3.15
+asr07 3.275
+asr08 3.825
+asr09 3.25
+asr10 3.45
+asr11 5.5
+asr12 5.05

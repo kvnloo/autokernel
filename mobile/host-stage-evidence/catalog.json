@@ -1,0 +1,4262 @@
+[
+  {
+    "family": "ace_step",
+    "id": "ace_step_turbo_q8_0",
+    "display_name": "ACE-Step 1.5 Turbo Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_turbo_bf16",
+    "display_name": "ACE-Step 1.5 Turbo BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_base_q8_0",
+    "display_name": "ACE-Step 1.5 Base Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_base_bf16",
+    "display_name": "ACE-Step 1.5 Base BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_xl_turbo_bf16",
+    "display_name": "ACE-Step 1.5 XL Turbo BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "CaptainArni/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_xl_sft_bf16",
+    "display_name": "ACE-Step 1.5 XL SFT BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "CaptainArni/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_xl_turbo_q8dit",
+    "display_name": "ACE-Step 1.5 XL Turbo Q8_0 DiT GGUF (BF16 planner)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "CaptainArni/audio.cpp-gguf"
+  },
+  {
+    "family": "ace_step",
+    "id": "ace_step_xl_sft_q8dit",
+    "display_name": "ACE-Step 1.5 XL SFT Q8_0 DiT GGUF (BF16 planner)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "ACE-Step1.5-GGUF",
+    "repo": "CaptainArni/audio.cpp-gguf"
+  },
+  {
+    "family": "apollo",
+    "id": "apollo_orig",
+    "display_name": "Apollo GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Apollo-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ast_audioset",
+    "id": "ast_audioset_f32",
+    "display_name": "AST AudioSet F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "AST-AudioSet-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "audio8_asr",
+    "id": "audio8_asr_0_1b_q8_0",
+    "display_name": "Audio8-ASR-0.1B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Audio8-ASR-0.1B-GGUF",
+    "repo": ""
+  },
+  {
+    "family": "audio8_asr",
+    "id": "audio8_asr_0_1b_f16",
+    "display_name": "Audio8-ASR-0.1B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Audio8-ASR-0.1B-GGUF",
+    "repo": ""
+  },
+  {
+    "family": "audio8_asr",
+    "id": "audio8_asr_0_1b_safetensors",
+    "display_name": "Audio8-ASR-0.1B HF Safetensors",
+    "format": "safetensors",
+    "precision": "bfloat16",
+    "default": false,
+    "target_directory": "Audio8-ASR-0.1B-hf",
+    "repo": "Audio8/Audio8-ASR-0.1B"
+  },
+  {
+    "family": "audio8_tts",
+    "id": "audio8_tts_preview_0_6b_q8_0",
+    "display_name": "Audio8 TTS Preview 0.6B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Audio8-TTS-Preview-0.6B-GGUF",
+    "repo": "js-byte/Audio8-TTS-Preview-0.6b-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_next_q4_k",
+    "display_name": "Audio Flamingo Next GGUF Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": true,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_next_q8_0",
+    "display_name": "Audio Flamingo Next GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_next_bf16",
+    "display_name": "Audio Flamingo Next GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_3_q4_k",
+    "display_name": "Audio Flamingo 3 GGUF Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_3_q8_0",
+    "display_name": "Audio Flamingo 3 GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "audio_flamingo_3_bf16",
+    "display_name": "Audio Flamingo 3 GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audio_flamingo",
+    "id": "music_flamingo_2601_q8_0",
+    "display_name": "Music Flamingo 2601 GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Audio-Flamingo-GGUF",
+    "repo": "audio-cpp/Audio-Flamingo-GGUF"
+  },
+  {
+    "family": "audiosr",
+    "id": "audiosr_basic_f32",
+    "display_name": "AudioSR Basic F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "AudioSR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "auk",
+    "id": "auk_base_f32",
+    "display_name": "AuK Base F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_base_f16",
+    "display_name": "AuK Base F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_base_q8_0",
+    "display_name": "AuK Base Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_flash_f32",
+    "display_name": "AuK-Flash F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_flash_f16",
+    "display_name": "AuK-Flash F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_flash_q8_0",
+    "display_name": "AuK-Flash Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_qwen_bf16",
+    "display_name": "AuK Qwen BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_qwen_q8_0",
+    "display_name": "AuK Qwen Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "auk",
+    "id": "auk_vae_f32",
+    "display_name": "AuK VAE F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "AuK-Base-and-Flash-GGUF",
+    "repo": "audio-cpp/AuK-Base-and-Flash-GGUF"
+  },
+  {
+    "family": "breeze_tts",
+    "id": "breeze_tts_2_q4_0",
+    "display_name": "BreezeTTS 2 Q4_0 GGUF",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "Breeze-TTS-2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "breeze_tts",
+    "id": "breeze_tts_2_q8_0",
+    "display_name": "BreezeTTS 2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Breeze-TTS-2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "breeze_tts",
+    "id": "breeze_tts_2_bf16",
+    "display_name": "BreezeTTS 2 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Breeze-TTS-2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "bs_roformer",
+    "id": "bs_roformer_q8_0",
+    "display_name": "BS-RoFormer ep368 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "BS-RoFormer-ep368-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "canary_asr",
+    "id": "canary_180m_flash_f32",
+    "display_name": "Canary 180M Flash GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Canary-180M-Flash-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "canary_asr",
+    "id": "canary_180m_flash_q8_0",
+    "display_name": "Canary 180M Flash GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Canary-180M-Flash-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ced",
+    "id": "ced_tiny_f32",
+    "display_name": "CED Tiny F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "CED-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ced",
+    "id": "ced_mini_f32",
+    "display_name": "CED Mini F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "CED-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ced",
+    "id": "ced_small_f32",
+    "display_name": "CED Small F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "CED-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ced",
+    "id": "ced_base_f32",
+    "display_name": "CED Base F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "CED-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "chatterbox",
+    "id": "chatterbox_q8_0",
+    "display_name": "Chatterbox Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Chatterbox-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "chatterbox",
+    "id": "chatterbox_f16",
+    "display_name": "Chatterbox F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Chatterbox-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "chatterbox",
+    "id": "chatterbox_safetensors",
+    "display_name": "Chatterbox Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "chatterbox",
+    "repo": "ResembleAI/chatterbox"
+  },
+  {
+    "family": "chatterbox_turbo",
+    "id": "chatterbox_turbo_q8_0",
+    "display_name": "Chatterbox Turbo Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Chatterbox-Turbo-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "chatterbox_turbo",
+    "id": "chatterbox_turbo_f16",
+    "display_name": "Chatterbox Turbo F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Chatterbox-Turbo-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "citrinet_asr",
+    "id": "citrinet_asr_q8_0",
+    "display_name": "Citrinet ASR Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Citrinet-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "cohere_asr",
+    "id": "cohere_transcribe_bf16",
+    "display_name": "Cohere Transcribe GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Cohere-Transcribe-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "cohere_asr",
+    "id": "cohere_transcribe_q8_0",
+    "display_name": "Cohere Transcribe GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Cohere-Transcribe-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "cohere_asr",
+    "id": "cohere_transcribe_q4_0",
+    "display_name": "Cohere Transcribe GGUF Q4_0",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "Cohere-Transcribe-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "confucius4_r2t2",
+    "id": "confucius4_r2t2_q8_0",
+    "display_name": "Confucius4-R2T2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Confucius4-R2T2-GGUF",
+    "repo": "davidxifeng/Confucius4-R2T2-gguf"
+  },
+  {
+    "family": "confucius4_r2t2",
+    "id": "confucius4_r2t2_f16",
+    "display_name": "Confucius4-R2T2 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Confucius4-R2T2-GGUF",
+    "repo": "davidxifeng/Confucius4-R2T2-gguf"
+  },
+  {
+    "family": "confucius4_r2t2",
+    "id": "confucius4_r2t2_q4_k_m",
+    "display_name": "Confucius4-R2T2 Q4_K_M GGUF",
+    "format": "gguf",
+    "precision": "q4_k_m",
+    "default": false,
+    "target_directory": "Confucius4-R2T2-Q4_K_M-GGUF",
+    "repo": "Nairod785/Confucius4-R2T2-Q4_K_M-GGUF"
+  },
+  {
+    "family": "confucius4_r2t2",
+    "id": "confucius4_r2t2_safetensors",
+    "display_name": "Confucius4-R2T2 (HF safetensors)",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Confucius4-R2T2",
+    "repo": "netease-youdao/Confucius4-R2T2"
+  },
+  {
+    "family": "confucius4_tts",
+    "id": "confucius4_tts_orig",
+    "display_name": "Confucius4-TTS Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Confucius4-TTS-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "controlfoley",
+    "id": "controlfoley_large_44k_f32",
+    "display_name": "ControlFoley Large 44k F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "ControlFoley-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "controlfoley",
+    "id": "controlfoley_large_44k_q8_0",
+    "display_name": "ControlFoley Large 44k Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "ControlFoley-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "cosyvoice3",
+    "id": "cosyvoice3_q8_0",
+    "display_name": "CosyVoice3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "CosyVoice3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "cosyvoice3",
+    "id": "cosyvoice3_f32",
+    "display_name": "CosyVoice3 F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "CosyVoice3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "crisperwhisper",
+    "id": "crisperwhisper_2_large_bf16",
+    "display_name": "CrisperWhisper 2.0 Large GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "CrisperWhisper2.0-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "crisperwhisper",
+    "id": "crisperwhisper_2_large_q8_0",
+    "display_name": "CrisperWhisper 2.0 Large GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "CrisperWhisper2.0-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "crisperwhisper",
+    "id": "crisperwhisper_2_large_q4_k",
+    "display_name": "CrisperWhisper 2.0 Large GGUF Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "CrisperWhisper2.0-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_soar_q8_0",
+    "display_name": "DotTTS SOAR Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "DotTTS-SOAR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_soar_bf16",
+    "display_name": "DotTTS SOAR BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "DotTTS-SOAR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_mf_q8_0",
+    "display_name": "DotTTS MeanFlow Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "DotTTS-MF-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_mf_bf16",
+    "display_name": "DotTTS MeanFlow BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "DotTTS-MF-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_edit_q8_0",
+    "display_name": "DotTTS Edit Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "DotTTS-Edit-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dots_tts",
+    "id": "dots_tts_edit_bf16",
+    "display_name": "DotTTS Edit BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "DotTTS-Edit-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "dramabox",
+    "id": "dramabox_q8_0",
+    "display_name": "DramaBox Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "DramaBox-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "echo_tts",
+    "id": "echo_tts_q8_0",
+    "display_name": "Echo-TTS Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Echo-TTS-GGUF",
+    "repo": "dignome/Echo-TTS"
+  },
+  {
+    "family": "echo_tts",
+    "id": "echo_tts_f16",
+    "display_name": "Echo-TTS F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Echo-TTS-GGUF",
+    "repo": "dignome/Echo-TTS"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_unified",
+    "display_name": "Habibi-TTS Unified (Arabic, multi-dialect)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Habibi-TTS/Unified",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "vocos_mel_24khz",
+    "display_name": "Vocos mel 24kHz vocoder (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "vocos-mel-24khz",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_alg",
+    "display_name": "Habibi-TTS ALG specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/ALG",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_egy",
+    "display_name": "Habibi-TTS EGY specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/EGY",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_irq",
+    "display_name": "Habibi-TTS IRQ specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/IRQ",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_mar",
+    "display_name": "Habibi-TTS MAR specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/MAR",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_msa",
+    "display_name": "Habibi-TTS MSA specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/MSA",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_sau",
+    "display_name": "Habibi-TTS SAU specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/SAU",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "f5_tts",
+    "id": "habibi_uae",
+    "display_name": "Habibi-TTS UAE specialized checkpoint (GGUF)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Habibi-TTS/Specialized/UAE",
+    "repo": "trklou/audio.cpp"
+  },
+  {
+    "family": "firered_audio",
+    "id": "firered_audio_orig",
+    "display_name": "FireRedAudio Orig GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "FireRedAudio-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "firered_audio",
+    "id": "firered_audio_q8_0",
+    "display_name": "FireRedAudio Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "FireRedAudio-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "firered_vad",
+    "id": "firered_vad_f32",
+    "display_name": "FireRed VAD GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "FireRedVAD-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "firered_vad",
+    "id": "firered_stream_vad_f32",
+    "display_name": "FireRed Stream-VAD GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "FireRedVAD-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fireredtts3",
+    "id": "fireredtts3_instruct_orig",
+    "display_name": "FireRedTTS3 Instruct Orig GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "FireRedTTS3-Instruct-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fireredtts3",
+    "id": "fireredtts3_instruct_q8_0",
+    "display_name": "FireRedTTS3 Instruct Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "FireRedTTS3-Instruct-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fireredtts3",
+    "id": "fireredtts3_base_orig",
+    "display_name": "FireRedTTS3 Base Orig GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "FireRedTTS3-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fireredtts3",
+    "id": "fireredtts3_base_q8_0",
+    "display_name": "FireRedTTS3 Base Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "FireRedTTS3-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fish_audio",
+    "id": "fish_audio_s2_pro_q8_0",
+    "display_name": "Fish Audio S2 Pro Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Fish-Audio-S2-Pro-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fish_audio",
+    "id": "fish_audio_s2_pro_bf16",
+    "display_name": "Fish Audio S2 Pro BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Fish-Audio-S2-Pro-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "fish_drama3",
+    "id": "fish_drama3_q4_experts_q8_backbone",
+    "display_name": "Drama 3 Q4_K experts / Q8_0 backbone",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": true,
+    "target_directory": "Drama-3-GGUF",
+    "repo": "Jmica/Drama-3-GGUF"
+  },
+  {
+    "family": "fish_drama3",
+    "id": "fish_drama3_q3_experts_q8_backbone",
+    "display_name": "Drama 3 Q3_K experts / Q8_0 backbone",
+    "format": "gguf",
+    "precision": "q3_k_s",
+    "default": false,
+    "target_directory": "Drama-3-GGUF",
+    "repo": "Jmica/Drama-3-GGUF"
+  },
+  {
+    "family": "fish_drama3",
+    "id": "fish_drama3_q2_experts_q8_backbone",
+    "display_name": "Drama 3 Q2_K experts / Q8_0 backbone",
+    "format": "gguf",
+    "precision": "q2_k",
+    "default": false,
+    "target_directory": "Drama-3-GGUF",
+    "repo": "Jmica/Drama-3-GGUF"
+  },
+  {
+    "family": "fish_drama3",
+    "id": "fish_drama3_q4_backbone",
+    "display_name": "Drama 3 Q4_K experts / Q4_K backbone",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "Drama-3-GGUF",
+    "repo": "Jmica/Drama-3-GGUF"
+  },
+  {
+    "family": "fish_drama3",
+    "id": "fish_drama3_small_iq3_xxs",
+    "display_name": "Drama3-small IQ3_XXS",
+    "format": "gguf",
+    "precision": "iq3_xxs",
+    "default": false,
+    "target_directory": "Drama3-small-GGUF",
+    "repo": "pentacoxian-dev/drama3-small-GGUF"
+  },
+  {
+    "family": "fun_asr_nano",
+    "id": "fun_asr_nano_2512_q8_0",
+    "display_name": "Fun-ASR-Nano-2512 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Fun-ASR-Nano-2512-GGUF",
+    "repo": "FunAudioLLM/Fun-ASR-Nano-2512-GGUF"
+  },
+  {
+    "family": "fun_asr_nano",
+    "id": "fun_asr_nano_2512_f16",
+    "display_name": "Fun-ASR-Nano-2512 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Fun-ASR-Nano-2512-GGUF",
+    "repo": "FunAudioLLM/Fun-ASR-Nano-2512-GGUF"
+  },
+  {
+    "family": "fun_asr_nano",
+    "id": "fun_asr_nano_2512_safetensors",
+    "display_name": "Fun-ASR-Nano-2512 HF Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Fun-ASR-Nano-2512-hf",
+    "repo": "FunAudioLLM/Fun-ASR-Nano-2512-hf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_v3_ctc_f16",
+    "display_name": "GigaAM v3 CTC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": true,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_v3_rnnt_f16",
+    "display_name": "GigaAM v3 RNN-T F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_v3_e2e_ctc_f16",
+    "display_name": "GigaAM v3 E2E CTC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_v3_e2e_rnnt_f16",
+    "display_name": "GigaAM v3 E2E RNN-T F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_multilingual_ctc_f32",
+    "display_name": "GigaAM Multilingual CTC F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_multilingual_ctc_f16",
+    "display_name": "GigaAM Multilingual CTC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_multilingual_large_ctc_f32",
+    "display_name": "GigaAM Multilingual Large CTC F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "gigaam_asr",
+    "id": "gigaam_multilingual_large_ctc_f16",
+    "display_name": "GigaAM Multilingual Large CTC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "GigaAM-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "glm_tts",
+    "id": "glm_tts_q8_0",
+    "display_name": "GLM-TTS mixed Q8_0/F16 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "GLM-TTS-Q8",
+    "repo": "mirek190/audio.cpp"
+  },
+  {
+    "family": "gradium_phonon",
+    "id": "gradium_phonon_31m_en_q8_0",
+    "display_name": "Phonon 31m English Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "phonon-31m-en",
+    "repo": "gradium/phonon-31m-en-audiocpp"
+  },
+  {
+    "family": "gradium_phonon",
+    "id": "gradium_phonon_31m_en_safetensors",
+    "display_name": "Phonon 31m English Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "phonon-31m-en-safetensors",
+    "repo": "gradium/phonon-31m-en"
+  },
+  {
+    "family": "granite5asr",
+    "id": "granite5asr_q8_0",
+    "display_name": "Granite Speech 5.0 470M TurboCTC Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Granite-Speech-5.0-470M-TurboCTC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "granite5asr",
+    "id": "granite5asr_safetensors",
+    "display_name": "Granite Speech 5.0 470M TurboCTC Native Safetensors",
+    "format": "safetensors",
+    "precision": "bfloat16",
+    "default": false,
+    "target_directory": "granite5asr",
+    "repo": "ibm-granite/granite-speech-5.0-470m-turboctc"
+  },
+  {
+    "family": "heartmula",
+    "id": "heartmula_q8_0",
+    "display_name": "HeartMuLa Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "HeartMuLa-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "heartmula",
+    "id": "heartmula_f16",
+    "display_name": "HeartMuLa F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "HeartMuLa-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "higgs_audio_stt",
+    "id": "higgs_audio_stt_q8_0",
+    "display_name": "Higgs Audio v3 STT Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Higgs-Audio-v3-STT-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "higgs_audio_stt",
+    "id": "higgs_audio_stt_f16",
+    "display_name": "Higgs Audio v3 STT F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Higgs-Audio-v3-STT-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "higgs_audio_tts",
+    "id": "higgs_audio_tts_4b_q8_0",
+    "display_name": "Higgs Audio v3 TTS 4B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Higgs-Audio-v3-TTS-4B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "higgs_audio_tts",
+    "id": "higgs_audio_tts_4b_bf16",
+    "display_name": "Higgs Audio v3 TTS 4B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Higgs-Audio-v3-TTS-4B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "htdemucs",
+    "id": "htdemucs_q8_0",
+    "display_name": "HTDemucs Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "HTDemucs-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "htdemucs",
+    "id": "htdemucs_f16",
+    "display_name": "HTDemucs F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "HTDemucs-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "htdemucs_6stems",
+    "id": "htdemucs_6stems_q8_0",
+    "display_name": "HTDemucs 6-stem Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "HTDemucs-6stems-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "htdemucs_6stems",
+    "id": "htdemucs_6stems_f16",
+    "display_name": "HTDemucs 6-stem F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "HTDemucs-6stems-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "hviske_asr",
+    "id": "hviske_asr_q8_0",
+    "display_name": "Hviske v5.3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Hviske-v5.3-GGUF",
+    "repo": "mirek190/audio.cpp"
+  },
+  {
+    "family": "hviske_asr",
+    "id": "hviske_asr_safetensors",
+    "display_name": "Hviske v5.3 Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "hviske-v5.3",
+    "repo": "syvai/hviske-v5.3"
+  },
+  {
+    "family": "hviske_asr_v6",
+    "id": "hviske_asr_v6_bf16",
+    "display_name": "Hviske v6 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Hviske-v6-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "hviske_asr_v6",
+    "id": "hviske_asr_v6_q8_0",
+    "display_name": "Hviske v6 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Hviske-v6-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_echo",
+    "id": "index_echo_s2tt_2b_orig",
+    "display_name": "Index-Echo-S2TT 2B Original",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Index-Echo-S2TT-GGUF",
+    "repo": "audio-cpp/Index-Echo-S2TT-GGUF"
+  },
+  {
+    "family": "index_echo",
+    "id": "index_echo_s2tt_2b_q8_0",
+    "display_name": "Index-Echo-S2TT 2B Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Index-Echo-S2TT-GGUF",
+    "repo": "audio-cpp/Index-Echo-S2TT-GGUF"
+  },
+  {
+    "family": "index_echo",
+    "id": "index_echo_s2tt_2b_q4_k",
+    "display_name": "Index-Echo-S2TT 2B Q4_K (experimental)",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "Index-Echo-S2TT-GGUF",
+    "repo": "audio-cpp/Index-Echo-S2TT-GGUF"
+  },
+  {
+    "family": "index_echo",
+    "id": "index_echo_s2tt_9b_orig",
+    "display_name": "Index-Echo-S2TT 9B Original",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Index-Echo-S2TT-GGUF",
+    "repo": "audio-cpp/Index-Echo-S2TT-GGUF"
+  },
+  {
+    "family": "index_echo",
+    "id": "index_echo_s2tt_9b_q8_0",
+    "display_name": "Index-Echo-S2TT 9B Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Index-Echo-S2TT-GGUF",
+    "repo": "audio-cpp/Index-Echo-S2TT-GGUF"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_q8_0",
+    "display_name": "IndexTTS2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "IndexTTS2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_f16",
+    "display_name": "IndexTTS2 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "IndexTTS2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_orig",
+    "display_name": "IndexTTS2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "IndexTTS2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_safetensors",
+    "display_name": "IndexTTS2 Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "IndexTTS-2",
+    "repo": "mlx-community/index-tts2-mlx"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_5_q8_0",
+    "display_name": "IndexTTS2.5 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "IndexTTS2.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_5_f16",
+    "display_name": "IndexTTS2.5 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "IndexTTS2.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "index_tts2",
+    "id": "index_tts2_5_orig",
+    "display_name": "IndexTTS2.5 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "IndexTTS2.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "inflect_v2",
+    "id": "inflect_micro_v2_orig",
+    "display_name": "Inflect Micro v2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Inflect-Micro-v2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_v4_small_q8_0",
+    "display_name": "Irodori-TTS v4.1 Small Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Irodori-TTS-v4-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_v4_1_anime_q8_0",
+    "display_name": "Irodori-TTS v4.1 Anime Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Irodori-TTS-v4-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_v4_small_f16",
+    "display_name": "Irodori-TTS v4.1 Small F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Irodori-TTS-v4-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_600m_v3_voicedesign_q8_0",
+    "display_name": "Irodori-TTS 600M v3 VoiceDesign Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Irodori-TTS-600M-v3-VoiceDesign-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_600m_v3_voicedesign_f16",
+    "display_name": "Irodori-TTS 600M v3 VoiceDesign F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Irodori-TTS-600M-v3-VoiceDesign-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_500m_v3_q8_0",
+    "display_name": "Irodori-TTS 500M v3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Irodori-TTS-500M-v3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_v4_1_small_mf_q8_0",
+    "display_name": "Irodori-TTS v4.1 Small MeanFlow Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Irodori-TTS-v4-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_v4_1_small_mf_f16",
+    "display_name": "Irodori-TTS v4.1 Small MeanFlow F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Irodori-TTS-v4-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "irodori_tts",
+    "id": "irodori_tts_500m_v3_f16",
+    "display_name": "Irodori-TTS 500M v3 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Irodori-TTS-500M-v3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kitten_tts",
+    "id": "kitten_tts_mini_0_8_orig",
+    "display_name": "KittenTTS Mini 0.8 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "KittenTTS-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kitten_tts2",
+    "id": "kitten_tts2_bf16",
+    "display_name": "Kitten TTS 2 BF16 GGUF (Previous Checkpoint)",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "kitten-tts2-v2",
+    "repo": "dignome/kitten_tts2"
+  },
+  {
+    "family": "kitten_tts2",
+    "id": "kitten_tts2_q8_v2",
+    "display_name": "Kitten TTS 2 Q8 GGUF (Previous Checkpoint)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "kitten-tts2-v2",
+    "repo": "dignome/kitten_tts2"
+  },
+  {
+    "family": "kitten_tts2",
+    "id": "kitten_tts2_q4",
+    "display_name": "Kitten TTS 2 Hybrid Q4 GGUF (Previous Checkpoint, Experimental)",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "kitten-tts2-v2",
+    "repo": "dignome/kitten_tts2"
+  },
+  {
+    "family": "kitten_tts2",
+    "id": "kitten_tts2_20261021_q8_0",
+    "display_name": "Kitten TTS 2 2026-10-21 Q8 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "KittenTTS2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kitten_tts2",
+    "id": "kitten_tts2_20261021_q4_0",
+    "display_name": "Kitten TTS 2 2026-10-21 Q4 GGUF (BF16 Embedding)",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "KittenTTS2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kokoro_tts",
+    "id": "kokoro_82m_q8_0",
+    "display_name": "Kokoro 82M Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Kokoro-82M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kokoro_tts",
+    "id": "kokoro_82m_bf16",
+    "display_name": "Kokoro 82M BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Kokoro-82M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kokoro_tts",
+    "id": "kokoro_82m_generator_rk3588",
+    "display_name": "Kokoro 82M NPU Generator RKNN (RK3588)",
+    "format": "rknn",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Kokoro-82M-GGUF",
+    "repo": "wOvANAI/rknn-tts-engines"
+  },
+  {
+    "family": "kroko_asr",
+    "id": "kroko_asr_community_q8_0",
+    "display_name": "Kroko Community ASR Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Kroko-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kugelaudio",
+    "id": "kugelaudio_0_open_bf16",
+    "display_name": "KugelAudio-0-Open BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "KugelAudio-0-Open-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kugelaudio",
+    "id": "kugelaudio_0_open_q8_0",
+    "display_name": "KugelAudio-0-Open Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "KugelAudio-0-Open-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "kugelaudio",
+    "id": "kugelaudio_0_open_q4_k",
+    "display_name": "KugelAudio-0-Open Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "KugelAudio-0-Open-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "latentsync",
+    "id": "latentsync_1_6_q8_0_f16",
+    "display_name": "LatentSync 1.6 Q8/F16",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "LatentSync-1.6-GGUF",
+    "repo": "audio-cpp/LatentSync-1.6-GGUF"
+  },
+  {
+    "family": "latentsync",
+    "id": "latentsync_1_6_f16",
+    "display_name": "LatentSync 1.6 F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "LatentSync-1.6-GGUF",
+    "repo": "audio-cpp/LatentSync-1.6-GGUF"
+  },
+  {
+    "family": "latentsync",
+    "id": "latentsync_1_6_f32_f16",
+    "display_name": "LatentSync 1.6 F32/F16",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "LatentSync-1.6-GGUF",
+    "repo": "audio-cpp/LatentSync-1.6-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_q8_0",
+    "display_name": "LFM2.5-Audio-1.5B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "LFM2.5-Audio-1.5B-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_f16",
+    "display_name": "LFM2.5-Audio-1.5B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_q4_0",
+    "display_name": "LFM2.5-Audio-1.5B Q4_0 GGUF",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_jp_q8_0",
+    "display_name": "LFM2.5-Audio-1.5B-JP Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-JP-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-JP-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_jp_f16",
+    "display_name": "LFM2.5-Audio-1.5B-JP F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-JP-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-JP-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_jp_f32",
+    "display_name": "LFM2.5-Audio-1.5B-JP F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-JP-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-JP-GGUF"
+  },
+  {
+    "family": "lfm2_audio",
+    "id": "lfm2_audio_1_5b_jp_q4_0",
+    "display_name": "LFM2.5-Audio-1.5B-JP Q4_0 GGUF",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "LFM2.5-Audio-1.5B-JP-GGUF",
+    "repo": "LiquidAI/LFM2.5-Audio-1.5B-JP-GGUF"
+  },
+  {
+    "family": "lfm3_audio",
+    "id": "lfm3_audio_2b_q8_0",
+    "display_name": "LFM3-Audio-2B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "LFM3-Audio-2B-GGUF",
+    "repo": "LiquidAI/LFM3-Audio-2B-GGUF"
+  },
+  {
+    "family": "lfm3_audio",
+    "id": "lfm3_audio_2b_f16",
+    "display_name": "LFM3-Audio-2B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "LFM3-Audio-2B-GGUF",
+    "repo": "LiquidAI/LFM3-Audio-2B-GGUF"
+  },
+  {
+    "family": "lfm3_audio",
+    "id": "lfm3_audio_2b_bf16",
+    "display_name": "LFM3-Audio-2B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "LFM3-Audio-2B-GGUF",
+    "repo": "LiquidAI/LFM3-Audio-2B-GGUF"
+  },
+  {
+    "family": "lfm3_audio",
+    "id": "lfm3_audio_2b_q4_k_m",
+    "display_name": "LFM3-Audio-2B Q4_K_M GGUF (Q8_0 mmproj)",
+    "format": "gguf",
+    "precision": "q4_k_m",
+    "default": false,
+    "target_directory": "LFM3-Audio-2B-GGUF",
+    "repo": "LiquidAI/LFM3-Audio-2B-GGUF"
+  },
+  {
+    "family": "lfm3_audio",
+    "id": "lfm3_audio_2b_q4_0",
+    "display_name": "LFM3-Audio-2B Q4_0 GGUF (Q8_0 mmproj)",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "LFM3-Audio-2B-GGUF",
+    "repo": "LiquidAI/LFM3-Audio-2B-GGUF"
+  },
+  {
+    "family": "liveavatar",
+    "id": "liveavatar_nvfp4_lora",
+    "display_name": "LiveAvatar NVFP4 LoRA GGUF",
+    "format": "gguf",
+    "precision": "native",
+    "default": true,
+    "target_directory": "LiveAvatar-GGUF",
+    "repo": "audio-cpp/LiveAvatar-GGUF"
+  },
+  {
+    "family": "magenta_realtime_2",
+    "id": "magenta_realtime_2_small_f16",
+    "display_name": "Magenta RealTime 2 Small F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": true,
+    "target_directory": "Magenta-RealTime-2-GGUF",
+    "repo": "audio-cpp/Magenta-RealTime-2-GGUF"
+  },
+  {
+    "family": "magenta_realtime_2",
+    "id": "magenta_realtime_2_small_q8_0",
+    "display_name": "Magenta RealTime 2 Small Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Magenta-RealTime-2-GGUF",
+    "repo": "audio-cpp/Magenta-RealTime-2-GGUF"
+  },
+  {
+    "family": "magenta_realtime_2",
+    "id": "magenta_realtime_2_base_f16",
+    "display_name": "Magenta RealTime 2 Base F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Magenta-RealTime-2-GGUF",
+    "repo": "audio-cpp/Magenta-RealTime-2-GGUF"
+  },
+  {
+    "family": "magenta_realtime_2",
+    "id": "magenta_realtime_2_base_q8_0",
+    "display_name": "Magenta RealTime 2 Base Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Magenta-RealTime-2-GGUF",
+    "repo": "audio-cpp/Magenta-RealTime-2-GGUF"
+  },
+  {
+    "family": "magpie_tts",
+    "id": "magpie_tts_orig",
+    "display_name": "MagpieTTS Multilingual 357M Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "MagpieTTS-Multilingual-357M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "magpie_tts",
+    "id": "magpie_tts_q8_0",
+    "display_name": "MagpieTTS Multilingual 357M Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MagpieTTS-Multilingual-357M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "maya1",
+    "id": "maya1_orig",
+    "display_name": "Maya1 Original-Precision GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Maya1-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "maya1",
+    "id": "maya1_q8_0",
+    "display_name": "Maya1 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Maya1-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "meanvc2",
+    "id": "meanvc2_120ms_40ms_f32",
+    "display_name": "MeanVC2 120ms/40ms F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "MeanVC2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "meanvc2",
+    "id": "meanvc2_120ms_40ms_q4_k",
+    "display_name": "MeanVC2 120ms/40ms Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "MeanVC2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mel_band_roformer",
+    "id": "mel_band_roformer_q8_0",
+    "display_name": "Mel-Band RoFormer Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Mel-Band-RoFormer-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mel_band_roformer",
+    "id": "mel_band_roformer_f16",
+    "display_name": "Mel-Band RoFormer F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Mel-Band-RoFormer-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mel_band_roformer",
+    "id": "mel_band_roformer_safetensors",
+    "display_name": "Mel RoFormer Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "mel-roformer-mlx",
+    "repo": "mlx-community/mel-roformer-mlx"
+  },
+  {
+    "family": "micro_wake_word",
+    "id": "micro_wake_word_okay_nabu_f32",
+    "display_name": "microWakeWord Okay Nabu GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "MicroWakeWord-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "midashenglm_gen",
+    "id": "midashenglm_gen_f32",
+    "display_name": "MiDashengLM-Gen F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "MiDashengLM-Gen-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "midashenglm_gen",
+    "id": "midashenglm_gen_q8_0",
+    "display_name": "MiDashengLM-Gen Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MiDashengLM-Gen-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "ming3_audio",
+    "id": "ming3_audio_tiny_bf16",
+    "display_name": "Ming 3.0 Audio Tiny BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Ming-3.0-Audio-Tiny-GGUF",
+    "repo": "audio-cpp/Ming-3.0-Audio-Tiny-GGUF"
+  },
+  {
+    "family": "ming3_audio",
+    "id": "ming3_audio_tiny_q8_0",
+    "display_name": "Ming 3.0 Audio Tiny Q8_0 Experts",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Ming-3.0-Audio-Tiny-GGUF",
+    "repo": "audio-cpp/Ming-3.0-Audio-Tiny-GGUF"
+  },
+  {
+    "family": "ming3_audio",
+    "id": "ming3_audio_tiny_q4_k",
+    "display_name": "Ming 3.0 Audio Tiny Q4_K Experts",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "Ming-3.0-Audio-Tiny-GGUF",
+    "repo": "audio-cpp/Ming-3.0-Audio-Tiny-GGUF"
+  },
+  {
+    "family": "ming3_tts",
+    "id": "ming_3_0_tts_0_5b_bf16",
+    "display_name": "Ming 3.0 TTS 0.5B BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Ming-3.0-TTS-0.5B-GGUF",
+    "repo": "audio-cpp/Ming-3.0-TTS-0.5B-GGUF"
+  },
+  {
+    "family": "ming3_tts",
+    "id": "ming_3_0_tts_0_5b_q8_0",
+    "display_name": "Ming 3.0 TTS 0.5B Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Ming-3.0-TTS-0.5B-GGUF",
+    "repo": "audio-cpp/Ming-3.0-TTS-0.5B-GGUF"
+  },
+  {
+    "family": "minimax_h3",
+    "id": "minimax_h3_q4_k",
+    "display_name": "MiniMax-H3 Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": true,
+    "target_directory": "MiniMax-H3-Q4-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "minimax_h3",
+    "id": "minimax_h3_q4_k_int8_dit",
+    "display_name": "MiniMax-H3 Q4_K GGUF + INT8 ConvRot DiT",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "MiniMax-H3-Q4-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "minimax_music3",
+    "id": "minimax_music3_q4_0",
+    "display_name": "MiniMax Music 3 Q4_0 GGUF",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": true,
+    "target_directory": "MiniMax-Music3-GGUF",
+    "repo": "audio-cpp/MiniMax-Music3-GGUF"
+  },
+  {
+    "family": "minimax_music3",
+    "id": "minimax_music3_q8_0",
+    "display_name": "MiniMax Music 3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "MiniMax-Music3-GGUF",
+    "repo": "audio-cpp/MiniMax-Music3-GGUF"
+  },
+  {
+    "family": "minimax_music3",
+    "id": "minimax_music3_bf16",
+    "display_name": "MiniMax Music 3 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MiniMax-Music3-GGUF",
+    "repo": "audio-cpp/MiniMax-Music3-GGUF"
+  },
+  {
+    "family": "miocodec",
+    "id": "miocodec_q8_0",
+    "display_name": "MioCodec 25Hz 44.1kHz v2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MioCodec-25Hz-44.1kHz-v2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "miocodec",
+    "id": "miocodec_f16",
+    "display_name": "MioCodec 25Hz 44.1kHz v2 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "MioCodec-25Hz-44.1kHz-v2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "miocodec",
+    "id": "miocodec_orig",
+    "display_name": "MioCodec 25Hz 44.1kHz v2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "MioCodec-25Hz-44.1kHz-v2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "miotts",
+    "id": "miotts_1_7b_q8_0",
+    "display_name": "MioTTS 1.7B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MioTTS-1.7B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "miotts",
+    "id": "miotts_1_7b_bf16",
+    "display_name": "MioTTS 1.7B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MioTTS-1.7B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "miotts",
+    "id": "miotts_1_7b_orig",
+    "display_name": "MioTTS 1.7B Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "MioTTS-1.7B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mms_forced_aligner",
+    "id": "mms_forced_aligner_300m_f16",
+    "display_name": "Meta MMS-300M Forced Aligner F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": true,
+    "target_directory": "MMS-Forced-Aligner-GGUF",
+    "repo": ""
+  },
+  {
+    "family": "mms_forced_aligner",
+    "id": "mms_forced_aligner_300m_safetensors",
+    "display_name": "Meta MMS-300M Forced Aligner Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "mms-300m-1130-forced-aligner",
+    "repo": "MahmoudAshraf/mms-300m-1130-forced-aligner"
+  },
+  {
+    "family": "mms_forced_aligner",
+    "id": "mms_forced_aligner_300m_q8_0",
+    "display_name": "Meta MMS-300M Forced Aligner Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "MMS-Forced-Aligner-GGUF",
+    "repo": ""
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_tiny_q8_0",
+    "display_name": "Moonshine Streaming Tiny Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Moonshine-Streaming-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_small_q8_0",
+    "display_name": "Moonshine Streaming Small Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Moonshine-Streaming-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_medium_q8_0",
+    "display_name": "Moonshine Streaming Medium Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Moonshine-Streaming-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_tiny_safetensors",
+    "display_name": "Moonshine Streaming Tiny Safetensors",
+    "format": "safetensors",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "moonshine-streaming-tiny",
+    "repo": "moonshine-ai/moonshine-streaming-tiny"
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_small_safetensors",
+    "display_name": "Moonshine Streaming Small Safetensors",
+    "format": "safetensors",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "moonshine-streaming-small",
+    "repo": "moonshine-ai/moonshine-streaming-small"
+  },
+  {
+    "family": "moonshine_asr",
+    "id": "moonshine_streaming_medium_safetensors",
+    "display_name": "Moonshine Streaming Medium Safetensors",
+    "format": "safetensors",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "moonshine-streaming-medium",
+    "repo": "moonshine-ai/moonshine-streaming-medium"
+  },
+  {
+    "family": "moss_transcribe_diarize",
+    "id": "moss_transcribe_diarize_bf16",
+    "display_name": "MOSS-Transcribe-Diarize GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "MOSS-Transcribe-Diarize-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_transcribe_diarize",
+    "id": "moss_transcribe_diarize_q8_0",
+    "display_name": "MOSS-Transcribe-Diarize GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "MOSS-Transcribe-Diarize-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_transcribe_diarize",
+    "id": "moss_transcribe_diarize_q4_k",
+    "display_name": "MOSS-Transcribe-Diarize GGUF Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "MOSS-Transcribe-Diarize-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_tts_local",
+    "id": "moss_tts_local_v1_5_q8_0",
+    "display_name": "MOSS-TTS-Local v1.5 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MOSS-TTS-Local-v1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_tts_local",
+    "id": "moss_tts_local_v1_5_bf16",
+    "display_name": "MOSS-TTS-Local v1.5 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MOSS-TTS-Local-v1.5-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_tts_nano",
+    "id": "moss_tts_nano_100m_q8_0",
+    "display_name": "MOSS-TTS-Nano 100M Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MOSS-TTS-Nano-100M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_tts_nano",
+    "id": "moss_tts_nano_100m_bf16",
+    "display_name": "MOSS-TTS-Nano 100M BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MOSS-TTS-Nano-100M-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "moss_tts_v15",
+    "id": "moss_tts_v15_q8_0_codec_f16",
+    "display_name": "MOSS-TTS-v1.5 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MOSS-TTS-v1.5-GGUF",
+    "repo": "christopherthompson81/MOSS-TTS-v1.5-GGUF"
+  },
+  {
+    "family": "moss_tts_v15",
+    "id": "moss_tts_v15_q4_k_codec_f16",
+    "display_name": "MOSS-TTS-v1.5 Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "MOSS-TTS-v1.5-GGUF",
+    "repo": "christopherthompson81/MOSS-TTS-v1.5-GGUF"
+  },
+  {
+    "family": "moss_tts_v15",
+    "id": "moss_tts_v15_bf16_codec_f16",
+    "display_name": "MOSS-TTS-v1.5 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MOSS-TTS-v1.5-GGUF",
+    "repo": "christopherthompson81/MOSS-TTS-v1.5-GGUF"
+  },
+  {
+    "family": "moss_ttsd",
+    "id": "moss_ttsd_q8_0_codec_f16",
+    "display_name": "MOSS-TTSD Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "MOSS-TTSD-GGUF",
+    "repo": "christopherthompson81/MOSS-TTSD-GGUF"
+  },
+  {
+    "family": "moss_ttsd",
+    "id": "moss_ttsd_q4_k_codec_f16",
+    "display_name": "MOSS-TTSD Q4_K GGUF (f16 heads)",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "MOSS-TTSD-GGUF",
+    "repo": "christopherthompson81/MOSS-TTSD-GGUF"
+  },
+  {
+    "family": "moss_ttsd",
+    "id": "moss_ttsd_bf16_codec_f16",
+    "display_name": "MOSS-TTSD BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "MOSS-TTSD-GGUF",
+    "repo": "christopherthompson81/MOSS-TTSD-GGUF"
+  },
+  {
+    "family": "moss_voicegen",
+    "id": "moss_voicegen_bf16_codec_f16_decode",
+    "display_name": "MOSS-VoiceGenerator BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "MOSS-VoiceGenerator-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mossformer2",
+    "id": "mossformer2_ss_16k_f32",
+    "display_name": "MossFormer2 SS 16K F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "MossFormer2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "mossformer2",
+    "id": "mossformer2_ss_16k_f16",
+    "display_name": "MossFormer2 SS 16K F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "MossFormer2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "muscriptor",
+    "id": "muscriptor_small_f32",
+    "display_name": "MuScriptor Small F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "MuScriptor-Small-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "nemotron_3_diar",
+    "id": "nemotron_3_diar_bf16",
+    "display_name": "Nemotron 3 Diarization BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Nemotron-3-Diarization-GGUF",
+    "repo": "audio-cpp/Nemotron-3-Diarization-GGUF"
+  },
+  {
+    "family": "nemotron_3_diar",
+    "id": "nemotron_3_diar_q8_0",
+    "display_name": "Nemotron 3 Diarization Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Nemotron-3-Diarization-GGUF",
+    "repo": "audio-cpp/Nemotron-3-Diarization-GGUF"
+  },
+  {
+    "family": "nemotron_asr",
+    "id": "nemotron_asr_q8_0",
+    "display_name": "Nemotron 3.5 ASR Streaming 0.6B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Nemotron-3.5-ASR-Streaming-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "nemotron_asr",
+    "id": "nemotron_asr_f16",
+    "display_name": "Nemotron 3.5 ASR Streaming 0.6B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Nemotron-3.5-ASR-Streaming-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "nemotron_asr",
+    "id": "nemotron_asr_safetensors",
+    "display_name": "Nemotron 3.5 ASR Streaming 0.6B Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "nemotron-3.5-asr-streaming-0.6b",
+    "repo": "nvidia/nemotron-3.5-asr-streaming-0.6b"
+  },
+  {
+    "family": "nemotron_transcribe",
+    "id": "nemotron_transcribe_iq4_nl",
+    "display_name": "Nemotron 3.5 Transcribe 30B-A4B IQ4_NL experts",
+    "format": "gguf",
+    "precision": "iq4_nl",
+    "default": true,
+    "target_directory": "NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF",
+    "repo": "Jmica/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF"
+  },
+  {
+    "family": "nemotron_transcribe",
+    "id": "nemotron_transcribe_q4_k",
+    "display_name": "Nemotron 3.5 Transcribe 30B-A4B Q4_K experts",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF",
+    "repo": "Jmica/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF"
+  },
+  {
+    "family": "nemotron_transcribe",
+    "id": "nemotron_transcribe_q3_k",
+    "display_name": "Nemotron 3.5 Transcribe 30B-A4B Q3_K experts",
+    "format": "gguf",
+    "precision": "q3_k",
+    "default": false,
+    "target_directory": "NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF",
+    "repo": "Jmica/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF"
+  },
+  {
+    "family": "nemotron_transcribe",
+    "id": "nemotron_transcribe_q2_k",
+    "display_name": "Nemotron 3.5 Transcribe 30B-A4B Q2_K experts",
+    "format": "gguf",
+    "precision": "q2_k",
+    "default": false,
+    "target_directory": "NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF",
+    "repo": "Jmica/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF"
+  },
+  {
+    "family": "neutts",
+    "id": "neutts_2e_orig",
+    "display_name": "NeuTTS 2E Original-Precision GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "NeuTTS-2E-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "niagara_asr",
+    "id": "niagara_19m_f32",
+    "display_name": "Niagara 19M Batch English F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Niagara-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "niagara_asr",
+    "id": "niagara_38m_f32",
+    "display_name": "Niagara 38M Batch English F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "Niagara-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "omnivoice",
+    "id": "omnivoice_q8_0",
+    "display_name": "OmniVoice Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "OmniVoice-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "omnivoice",
+    "id": "omnivoice_bf16",
+    "display_name": "OmniVoice BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "OmniVoice-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "omnivoice",
+    "id": "omnivoice_f16",
+    "display_name": "OmniVoice F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "OmniVoice-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "omnivoice",
+    "id": "omnivoice_safetensors",
+    "display_name": "OmniVoice Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "OmniVoice",
+    "repo": "k2-fsa/OmniVoice"
+  },
+  {
+    "family": "omnivoice",
+    "id": "voicetut_tts_q8_0",
+    "display_name": "VoiceTut-TTS Egyptian Arabic Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "VoiceTut-TTS-GGUF",
+    "repo": "mohammedaly22/VoiceTut-TTS-GGUF"
+  },
+  {
+    "family": "omnivoice",
+    "id": "voicetut_tts_f16",
+    "display_name": "VoiceTut-TTS Egyptian Arabic F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "VoiceTut-TTS-GGUF",
+    "repo": "mohammedaly22/VoiceTut-TTS-GGUF"
+  },
+  {
+    "family": "open_wake_word",
+    "id": "open_wake_word_alexa_f32",
+    "display_name": "OpenWakeWord Alexa GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "OpenWakeWord-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "outetts",
+    "id": "outetts_1_0_1b_q8_0",
+    "display_name": "Llama-OuteTTS 1.0 1B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Llama-OuteTTS-1.0-1B_Q8",
+    "repo": "mirek190/audio.cpp"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_base_102m_f32",
+    "display_name": "OWSM v4 Base 102M F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_base_102m_q8_0",
+    "display_name": "OWSM v4 Base 102M Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_small_370m_f32",
+    "display_name": "OWSM v4 Small 370M F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_small_370m_q8_0",
+    "display_name": "OWSM v4 Small 370M Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_small_370m_q4_k",
+    "display_name": "OWSM v4 Small 370M Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_medium_1b_f32",
+    "display_name": "OWSM v4 Medium 1B F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_medium_1b_q8_0",
+    "display_name": "OWSM v4 Medium 1B Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm",
+    "id": "owsm_v4_medium_1b_q4_k",
+    "display_name": "OWSM v4 Medium 1B Q4_K",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "OWSM-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm_ctc",
+    "id": "owsm_ctc_v4_1b_f32",
+    "display_name": "OWSM-CTC v4 1B F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "OWSM-CTC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "owsm_ctc",
+    "id": "owsm_ctc_v4_1b_q8_0",
+    "display_name": "OWSM-CTC v4 1B Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "OWSM-CTC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "parakeet_tdt",
+    "id": "parakeet_tdt_q8_0",
+    "display_name": "Parakeet-TDT 0.6B v3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Parakeet-TDT-0.6B-v3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "parakeet_tdt",
+    "id": "parakeet_tdt_f16",
+    "display_name": "Parakeet-TDT 0.6B v3 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Parakeet-TDT-0.6B-v3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "parakeet_tdt",
+    "id": "orukeet_q8_0",
+    "display_name": "Orukeet r3 Q8_0 GGUF (Parakeet-TDT 0.6B v3 fine-tune)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Orukeet-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "parakeet_tdt",
+    "id": "orukeet_f16",
+    "display_name": "Orukeet r3 F16 GGUF (Parakeet-TDT 0.6B v3 fine-tune)",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Orukeet-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "personaplex",
+    "id": "personaplex_7b_v1_q4_k",
+    "display_name": "PersonaPlex 7B v1 Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": true,
+    "target_directory": "PersonaPlex-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "personaplex",
+    "id": "personaplex_7b_v1_q8_0",
+    "display_name": "PersonaPlex 7B v1 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PersonaPlex-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "piper_tts",
+    "id": "piper_lessac_medium_orig",
+    "display_name": "Piper Lessac Medium Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Piper-TTS-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "piper_tts",
+    "id": "piper_lessac_medium_decoder_rk3588",
+    "display_name": "Piper Lessac Medium NPU Decoder RKNN (RK3588)",
+    "format": "rknn",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Piper-TTS-GGUF",
+    "repo": "wOvANAI/rknn-tts-engines"
+  },
+  {
+    "family": "plapre",
+    "id": "plapre_3_bf16",
+    "display_name": "Plapre 3 BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Plapre-3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "plapre",
+    "id": "plapre_3_f32",
+    "display_name": "Plapre 3 F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "Plapre-3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_english_q8_0",
+    "display_name": "PocketTTS English Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "PocketTTS-GGUF/english",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_english_bf16",
+    "display_name": "PocketTTS English BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/english",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_french_q8_0",
+    "display_name": "PocketTTS French Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/french",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_french_bf16",
+    "display_name": "PocketTTS French BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/french",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_german_q8_0",
+    "display_name": "PocketTTS German Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/german",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_german_bf16",
+    "display_name": "PocketTTS German BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/german",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_italian_q8_0",
+    "display_name": "PocketTTS Italian Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/italian",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_italian_bf16",
+    "display_name": "PocketTTS Italian BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/italian",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_portuguese_q8_0",
+    "display_name": "PocketTTS Portuguese Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/portuguese",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_portuguese_bf16",
+    "display_name": "PocketTTS Portuguese BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/portuguese",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_spanish_q8_0",
+    "display_name": "PocketTTS Spanish Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/spanish",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_spanish_bf16",
+    "display_name": "PocketTTS Spanish BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "PocketTTS-GGUF/spanish",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pocket_tts",
+    "id": "pocket_tts_english_safetensors",
+    "display_name": "PocketTTS English Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "pocket-tts",
+    "repo": "kyutai/pocket-tts"
+  },
+  {
+    "family": "pulsevad",
+    "id": "pulsevad_2_1k_f32",
+    "display_name": "PulseVAD 2.1K GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "PulseVAD-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "pulsevad",
+    "id": "pulsevad_81k_f32",
+    "display_name": "PulseVAD 81K GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "PulseVAD-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_1_7b_q8_0",
+    "display_name": "Qwen3-ASR 1.7B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Qwen3-ASR-1.7B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_1_7b_f16",
+    "display_name": "Qwen3-ASR 1.7B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Qwen3-ASR-1.7B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_0_6b_q8_0",
+    "display_name": "Qwen3-ASR 0.6B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Qwen3-ASR-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_0_6b_f16",
+    "display_name": "Qwen3-ASR 0.6B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Qwen3-ASR-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_1_7b_safetensors",
+    "display_name": "Qwen3-ASR 1.7B HF Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Qwen3-ASR-1.7B-hf",
+    "repo": "Qwen/Qwen3-ASR-1.7B-hf"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwen3_asr_0_6b_safetensors",
+    "display_name": "Qwen3-ASR 0.6B Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Qwen3-ASR-0.6B",
+    "repo": "Qwen/Qwen3-ASR-0.6B"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwencleo_asr_q8_0",
+    "display_name": "QwenCleo-ASR Egyptian Arabic Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "QwenCleo-ASR-GGUF",
+    "repo": "mohammedaly22/QwenCleo-ASR-GGUF"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwencleo_asr_f16",
+    "display_name": "QwenCleo-ASR Egyptian Arabic F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "QwenCleo-ASR-GGUF",
+    "repo": "mohammedaly22/QwenCleo-ASR-GGUF"
+  },
+  {
+    "family": "qwen3_asr",
+    "id": "qwencleo_asr_safetensors",
+    "display_name": "QwenCleo-ASR Egyptian Arabic Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "QwenCleo-ASR",
+    "repo": "mohammedaly22/QwenCleo-ASR"
+  },
+  {
+    "family": "qwen3_forced_aligner",
+    "id": "qwen3_forced_aligner_0_6b_q8_0",
+    "display_name": "Qwen3 Forced Aligner 0.6B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Qwen3-ForcedAligner-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_forced_aligner",
+    "id": "qwen3_forced_aligner_0_6b_f16",
+    "display_name": "Qwen3 Forced Aligner 0.6B F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Qwen3-ForcedAligner-0.6B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_forced_aligner",
+    "id": "qwen3_forced_aligner_0_6b_safetensors",
+    "display_name": "Qwen3 Forced Aligner 0.6B Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Qwen3-ForcedAligner-0.6B",
+    "repo": "Qwen/Qwen3-ForcedAligner-0.6B"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_base_q8_0",
+    "display_name": "Qwen3 TTS 12Hz 1.7B Base Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_base_bf16",
+    "display_name": "Qwen3 TTS 12Hz 1.7B Base BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_base_orig",
+    "display_name": "Qwen3 TTS 12Hz 1.7B Base Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_customvoice_q8_0",
+    "display_name": "Qwen3 TTS 12Hz 1.7B CustomVoice Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-CustomVoice-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_customvoice_bf16",
+    "display_name": "Qwen3 TTS 12Hz 1.7B CustomVoice BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-CustomVoice-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_voicedesign_q8_0",
+    "display_name": "Qwen3 TTS 12Hz 1.7B VoiceDesign Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-VoiceDesign-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_voicedesign_bf16",
+    "display_name": "Qwen3 TTS 12Hz 1.7B VoiceDesign BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-VoiceDesign-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_0_6b_base_q8_0",
+    "display_name": "Qwen3 TTS 12Hz 0.6B Base Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-0.6B-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_0_6b_base_bf16",
+    "display_name": "Qwen3 TTS 12Hz 0.6B Base BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-0.6B-Base-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_1_7b_base_safetensors",
+    "display_name": "Qwen3 TTS 12Hz 1.7B Base Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-1.7B-Base",
+    "repo": "Qwen/Qwen3-TTS-12Hz-1.7B-Base"
+  },
+  {
+    "family": "qwen3_tts",
+    "id": "qwen3_tts_0_6b_base_speech_decoder_rk3588",
+    "display_name": "Qwen3 TTS 12Hz 0.6B NPU Speech Decoder RKNN Pair (RK3588)",
+    "format": "rknn",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Qwen3-TTS-12Hz-0.6B-Base-GGUF",
+    "repo": "wOvANAI/rknn-tts-engines"
+  },
+  {
+    "family": "reuse",
+    "id": "reuse_f32",
+    "display_name": "RE-USE F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "RE-USE-GGUF",
+    "repo": "audio-cpp/RE-USE-GGUF"
+  },
+  {
+    "family": "reuse",
+    "id": "reuse_f16",
+    "display_name": "RE-USE F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "RE-USE-GGUF",
+    "repo": "audio-cpp/RE-USE-GGUF"
+  },
+  {
+    "family": "reuse",
+    "id": "reuse_q8_0",
+    "display_name": "RE-USE Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "RE-USE-GGUF",
+    "repo": "audio-cpp/RE-USE-GGUF"
+  },
+  {
+    "family": "rvc",
+    "id": "rvc_f16",
+    "display_name": "RVC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": true,
+    "target_directory": "RVC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_small_f32",
+    "display_name": "SAM Audio Small F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_small_bf16",
+    "display_name": "SAM Audio Small BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_small_q8_0",
+    "display_name": "SAM Audio Small Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_base_f32",
+    "display_name": "SAM Audio Base F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_base_bf16",
+    "display_name": "SAM Audio Base BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_base_q8_0",
+    "display_name": "SAM Audio Base Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_large_f32",
+    "display_name": "SAM Audio Large F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_large_bf16",
+    "display_name": "SAM Audio Large BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "sam_audio",
+    "id": "sam_audio_large_q8_0",
+    "display_name": "SAM Audio Large Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "SAM-Audio-GGUF",
+    "repo": "audio-cpp/SAM-Audio-GGUF"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_99m_bf16",
+    "display_name": "SAMSONE 99M GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_99m_q8_0",
+    "display_name": "SAMSONE 99M GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_134m_bf16",
+    "display_name": "SAMSONE 134M GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_134m_q8_0",
+    "display_name": "SAMSONE 134M GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_356m_bf16",
+    "display_name": "SAMSONE 356M GGUF BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "samsone",
+    "id": "samsone_356m_q8_0",
+    "display_name": "SAMSONE 356M GGUF Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Samsone-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_heart_nano_orig",
+    "display_name": "sanoTTS heart-nano 294k FP32 GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "sanoTTS-heart-nano-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_heart_orig",
+    "display_name": "sanoTTS heart 2.27M FP32 GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-heart-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_amy_orig",
+    "display_name": "sanoTTS amy 1.46M FP32 GGUF (English, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-amy-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_hfc_orig",
+    "display_name": "sanoTTS hfc 1.83M FP32 GGUF (English, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-hfc-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_kristin_orig",
+    "display_name": "sanoTTS kristin 1.40M FP32 GGUF (English, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-kristin-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_vi_orig",
+    "display_name": "sanoTTS vi 1.57M FP32 GGUF (Vietnamese, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-vi-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_id_orig",
+    "display_name": "sanoTTS id 1.56M FP32 GGUF (Indonesian, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-id-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_cs_orig",
+    "display_name": "sanoTTS cs 1.57M FP32 GGUF (Czech, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-cs-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_de_orig",
+    "display_name": "sanoTTS de 1.57M FP32 GGUF (German, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-de-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_es_orig",
+    "display_name": "sanoTTS es 1.56M FP32 GGUF (Spanish, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-es-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_fr_orig",
+    "display_name": "sanoTTS fr 1.57M FP32 GGUF (French, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-fr-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_it_orig",
+    "display_name": "sanoTTS it 1.57M FP32 GGUF (Italian, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-it-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_pt_orig",
+    "display_name": "sanoTTS pt 1.57M FP32 GGUF (Portuguese (Brazil), piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-pt-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_ro_orig",
+    "display_name": "sanoTTS ro 1.57M FP32 GGUF (Romanian, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-ro-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_ru_orig",
+    "display_name": "sanoTTS ru 1.57M FP32 GGUF (Russian, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-ru-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_tr_orig",
+    "display_name": "sanoTTS tr 1.56M FP32 GGUF (Turkish, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-tr-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_ne_orig",
+    "display_name": "sanoTTS ne 1.47M FP32 GGUF (Nepali, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-ne-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "sanotts",
+    "id": "sanotts_hi_orig",
+    "display_name": "sanoTTS hi 1.50M FP32 GGUF (Hindi, piperlite)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sanoTTS-hi-GGUF",
+    "repo": "ampixa/sanoTTS"
+  },
+  {
+    "family": "seed_vc",
+    "id": "seed_vc_mlx_q8_0",
+    "display_name": "SeedVC-MLX Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "SeedVC-MLX-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "seed_vc",
+    "id": "seed_vc_mlx_f16",
+    "display_name": "SeedVC-MLX F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "SeedVC-MLX-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "seed_vc",
+    "id": "seed_vc_mlx_orig",
+    "display_name": "SeedVC-MLX Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "SeedVC-MLX-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "seed_vc",
+    "id": "seed_vc_mlx_safetensors",
+    "display_name": "SeedVC-MLX Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "SeedVC-MLX",
+    "repo": "mlx-community/SeedVC-MLX"
+  },
+  {
+    "family": "sense_asr",
+    "id": "sensevoice_small_q8",
+    "display_name": "SenseVoice-Small Q8 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "SenseVoice-Small-GGUF",
+    "repo": "FunAudioLLM/SenseVoiceSmall-GGUF-audiocpp"
+  },
+  {
+    "family": "sheetsage2",
+    "id": "sheetsage2_orig",
+    "display_name": "SheetSage2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "SheetSage2-GGUF",
+    "repo": "audio-cpp/SheetSage2-GGUF"
+  },
+  {
+    "family": "sherpa_kws",
+    "id": "sherpa_kws_zipformer_zh_en_3m_f32",
+    "display_name": "Sherpa KWS Zipformer Chinese-English 3M GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Sherpa-KWS-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "sidon",
+    "id": "sidon_f32",
+    "display_name": "Sidon v0.1 F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Sidon-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "smart_turn",
+    "id": "smart_turn_v3_2_f32",
+    "display_name": "Smart Turn v3.2 F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Smart-Turn-v3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "soprano_tts",
+    "id": "soprano_1_1_80m_q8_0",
+    "display_name": "Soprano-1.1-80M Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Soprano-1.1-80M-GGUF",
+    "repo": "WalkingCat/Soprano-1.1-80M-GGUF"
+  },
+  {
+    "family": "soprano_tts",
+    "id": "soprano_1_1_80m_bf16",
+    "display_name": "Soprano-1.1-80M BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Soprano-1.1-80M-GGUF",
+    "repo": "WalkingCat/Soprano-1.1-80M-GGUF"
+  },
+  {
+    "family": "sopro_tts",
+    "id": "sopro_v2_turbo_f16",
+    "display_name": "Sopro V2 Turbo F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": true,
+    "target_directory": "sopro-v2-turbo-GGUF",
+    "repo": "samuel-vitorino/sopro-v2-turbo"
+  },
+  {
+    "family": "sopro_tts",
+    "id": "sopro_v2_turbo_safetensors",
+    "display_name": "Sopro V2 Turbo (upstream safetensors)",
+    "format": "safetensors",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "sopro-v2-turbo",
+    "repo": "samuel-vitorino/sopro-v2-turbo"
+  },
+  {
+    "family": "sortformer_diar",
+    "id": "sortformer_diar_4spk_v1_q8_0",
+    "display_name": "Sortformer Diar 4spk v1 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Sortformer-Diar-4spk-v1-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "sortformer_diar",
+    "id": "sortformer_diar_4spk_v1_f16",
+    "display_name": "Sortformer Diar 4spk v1 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Sortformer-Diar-4spk-v1-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "sortformer_diar",
+    "id": "sortformer_diar_4spk_v1_safetensors",
+    "display_name": "Sortformer Diar 4spk v1 Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "diar_sortformer_4spk-v1",
+    "repo": "nvidia/diar_sortformer_4spk-v1"
+  },
+  {
+    "family": "sortformer_diar_v2",
+    "id": "sortformer_diar_v2_1_f32_local",
+    "display_name": "Sortformer Diar v2.1 F32 local package",
+    "format": "safetensors",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "Sortformer-Diar-v2.1-local",
+    "repo": ""
+  },
+  {
+    "family": "sortformer_diar_v2",
+    "id": "sortformer_diar_v2_1_f32_gguf_local",
+    "display_name": "Sortformer Diar v2.1 F32 GGUF local package",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Sortformer-Diar-v2.1-local",
+    "repo": ""
+  },
+  {
+    "family": "sortformer_diar_v2",
+    "id": "sortformer_diar_v2_1_f16_mixed_gguf_local",
+    "display_name": "Sortformer Diar v2.1 mixed F16/F32 GGUF local package",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Sortformer-Diar-v2.1-local",
+    "repo": ""
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_medium_q8_0",
+    "display_name": "Stable Audio 3 Medium Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Stable-Audio-3-Medium-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_medium_f16",
+    "display_name": "Stable Audio 3 Medium F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Stable-Audio-3-Medium-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_music_q8_0",
+    "display_name": "Stable Audio 3 Small Music Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Stable-Audio-3-Small-Music-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_music_f16",
+    "display_name": "Stable Audio 3 Small Music F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Stable-Audio-3-Small-Music-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_sfx_q8_0",
+    "display_name": "Stable Audio 3 Small SFX Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Stable-Audio-3-Small-SFX-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_sfx_f16",
+    "display_name": "Stable Audio 3 Small SFX F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Stable-Audio-3-Small-SFX-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_medium_safetensors",
+    "display_name": "Stable Audio 3 Medium Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "stable-audio-3-medium",
+    "repo": "stabilityai/stable-audio-3-medium"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_music_safetensors",
+    "display_name": "Stable Audio 3 Small Music Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "stable-audio-3-small-music",
+    "repo": "stabilityai/stable-audio-3-small-music"
+  },
+  {
+    "family": "stable_audio",
+    "id": "stable_audio_3_small_sfx_safetensors",
+    "display_name": "Stable Audio 3 Small SFX Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "stable-audio-3-small-sfx",
+    "repo": "stabilityai/stable-audio-3-small-sfx"
+  },
+  {
+    "family": "supertonic",
+    "id": "supertonic_3_q8_0",
+    "display_name": "Supertonic 3 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Supertonic-3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "supertonic",
+    "id": "supertonic_3_f16",
+    "display_name": "Supertonic 3 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Supertonic-3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "supertonic",
+    "id": "supertonic_3_orig",
+    "display_name": "Supertonic 3 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "Supertonic-3-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "supertonic",
+    "id": "supertonic_3_safetensors",
+    "display_name": "Supertonic 3 Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "supertonic-3",
+    "repo": "mlx-community/supertonic-3-mlx"
+  },
+  {
+    "family": "tf_gridnet",
+    "id": "tf_gridnet_wsj0_2mix_f32",
+    "display_name": "TF-GridNet WSJ0-2mix F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "TF-GridNet-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "tone_color_vc",
+    "id": "tone_color_vc_f32",
+    "display_name": "Tone Color VC F32 GGUF",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Tone-Color-VC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "tone_color_vc",
+    "id": "tone_color_vc_f16",
+    "display_name": "Tone Color VC F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Tone-Color-VC-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "universr",
+    "id": "universr_audio_orig",
+    "display_name": "UniverSR Audio GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "UniverSR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "universr",
+    "id": "universr_speech_orig",
+    "display_name": "UniverSR Speech GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "UniverSR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vevo2",
+    "id": "vevo2_q8_0",
+    "display_name": "Vevo2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Vevo2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vevo2",
+    "id": "vevo2_f16",
+    "display_name": "Vevo2 F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Vevo2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vevo2",
+    "id": "vevo2_orig",
+    "display_name": "Vevo2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "Vevo2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vibeasr",
+    "id": "vibeasr_bitnet_i2_s",
+    "display_name": "VibeVoice-ASR-BitNet I8_S encoder + I2_S decoder",
+    "format": "gguf",
+    "precision": "native",
+    "default": true,
+    "target_directory": "VibeVoice-ASR-BitNet",
+    "repo": "microsoft/VibeVoice-ASR-BitNet"
+  },
+  {
+    "family": "vibevoice",
+    "id": "vibevoice_1_5b_q8_0",
+    "display_name": "VibeVoice 1.5B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VibeVoice-1.5B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vibevoice",
+    "id": "vibevoice_1_5b_bf16",
+    "display_name": "VibeVoice 1.5B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "VibeVoice-1.5B-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vibevoice",
+    "id": "vibevoice_7b_q8_0",
+    "display_name": "VibeVoice 7B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "VibeVoice-7B-GGUF",
+    "repo": "audio-cpp/VibeVoice-7B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr",
+    "id": "vibevoice_asr_q8_0",
+    "display_name": "VibeVoice ASR Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VibeVoice-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vibevoice_asr",
+    "id": "vibevoice_asr_f16",
+    "display_name": "VibeVoice ASR F16 GGUF",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_7b_q8_0",
+    "display_name": "VibeVoice ASR Streaming 7B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VibeVoice-ASR-Streaming-7B-GGUF",
+    "repo": "audio-cpp/VibeVoice-ASR-Streaming-7B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_7b_bf16",
+    "display_name": "VibeVoice ASR Streaming 7B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-Streaming-7B-GGUF",
+    "repo": "audio-cpp/VibeVoice-ASR-Streaming-7B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_7b_q4_k",
+    "display_name": "VibeVoice ASR Streaming 7B Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-Streaming-7B-GGUF",
+    "repo": "audio-cpp/VibeVoice-ASR-Streaming-7B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_1_5b_q8_0",
+    "display_name": "VibeVoice ASR Streaming 1.5B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-Streaming-1.5B-GGUF",
+    "repo": "christopherthompson81/VibeVoice-ASR-Streaming-1.5B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_1_5b_bf16",
+    "display_name": "VibeVoice ASR Streaming 1.5B BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-Streaming-1.5B-GGUF",
+    "repo": "christopherthompson81/VibeVoice-ASR-Streaming-1.5B-GGUF"
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "id": "vibevoice_asr_streaming_1_5b_q4_k",
+    "display_name": "VibeVoice ASR Streaming 1.5B Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "VibeVoice-ASR-Streaming-1.5B-GGUF",
+    "repo": "christopherthompson81/VibeVoice-ASR-Streaming-1.5B-GGUF"
+  },
+  {
+    "family": "vieneu_v3_turbo",
+    "id": "vieneu_v3_turbo_q8_0",
+    "display_name": "VieNeu-TTS v3 Turbo Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VieNeu-TTS-v3-Turbo-GGUF",
+    "repo": "pnnbao-ump/VieNeu-TTS-v3-Turbo"
+  },
+  {
+    "family": "vieneu_v3_turbo",
+    "id": "vieneu_v3_turbo_bf16",
+    "display_name": "VieNeu-TTS v3 Turbo BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "VieNeu-TTS-v3-Turbo-GGUF",
+    "repo": "pnnbao-ump/VieNeu-TTS-v3-Turbo"
+  },
+  {
+    "family": "vieneu_v3_turbo",
+    "id": "vietneu_tts_v3_turbo_q8_0",
+    "display_name": "VieNeu-TTS v3 Turbo Q8_0 GGUF (first community port, July 2026 weights)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "VieNeu-TTS-v3-Turbo-GGUF-2026-07",
+    "repo": "phuocnguyen90/VieNeu-TTS-v3-Turbo-GGUF"
+  },
+  {
+    "family": "voxcpm1",
+    "id": "voxcpm1_0_5b_q8_0",
+    "display_name": "VoxCPM 0.5B Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VoxCPM1-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxcpm2",
+    "id": "voxcpm2_q8_0",
+    "display_name": "VoxCPM2 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "VoxCPM2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxcpm2",
+    "id": "voxcpm2_bf16",
+    "display_name": "VoxCPM2 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "VoxCPM2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxcpm2",
+    "id": "voxcpm2_orig",
+    "display_name": "VoxCPM2 Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "VoxCPM2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxcpm2",
+    "id": "voxcpm2_vocalrender_pro",
+    "display_name": "VocalRender-Pro (VoxCPM2) Original-Dtype GGUF",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "VoxCPM2-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxcpm2",
+    "id": "voxcpm2_safetensors",
+    "display_name": "VoxCPM2 Safetensors",
+    "format": "safetensors",
+    "precision": "native",
+    "default": false,
+    "target_directory": "VoxCPM2",
+    "repo": "OpenBMB/VoxCPM2"
+  },
+  {
+    "family": "voxtral_realtime",
+    "id": "voxtral_realtime_q8_0",
+    "display_name": "Voxtral Mini 4B Realtime Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Voxtral-Mini-4B-Realtime-2602-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxtral_realtime",
+    "id": "voxtral_realtime_q4_k",
+    "display_name": "Voxtral Mini 4B Realtime Q4_K GGUF",
+    "format": "gguf",
+    "precision": "q4_k",
+    "default": false,
+    "target_directory": "Voxtral-Mini-4B-Realtime-2602-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxtral_realtime",
+    "id": "voxtral_realtime_bf16",
+    "display_name": "Voxtral Mini 4B Realtime BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Voxtral-Mini-4B-Realtime-2602-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxtral_tts",
+    "id": "voxtral_4b_tts_2603_bf16",
+    "display_name": "Voxtral 4B TTS 2603 BF16 GGUF",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": true,
+    "target_directory": "Voxtral-4B-TTS-2603-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "voxtral_tts",
+    "id": "voxtral_4b_tts_2603_q8_0",
+    "display_name": "Voxtral 4B TTS 2603 Q8_0 GGUF",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "Voxtral-4B-TTS-2603-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "whistle_asr",
+    "id": "whistle_asr_f32",
+    "display_name": "Whistle ASR GGUF F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": true,
+    "target_directory": "Whistle-GGUF",
+    "repo": "audio-cpp/audio.cpp-gguf"
+  },
+  {
+    "family": "xtts_v2",
+    "id": "xtts_v2_gguf_q8_0",
+    "display_name": "XTTS v2 GGUF (Q8_0)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "XTTS-v2-Q8",
+    "repo": "onicubag/xTTSv2-GGUF"
+  },
+  {
+    "family": "xtts_v2",
+    "id": "xtts_v2_gguf",
+    "display_name": "XTTS v2 GGUF (Original)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": false,
+    "target_directory": "XTTS-v2",
+    "repo": "onicubag/xTTSv2-GGUF"
+  },
+  {
+    "family": "xtts_v2",
+    "id": "xtts_v2_gguf_q4_k_m",
+    "display_name": "XTTS v2 GGUF (Q4_K_M)",
+    "format": "gguf",
+    "precision": "q4_k_m",
+    "default": false,
+    "target_directory": "XTTS-v2-Q4_K_M",
+    "repo": "onicubag/xTTSv2-GGUF"
+  },
+  {
+    "family": "yue2",
+    "id": "yue2_main_q8_0",
+    "display_name": "Yue2 3B Main Q8_0",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": true,
+    "target_directory": "Yue2-3B-GGUF",
+    "repo": "audio-cpp/Yue2-3B-GGUF"
+  },
+  {
+    "family": "yue2",
+    "id": "yue2_main_bf16",
+    "display_name": "Yue2 3B Main BF16",
+    "format": "gguf",
+    "precision": "bf16",
+    "default": false,
+    "target_directory": "Yue2-3B-GGUF",
+    "repo": "audio-cpp/Yue2-3B-GGUF"
+  },
+  {
+    "family": "yue2",
+    "id": "yue2_main_q4_0",
+    "display_name": "Yue2 3B Main Q4_0",
+    "format": "gguf",
+    "precision": "q4_0",
+    "default": false,
+    "target_directory": "Yue2-3B-GGUF",
+    "repo": "audio-cpp/Yue2-3B-GGUF"
+  },
+  {
+    "family": "yue2",
+    "id": "yue2_vae_f16",
+    "display_name": "Yue2 VAE F16",
+    "format": "gguf",
+    "precision": "f16",
+    "default": false,
+    "target_directory": "Yue2-3B-GGUF",
+    "repo": "audio-cpp/Yue2-3B-GGUF"
+  },
+  {
+    "family": "yue2",
+    "id": "yue2_vae_f32",
+    "display_name": "Yue2 VAE F32",
+    "format": "gguf",
+    "precision": "f32",
+    "default": false,
+    "target_directory": "Yue2-3B-GGUF",
+    "repo": "audio-cpp/Yue2-3B-GGUF"
+  },
+  {
+    "family": "zipvoice",
+    "id": "zipvoice_distill_gguf",
+    "display_name": "ZipVoice-Distill GGUF (local conversion)",
+    "format": "gguf",
+    "precision": "orig",
+    "default": true,
+    "target_directory": "ZipVoice-Distill-GGUF",
+    "repo": "davidxifeng/zipvoice-gguf"
+  },
+  {
+    "family": "zipvoice",
+    "id": "zipvoice_distill_q8_0",
+    "display_name": "ZipVoice-Distill GGUF (Q8_0)",
+    "format": "gguf",
+    "precision": "q8_0",
+    "default": false,
+    "target_directory": "ZipVoice-Distill-GGUF",
+    "repo": "davidxifeng/zipvoice-gguf"
+  }
+]

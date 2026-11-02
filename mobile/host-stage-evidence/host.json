@@ -1,0 +1,64 @@
+{
+  "at": "2026-11-02T11:33:10.603858-06:00",
+  "platform": "Linux-7.2.9-1-cachyos-x86_64-with-glibc2.44",
+  "cpuinfo": "model name\t: Intel(R) Core(TM) i9-10900KF CPU @ 3.70GHz",
+  "uptime": "11:33:10 up 1 day, 16:34,  8 users,  load average: 7.56, 13.47, 16.43",
+  "nproc": "2",
+  "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "cgroups": [
+    {
+      "path": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/agent.slice/hermes-gateway.service",
+      "cpu.max": "max 100000",
+      "cpuset": "0-19"
+    },
+    {
+      "path": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/agent.slice",
+      "cpu.max": "200000 100000",
+      "cpuset": "0-19"
+    },
+    {
+      "path": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service",
+      "cpu.max": "max 100000",
+      "cpuset": "0-19"
+    },
+    {
+      "path": "/sys/fs/cgroup/user.slice/user-1000.slice",
+      "cpu.max": "max 100000",
+      "cpuset": "0-19"
+    },
+    {
+      "path": "/sys/fs/cgroup/user.slice",
+      "cpu.max": "max 100000",
+      "cpuset": "0-19"
+    },
+    {
+      "path": "/sys/fs/cgroup",
+      "cpu.max": null,
+      "cpuset": "0-19"
+    }
+  ],
+  "audio_cpp_sha": "a01aed4a15c1da59010e48bc15fb029ecb961975",
+  "binary_version": "audio.cpp dev\ngit: a01aed4 2026-11-01\nbuild: Release, gcc 16.2.1, Linux x86_64\nbackends: cpu\n",
+  "referee_sha256": "f24348ca483d25de50c5d582542647660213513f28279ffca3b85b23b705fd98"
+}

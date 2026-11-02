@@ -1,0 +1,5 @@
+selected pulsevad_2_1k_f32 (pulsevad)
+repo audio-cpp/audio.cpp-gguf@main
+target /mnt/zer0models/models/zlv-tts/acpp-models/PulseVAD-GGUF
+file remote=PulseVAD-GGUF/pulsevad-2.1k-f32.gguf local=PulseVAD-GGUF/pulsevad-2.1k-f32.gguf
+installed pulsevad_2_1k_f32 -> /mnt/zer0models/models/zlv-tts/acpp-models/PulseVAD-GGUF
