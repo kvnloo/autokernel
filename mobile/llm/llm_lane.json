@@ -1,0 +1,9 @@
+{
+  "llama_cpp_commit":"d02b4c0d66796e0a44380611d038123fefb9fe83",
+  "variants":[{"name":"cpu","built":true,"size_mb":12,"needed":["libc.so","libm.so","libgcc_s.so"]},
+  {"name":"kleidiai","built":true,"size_mb":14,"needed":["libc.so","libm.so"]},
+  {"name":"opencl","built":true,"size_mb":15,"needed":["libOpenCL.so","libc.so"]}],
+  "models":[{"file":"Qwen3-0.6B-Q4_0.gguf","size_gb":0.5,"host_ttft_ms":180,"host_tok_s":42},
+  {"file":"Qwen3-1.7B-Q4_0.gguf","size_gb":1.1,"host_ttft_ms":320,"host_tok_s":28}],
+  "branch":"z0live/llm","commit":"db8aa07","blockers":"No phone adb; builds done with flock+nice; GGUF total ~1.6GB <3GB"
+}
