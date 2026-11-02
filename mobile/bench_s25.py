@@ -83,7 +83,7 @@ def telemetry():
     return t
 
 
-def wait_for_gates(max_wait_s=1800, log=print):
+def wait_for_gates(max_wait_s=int(os.environ.get("ZLV_MAX_WAIT_S", "1800")), log=print):
     start = time.time()
     while True:
         t = telemetry()
@@ -98,12 +98,10 @@ def wait_for_gates(max_wait_s=1800, log=print):
             why.append(f"owner active {t['owner_idle_s']}s ago")
         if not why:
             return t
-        if any("battery" in w and "%" in w for w in why):
-            raise SystemExit("GATE battery: " + "; ".join(why))
         if time.time() - start > max_wait_s:
             raise SystemExit("GATE timeout: " + "; ".join(why))
         log("waiting: " + "; ".join(why))
-        time.sleep(30)
+        time.sleep(60 if any("%" in w for w in why) else 30)
 
 
 # ---------------------------------------------------------------- assets
@@ -188,7 +186,9 @@ def cmdline(cfg, item, out_wav):
     a += [x.replace("{M}", f"{PD}/m") for x in cfg.get("extra_args", [])]
     pre = " ".join(f"{k}={shlex.quote(str(v))}" for k, v in cfg.get("env", {}).items())
     mask = cfg.get("cpu_mask")
-    return (pre + " " if pre else "") + (f"taskset {mask} " if mask else "") + " ".join(shlex.quote(x) for x in a)
+    # per-invocation wall cap: a hung backend (e.g. OpenCL init) must fail fast, not stall the queue for 30 min
+    cap = f"timeout {int(cfg.get('timeout_s', 120))} "
+    return (pre + " " if pre else "") + cap + (f"taskset {mask} " if mask else "") + " ".join(shlex.quote(x) for x in a)
 
 
 def phone_block(jobs):
@@ -256,7 +256,11 @@ def measure(cfgs, rounds, run_dir, log=print):
             script = phone_block(jobs)
             (run_dir / f"{c['_slot']}-r{r}.sh").write_text(script)
             adb("push", "-q", str(run_dir / f"{c['_slot']}-r{r}.sh"), f"{PD}/block.sh")
-            out = sh(f"cd {PD} && sh block.sh", timeout=1800)
+            try:
+                out = sh(f"cd {PD} && sh block.sh", timeout=1800)
+            except subprocess.TimeoutExpired:
+                kill_phone_jobs()
+                out = ""
             (run_dir / f"{c['_slot']}-r{r}.events").write_text(out)
             t1 = telemetry()
             tele.append({"slot": c["_slot"], "round": r, "before": t0, "after": t1})
