@@ -1,0 +1,5 @@
+selected sensevoice_small_q8 (sense_asr)
+repo FunAudioLLM/SenseVoiceSmall-GGUF-audiocpp@5c3fcfe748a8714216bc135476d5863084fddb72
+target /mnt/zer0models/models/zlv-tts/acpp-models/SenseVoice-Small-GGUF
+file remote=sensevoice-small-q8-audiocpp-v1.gguf local=SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf
+installed sensevoice_small_q8 -> /mnt/zer0models/models/zlv-tts/acpp-models/SenseVoice-Small-GGUF

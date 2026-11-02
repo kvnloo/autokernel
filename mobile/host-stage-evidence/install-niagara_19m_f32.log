@@ -1,0 +1,5 @@
+selected niagara_19m_f32 (niagara_asr)
+repo audio-cpp/audio.cpp-gguf@main
+target /mnt/zer0models/models/zlv-tts/acpp-models/Niagara-ASR-GGUF
+file remote=Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf local=Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf
+installed niagara_19m_f32 -> /mnt/zer0models/models/zlv-tts/acpp-models/Niagara-ASR-GGUF

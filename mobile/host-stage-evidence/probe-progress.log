@@ -1,0 +1,40 @@
+earshot-asr11-r0 0 12.81
+earshot-asr12-r0 0 5.61
+earshot-asr11-r1 0 4.4
+earshot-asr12-r1 0 4.12
+earshot-asr11-r2 0 4.5
+earshot-asr12-r2 0 4.43
+earshot-asr11-r3 0 4.29
+earshot-asr12-r3 0 4.3
+earshot-asr11-r4 0 4.48
+earshot-asr12-r4 0 4.32
+firered-stream-asr11-r0 0 37.93
+firered-stream-asr12-r0 0 25.68
+firered-stream-asr11-r1 0 29.54
+firered-stream-asr12-r1 0 26.74
+firered-stream-asr11-r2 0 29.05
+firered-stream-asr12-r2 0 27.37
+firered-stream-asr11-r3 0 31.01
+firered-stream-asr12-r3 0 26.4
+firered-stream-asr11-r4 0 26.15
+firered-stream-asr12-r4 0 26.26
+pulsevad-asr11-r0 0 11.78
+pulsevad-asr12-r0 0 13.86
+pulsevad-asr11-r1 0 11.98
+pulsevad-asr12-r1 0 10.55
+pulsevad-asr11-r2 0 10.75
+pulsevad-asr12-r2 0 10.33
+pulsevad-asr11-r3 0 10.69
+pulsevad-asr12-r3 0 10.24
+pulsevad-asr11-r4 0 11.21
+pulsevad-asr12-r4 0 10.34
+smart-turn-asr11-r0 0 131.57 {'schema': 'smart_turn.v1', 'data': {'probability': 0.986724853515625, 'complete': True}}
+smart-turn-asr12-r0 0 62.64 {'schema': 'smart_turn.v1', 'data': {'probability': 0.924149751663208, 'complete': True}}
+smart-turn-asr11-r1 0 63.95 {'schema': 'smart_turn.v1', 'data': {'probability': 0.986724853515625, 'complete': True}}
+smart-turn-asr12-r1 0 70.07 {'schema': 'smart_turn.v1', 'data': {'probability': 0.924149751663208, 'complete': True}}
+smart-turn-asr11-r2 0 65.29 {'schema': 'smart_turn.v1', 'data': {'probability': 0.986724853515625, 'complete': True}}
+smart-turn-asr12-r2 0 68.63 {'schema': 'smart_turn.v1', 'data': {'probability': 0.924149751663208, 'complete': True}}
+smart-turn-asr11-r3 0 67.86 {'schema': 'smart_turn.v1', 'data': {'probability': 0.986724853515625, 'complete': True}}
+smart-turn-asr12-r3 0 71.22 {'schema': 'smart_turn.v1', 'data': {'probability': 0.924149751663208, 'complete': True}}
+smart-turn-asr11-r4 0 66.64 {'schema': 'smart_turn.v1', 'data': {'probability': 0.986724853515625, 'complete': True}}
+smart-turn-asr12-r4 0 65.36 {'schema': 'smart_turn.v1', 'data': {'probability': 0.924149751663208, 'complete': True}}

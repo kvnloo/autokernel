@@ -1,0 +1,5 @@
+selected qwen3_asr_0_6b_q8_0 (qwen3_asr)
+repo audio-cpp/audio.cpp-gguf@main
+target /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-ASR-0.6B-GGUF
+file remote=Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf local=Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf
+installed qwen3_asr_0_6b_q8_0 -> /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-ASR-0.6B-GGUF

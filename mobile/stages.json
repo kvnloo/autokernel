@@ -1,0 +1,4772 @@
+{
+  "schema_version": 1,
+  "audio_cpp_commit": "a01aed4a15c1da59010e48bc15fb029ecb961975",
+  "benchmark_epoch": 1,
+  "base_commit": "1139ca41ed752038fe1300950bf8918963403e29",
+  "referee_modified": false,
+  "models_root": "/mnt/zer0models/models/zlv-tts/acpp-models",
+  "host_binary": "/mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli",
+  "host_run_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+  "host_environment": {
+    "OMP_NUM_THREADS": "4",
+    "OPENBLAS_NUM_THREADS": "4",
+    "MKL_NUM_THREADS": "4",
+    "BLIS_NUM_THREADS": "4",
+    "nice": 10
+  },
+  "runtime_requirements": "Run host CLI from the pinned audio.cpp checkout so current model_specs and bundled helper paths resolve. Phone binary needs AUDIOCPP_DEPLOYMENT_BUILD builtin contracts or an explicitly bundled full model_specs directory. SenseVoice default auto chunking also used bundled Silero weights at assets/framework/models/silero_vad. Host recipe validation is not Android runtime/package validation.",
+  "measurement_policy": {
+    "asr": "One fresh CLI process per item per primary recipe, 12 items; no excluded warmups; default modes retained; models executed sequentially in recipe order, not interleaved. Alternate streaming modes: two clips, one process each. All raw results retained.",
+    "vad_turn": "Five repetitions each of complete and incomplete clips, sequential model order. Process-cold, OS/file/materialization caches uncontrolled; repeat ranges retained.",
+    "latency_clock": "monotonic_ns receipt timestamps in Python; source log ts fields are only whole-second human timestamps. Native log timing values also retained. Streaming file inputs are unpaced.",
+    "primary_rtf": "post-load-to-final receipt time / input audio duration; process-including-load RTF separately. Neither is a microphone streaming latency measurement.",
+    "wer": "Corpus summed Levenshtein word edit distance / reference words. Lowercase ASCII alphanumerics, strip apostrophes, discard punctuation; no number expansion (five vs 5 counts).",
+    "comparison_claim": "Exploratory shortlist qualification, not statistical performance ranking or phone-real-time certification."
+  },
+  "evalset": {
+    "path": "ref/asr/transcripts.json",
+    "n": 12,
+    "voices": [
+      "af_heart",
+      "am_adam",
+      "bf_emma"
+    ],
+    "manifest_sha256": "dd61fe8a844cbbe1b4fb225a3bd656a384ed55d1052751d58104d64f9b3de204",
+    "pause_items": [
+      "asr11",
+      "asr12"
+    ],
+    "generator_script": "mobile/generate_stage_evalset.py"
+  },
+  "downloads": {
+    "new_package_payload_bytes": 3107754224,
+    "downloads_gb_decimal": 3.107754224,
+    "limit_bytes": 4000000000,
+    "packages": [
+      {
+        "id": "firered_stream_vad_f32",
+        "size_bytes": 2285056,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "kroko_asr_community_q8_0",
+        "size_bytes": 167756928,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "moonshine_streaming_tiny_q8_0",
+        "size_bytes": 60409088,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "moonshine_streaming_small_q8_0",
+        "size_bytes": 300622464,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "niagara_19m_f32",
+        "size_bytes": 255372352,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "parakeet_tdt_q8_0",
+        "size_bytes": 915735760,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "pulsevad_2_1k_f32",
+        "size_bytes": 81408,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": "874fcb41ececda20bcbc0782d6b4ea7f7d069ea8"
+      },
+      {
+        "id": "qwen3_asr_0_6b_q8_0",
+        "size_bytes": 1151279968,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      },
+      {
+        "id": "sensevoice_small_q8",
+        "size_bytes": 254211200,
+        "state": "ok",
+        "message": "",
+        "installed": false,
+        "version_state": "not_installed",
+        "local_revision": "",
+        "remote_revision": ""
+      }
+    ],
+    "receipts": "host-stage-evidence/downloads.json",
+    "note": "Sum of nine selected package payload sizes, all installed successfully; excludes already installed Smart Turn/LFM3/Kokoro, local copies of bundled VAD weights and generated WAVs. HTTP retry/metadata overhead is not measured."
+  },
+  "stages": {
+    "vad": [
+      {
+        "stage": "vad",
+        "id": "earshot",
+        "family": "earshot_vad",
+        "model": "earshot_vad",
+        "mode": "streaming",
+        "cli_args_template": [
+          "--task",
+          "vad",
+          "--family",
+          "earshot_vad",
+          "--model",
+          "{M}/earshot_vad",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "streaming",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--segments-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "segments JSON plus live events where supported",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "segments_out=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Native 16 ms causal scoring; speech_start/speech_end events. No session.wall_ms in this streaming path.",
+        "assets": [
+          {
+            "path": "earshot_vad/LICENSE-MIT",
+            "bytes": 1069,
+            "sha256": "e5f6595150dbac6fc41562928efd16df2786c000ee55614647249705d8746703"
+          },
+          {
+            "path": "earshot_vad/README.md",
+            "bytes": 556,
+            "sha256": "eae6ff22ab46da87e6d0e6e3e421ae8addc499abe222ff9d207501342436ae24"
+          },
+          {
+            "path": "earshot_vad/earshot_vad.safetensors",
+            "bytes": 48448,
+            "sha256": "6f51b4a6ce396dab150ec85b07dda1b629ff91899ac4c3d397006d9b5e888b37"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 4.4162725,
+            "min": 4.120776,
+            "max": 12.813931
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 2.4615479999999996,
+            "min": 2.220516,
+            "max": 8.814957
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 1.4949065000000001,
+            "min": 0.8293870000000001,
+            "max": 3.3162590000000005
+          },
+          "post_load_rtf": 0.00031780544075829385,
+          "process_rtf": 0.001010005383886256,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "earshot_vad.streaming.chunk_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.5858795,
+                "min": 0.537005,
+                "max": 1.390937
+              },
+              "marker_counts": [
+                316,
+                344
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family earshot_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/earshot_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/earshot-asr11-r0.segments.json",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/earshot-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "vad",
+        "id": "silero-offline",
+        "family": "silero_vad",
+        "model": "silero_vad",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "vad",
+          "--family",
+          "silero_vad",
+          "--model",
+          "{M}/silero_vad",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--segments-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "segments JSON plus live events where supported",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "segments_out=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline recipe validated. Streaming file input failed on the non-512-sample final chunk; raw failure retained.",
+        "assets": [
+          {
+            "path": "silero_vad/silero_vad_16k.safetensors",
+            "bytes": 1239748,
+            "sha256": "c59271c284ae9c8335d795d60e0bfdb71aaaceec578d9bd9ffc1b8153c319ea1"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 26.405642,
+            "min": 22.900007,
+            "max": 90.805612
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 6.4266345000000005,
+            "min": 5.064141,
+            "max": 37.913619
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 18.8128055,
+            "min": 16.52904,
+            "max": 51.596987
+          },
+          "post_load_rtf": 0.004162621213270142,
+          "process_rtf": 0.006285120303317536,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 16.483017,
+                "min": 15.426534,
+                "max": 20.696698
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.chunk.context_update_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.0069914999999999995,
+                "min": 0.005239,
+                "max": 0.007725
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.graph.build_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.0939155,
+                "min": 0.071341,
+                "max": 0.1353
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.chunk.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 13.9596175,
+                "min": 12.711982,
+                "max": 18.075552
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.input_prepare_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.034363,
+                "min": 0.026686,
+                "max": 0.043694
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.input_upload_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.038877999999999996,
+                "min": 0.026866,
+                "max": 0.046408
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.output_read_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.040467,
+                "min": 0.028344,
+                "max": 0.051834
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.state_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.0041275,
+                "min": 0.003152,
+                "max": 0.004515
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.total_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 15.812878,
+                "min": 14.84985,
+                "max": 19.912012999999998
+              },
+              "marker_counts": [
+                158,
+                172
+              ]
+            },
+            "silero_vad.offline.audio_prepare_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.1239625,
+                "min": 0.079715,
+                "max": 0.147033
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.offline.infer_total_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 16.354503,
+                "min": 15.281051,
+                "max": 20.552396
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.offline.total_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 16.477930999999998,
+                "min": 15.42454,
+                "max": 20.694314
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.prepare.total_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.107937,
+                "min": 0.079495,
+                "max": 0.162764
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-offline-asr11-r0.segments.json",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/silero-offline-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "vad",
+        "id": "marblenet",
+        "family": "marblenet_vad",
+        "model": "marblenet_vad",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "vad",
+          "--family",
+          "marblenet_vad",
+          "--model",
+          "{M}/marblenet_vad",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--segments-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "segments JSON plus live events where supported",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "segments_out=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline only in this integration.",
+        "assets": [
+          {
+            "path": "marblenet_vad/marblenet_vad.safetensors",
+            "bytes": 466592,
+            "sha256": "b76f67fff9f0955acc7d77fe6de87376b0199100f73cccc41a6d7f41a7ec54ef"
+          },
+          {
+            "path": "marblenet_vad/marblenet_vad_config.json",
+            "bytes": 1355,
+            "sha256": "21821122930d24035e61a1aea9491678f5eb09c7b29b05211df05ef25fba08d3"
+          },
+          {
+            "path": "marblenet_vad/marblenet_vad_labels.txt",
+            "bytes": 4,
+            "sha256": "82c1315e6c757f33c4a77ca58b2a184f5a88614470c05ec77f3d28918db6b8ae"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 17.984043,
+            "min": 15.676022,
+            "max": 81.382608
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 7.320071,
+            "min": 5.403485,
+            "max": 34.932339
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 10.7892505,
+            "min": 8.202634,
+            "max": 44.90791900000001
+          },
+          "post_load_rtf": 0.0027082851184834123,
+          "process_rtf": 0.00465649308056872,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "audio.stft_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 3.8843059999999996,
+                "min": 2.375556,
+                "max": 37.948992
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "marblenet.features_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 4.485431999999999,
+                "min": 2.808848,
+                "max": 38.570991
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "marblenet.graph.build_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.19021300000000002,
+                "min": 0.108947,
+                "max": 0.311937
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "marblenet.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 3.6233775,
+                "min": 3.338958,
+                "max": 5.815073
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "marblenet.graph.plan_create_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.027752,
+                "min": 0.018852,
+                "max": 0.03679
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 8.6098985,
+                "min": 6.769653,
+                "max": 42.765227
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family marblenet_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/marblenet_vad --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/marblenet-asr11-r0.segments.json",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/marblenet-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "vad",
+        "id": "firered-stream",
+        "family": "firered_vad",
+        "model": "FireRedVAD-GGUF/firered-stream-vad-f32.gguf",
+        "mode": "streaming",
+        "cli_args_template": [
+          "--task",
+          "vad",
+          "--family",
+          "firered_vad",
+          "--model",
+          "{M}/FireRedVAD-GGUF/firered-stream-vad-f32.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "streaming",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--segments-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "segments JSON plus live events where supported",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "segments_out=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Causal stateful Stream-VAD; input transport chunks 2560 samples. session.wall_ms repeats per chunk, not whole clip.",
+        "assets": [
+          {
+            "path": "FireRedVAD-GGUF/firered-stream-vad-f32.gguf",
+            "bytes": 2285056,
+            "sha256": "c77073c4bebd112a794ec10e71a70e0f74c78ffbe928f4dd79ce17bc19cf8e6a"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 27.0556275,
+            "min": 25.677278,
+            "max": 37.926382
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 6.8259605,
+            "min": 6.053447,
+            "max": 14.165489
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 19.146677500000003,
+            "min": 18.645618000000002,
+            "max": 23.366981
+          },
+          "post_load_rtf": 0.0038421423507109006,
+          "process_rtf": 0.005424019867298578,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "firered_vad.frontend_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 8.577498,
+                "min": 8.255283,
+                "max": 12.188046
+              },
+              "marker_counts": [
+                32,
+                35
+              ]
+            },
+            "firered_vad.graph_prepare_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.3437165,
+                "min": 0.293709,
+                "max": 0.414133
+              },
+              "marker_counts": [
+                3
+              ]
+            },
+            "firered_vad.network_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 8.9876075,
+                "min": 8.355328,
+                "max": 11.126264
+              },
+              "marker_counts": [
+                32,
+                35
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 18.271693499999998,
+                "min": 17.689062,
+                "max": 22.199868
+              },
+              "marker_counts": [
+                32,
+                35
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family firered_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/FireRedVAD-GGUF/firered-stream-vad-f32.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/firered-stream-asr11-r0.segments.json",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/firered-stream-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "vad",
+        "id": "pulsevad",
+        "family": "pulsevad",
+        "model": "PulseVAD-GGUF/pulsevad-2.1k-f32.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "vad",
+          "--family",
+          "pulsevad",
+          "--model",
+          "{M}/PulseVAD-GGUF/pulsevad-2.1k-f32.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--segments-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "segments JSON plus live events where supported",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "segments_out=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline only; 200 ms analysis windows, 100 ms default hop. Not live streaming.",
+        "assets": [
+          {
+            "path": "PulseVAD-GGUF/pulsevad-2.1k-f32.gguf",
+            "bytes": 81408,
+            "sha256": "0f7e6e897d1d380489e09ffaffc07b1f8396a2d1dac9ba3664512c816c5908bd"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 10.7203795,
+            "min": 10.244526,
+            "max": 13.860483
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 4.6099455,
+            "min": 4.44234,
+            "max": 6.011932
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 5.3933175,
+            "min": 4.953868,
+            "max": 6.884988
+          },
+          "post_load_rtf": 0.0010381563222748816,
+          "process_rtf": 0.0021180465971563983,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 4.78067,
+                "min": 4.35778,
+                "max": 6.011892
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family pulsevad --model /mnt/zer0models/models/zlv-tts/acpp-models/PulseVAD-GGUF/pulsevad-2.1k-f32.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/pulsevad-asr11-r0.segments.json",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/pulsevad-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl"
+        },
+        "alternate_recipes": []
+      }
+    ],
+    "turn": [
+      {
+        "stage": "turn",
+        "id": "smart-turn",
+        "family": "smart_turn",
+        "model": "Smart-Turn-v3-GGUF/smart-turn-v3.2-f32.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "turn",
+          "--family",
+          "smart_turn",
+          "--model",
+          "{M}/Smart-Turn-v3-GGUF/smart-turn-v3.2-f32.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout custom_schema_output JSON, schema smart_turn.v1",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "custom_schema_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline classifier on last eight seconds, left-padded to eight seconds. Run after VAD pause, not continuously on arbitrary chunks.",
+        "assets": [
+          {
+            "path": "Smart-Turn-v3-GGUF/smart-turn-v3.2-f32.gguf",
+            "bytes": 32014304,
+            "sha256": "dbd3fde8c39271b201c950d43f027318a3ec650292e40cecc37a29f82abc1e88"
+          }
+        ],
+        "host_results": {
+          "n": 10,
+          "ok": 10,
+          "process_ms": {
+            "n": 10,
+            "median": 67.2515575,
+            "min": 62.63677,
+            "max": 131.572271
+          },
+          "load_done_ms": {
+            "n": 10,
+            "median": 20.006972,
+            "min": 18.41465,
+            "max": 87.573039
+          },
+          "load_to_final_ms": {
+            "n": 10,
+            "median": 44.331475499999996,
+            "min": 43.026082,
+            "max": 49.392424000000005
+          },
+          "post_load_rtf": 0.008615305516587677,
+          "process_rtf": 0.013900183924170615,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 41.544301,
+                "min": 40.307846,
+                "max": 46.696775
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.classifier.ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 1.046704,
+                "min": 1.022266,
+                "max": 1.25573
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.encoder.ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 37.1967375,
+                "min": 36.126166,
+                "max": 42.107653
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.frontend.ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 3.0833345,
+                "min": 2.909233,
+                "max": 3.551706
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.whisper_tiny.graph.build_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.165559,
+                "min": 0.153628,
+                "max": 0.217058
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.whisper_tiny.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 36.576395500000004,
+                "min": 35.593061,
+                "max": 41.648352
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.whisper_tiny.input_upload_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.060144,
+                "min": 0.05455,
+                "max": 0.070472
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "smart_turn.whisper_tiny.output_readback_ms": {
+              "per_run_sum": {
+                "n": 10,
+                "median": 0.2099705,
+                "min": 0.193885,
+                "max": 0.249216
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task turn --family smart_turn --model /mnt/zer0models/models/zlv-tts/acpp-models/Smart-Turn-v3-GGUF/smart-turn-v3.2-f32.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/smart-turn-asr11-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "predictions": [
+            {
+              "item": "asr11",
+              "expected_complete": true,
+              "probability": 0.986724853515625,
+              "complete": true,
+              "correct": true
+            },
+            {
+              "item": "asr12",
+              "expected_complete": false,
+              "probability": 0.924149751663208,
+              "complete": true,
+              "correct": false
+            }
+          ],
+          "accuracy": 0.5,
+          "quality_pass": false
+        },
+        "alternate_recipes": []
+      }
+    ],
+    "asr": [
+      {
+        "stage": "asr",
+        "id": "moonshine-tiny",
+        "family": "moonshine_asr",
+        "model": "Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf",
+        "mode": "streaming",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "moonshine_asr",
+          "--model",
+          "{M}/Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "streaming",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Accepts audio chunks but buffers ALL waveform and transcribes at finalize. No partials at this SHA; see src/models/moonshine_asr/session.cpp:282-361.",
+        "assets": [
+          {
+            "path": "Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf",
+            "bytes": 60409088,
+            "sha256": "0f795f14924dbfe40d2ee0e220382c9b23cd9e89064c6ffb97e236d81f1d7020"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 181.17350249999998,
+            "min": 156.186001,
+            "max": 280.176572
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 119.5834505,
+            "min": 104.439344,
+            "max": 221.414385
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 55.64797799999999,
+            "min": 42.253056999999984,
+            "max": 79.989492
+          },
+          "post_load_rtf": 0.016032560345821324,
+          "process_rtf": 0.05184616059942363,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "moonshine_asr.decode_cross_kv_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 2.105278,
+                "min": 1.742438,
+                "max": 3.519835
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 23.279837999999998,
+                "min": 17.999807,
+                "max": 34.366937
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 19.87516,
+                "min": 15.255356,
+                "max": 30.747458000000005
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_read_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0892115,
+                "min": 0.07512300000000001,
+                "max": 0.134656
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_select_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.29060149999999996,
+                "min": 0.279529,
+                "max": 0.355825
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.007435000000000001,
+                "min": 0.00441,
+                "max": 1.0454400000000001
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.encoder_compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 21.2356955,
+                "min": 17.039881,
+                "max": 42.991736
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.encoder_graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.7505824999999999,
+                "min": 0.617652,
+                "max": 1.756254
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.frontend_cpu_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.4023585,
+                "min": 0.36425,
+                "max": 0.611807
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.resample_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.029908999999999998,
+                "min": 0.019902,
+                "max": 0.049227
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.run_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 47.749415,
+                "min": 37.418465,
+                "max": 74.357895
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.weights_load_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 29.75582,
+                "min": 27.52218,
+                "max": 119.039467
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family moonshine_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/moonshine-tiny-asr01-r0.txt",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/moonshine-tiny-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.042105263157894736,
+          "word_errors": 4,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.016032560345821324,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "asr",
+        "id": "moonshine-small",
+        "family": "moonshine_asr",
+        "model": "Moonshine-Streaming-GGUF/moonshine-streaming-small-q8_0.gguf",
+        "mode": "streaming",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "moonshine_asr",
+          "--model",
+          "{M}/Moonshine-Streaming-GGUF/moonshine-streaming-small-q8_0.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "streaming",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Accepts audio chunks but buffers ALL waveform and transcribes at finalize. No partials at this SHA.",
+        "assets": [
+          {
+            "path": "Moonshine-Streaming-GGUF/moonshine-streaming-small-q8_0.gguf",
+            "bytes": 300622464,
+            "sha256": "98731a08788a6dacc5dc56f32f36153f3373629adc7163ac83498a2702f210a9"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 904.468404,
+            "min": 851.866484,
+            "max": 1658.441763
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 559.7218995000001,
+            "min": 516.883489,
+            "max": 1285.643359
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 344.50400199999996,
+            "min": 298.1990400000001,
+            "max": 502.28699499999993
+          },
+          "post_load_rtf": 0.10101944970605187,
+          "process_rtf": 0.2747347497636887,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "moonshine_asr.decode_cross_kv_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 11.209025,
+                "min": 8.522743,
+                "max": 21.293111
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 109.4888435,
+                "min": 94.657454,
+                "max": 158.277335
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 96.0521385,
+                "min": 80.97045900000002,
+                "max": 145.897725
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_read_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.21713299999999996,
+                "min": 0.16324700000000003,
+                "max": 0.8425529999999999
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_select_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.335882,
+                "min": 0.24611900000000003,
+                "max": 0.386274
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.decode_step_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0162435,
+                "min": 0.01172,
+                "max": 1.410971
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.encoder_compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 202.458077,
+                "min": 175.372499,
+                "max": 333.345047
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.encoder_graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 1.528372,
+                "min": 1.044327,
+                "max": 3.450075
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.frontend_cpu_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.497987,
+                "min": 0.385547,
+                "max": 0.775371
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.resample_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.034243,
+                "min": 0.023268,
+                "max": 0.046786
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.run_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 323.725093,
+                "min": 280.128276,
+                "max": 475.02354
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "moonshine_asr.weights_load_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 420.045572,
+                "min": 394.944608,
+                "max": 1095.875288
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family moonshine_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Moonshine-Streaming-GGUF/moonshine-streaming-small-q8_0.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/moonshine-small-asr01-r0.txt",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/moonshine-small-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.010526315789473684,
+          "word_errors": 1,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.10101944970605187,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "asr",
+        "id": "kroko",
+        "family": "kroko_asr",
+        "model": "Kroko-ASR-GGUF/kroko-en-community-64-l-q8_0.gguf",
+        "mode": "streaming",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "kroko_asr",
+          "--model",
+          "{M}/Kroko-ASR-GGUF/kroko-en-community-64-l-q8_0.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "streaming",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}",
+          "--language",
+          "en"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Native cache-aware stateful Zipformer/RNN-T streaming. partial_text deltas are flushed by CLI. Finalization adds 660 ms zero tail. File feed is unpaced.",
+        "assets": [
+          {
+            "path": "Kroko-ASR-GGUF/kroko-en-community-64-l-q8_0.gguf",
+            "bytes": 167756928,
+            "sha256": "596c749fcb6c582f2d7aaa9aefcff2929e405867a4d04864a55b2c9c2963baa5"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 648.474959,
+            "min": 548.786091,
+            "max": 949.020325
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 259.93129450000004,
+            "min": 241.538619,
+            "max": 537.053759
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 396.819129,
+            "min": 287.629122,
+            "max": 573.9215879999999
+          },
+          "post_load_rtf": 0.10954530598270892,
+          "process_rtf": 0.18895180350432278,
+          "partial_runs": 12,
+          "first_partial_ms": {
+            "n": 12,
+            "median": 363.926749,
+            "min": 342.490012,
+            "max": 652.843817
+          },
+          "native_timings": {
+            "kroko_asr.decoder_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 17.241260500000003,
+                "min": 13.972728,
+                "max": 26.544650999999998
+              },
+              "marker_counts": [
+                3,
+                4,
+                5
+              ]
+            },
+            "kroko_asr.session_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 367.1191035,
+                "min": 268.385333,
+                "max": 543.429465
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "kroko_asr.subsampling_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 59.34143400000001,
+                "min": 42.721762999999996,
+                "max": 82.835815
+              },
+              "marker_counts": [
+                3,
+                4,
+                5
+              ]
+            },
+            "kroko_asr.zipformer_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 270.3982935,
+                "min": 195.16728999999998,
+                "max": 412.202089
+              },
+              "marker_counts": [
+                3,
+                4,
+                5
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 367.13008049999996,
+                "min": 268.450795,
+                "max": 543.439329
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family kroko_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Kroko-ASR-GGUF/kroko-en-community-64-l-q8_0.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/kroko-asr01-r0.txt --language en",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/kroko-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.021052631578947368,
+          "word_errors": 2,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.10954530598270892,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": []
+      },
+      {
+        "stage": "asr",
+        "id": "sensevoice",
+        "family": "sense_asr",
+        "model": "SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "sense_asr",
+          "--model",
+          "{M}/SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}",
+          "--language",
+          "en"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline default auto chunking can invoke bundled Silero VAD and emit multiple session.wall_ms values. Also has buffered streaming; smoke recorded separately.",
+        "assets": [
+          {
+            "path": "SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+            "bytes": 254211200,
+            "sha256": "4dedf169f625437fb336f2959674f399819729a765e184128c0e25a6e16ff0ec"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 577.2944695,
+            "min": 436.787176,
+            "max": 1121.892183
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 256.379216,
+            "min": 223.419281,
+            "max": 832.120887
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 297.224596,
+            "min": 211.12573299999997,
+            "max": 441.264713
+          },
+          "post_load_rtf": 0.08437938383861672,
+          "process_rtf": 0.16892312101440923,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "sense_asr.decode_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 1.7350599999999998,
+                "min": 1.153222,
+                "max": 2.90521
+              },
+              "marker_counts": [
+                1,
+                2
+              ]
+            },
+            "sense_asr.encoder.graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 6.8357995,
+                "min": 4.150716,
+                "max": 17.542586
+              },
+              "marker_counts": [
+                1,
+                2
+              ]
+            },
+            "sense_asr.encoder_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 416.18066650000003,
+                "min": 309.350685,
+                "max": 593.616613
+              },
+              "marker_counts": [
+                2,
+                4
+              ]
+            },
+            "sense_asr.frontend_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 6.5605615,
+                "min": 5.4826,
+                "max": 9.758935999999999
+              },
+              "marker_counts": [
+                1,
+                2
+              ]
+            },
+            "sense_asr.resample_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.023893499999999998,
+                "min": 0.017279,
+                "max": 0.035227
+              },
+              "marker_counts": [
+                1,
+                2
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 228.722803,
+                "min": 170.95113,
+                "max": 326.14494399999995
+              },
+              "marker_counts": [
+                2,
+                3
+              ]
+            },
+            "silero_vad.chunk.context_update_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0047395,
+                "min": 0.003339,
+                "max": 0.008659
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.graph.build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.09385199999999999,
+                "min": 0.056922,
+                "max": 0.294451
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.chunk.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 8.779575000000001,
+                "min": 7.741061,
+                "max": 16.336211
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.input_prepare_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.020671000000000002,
+                "min": 0.015657,
+                "max": 0.055187
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.input_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.025528500000000003,
+                "min": 0.018832,
+                "max": 0.044073
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.output_read_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.027849,
+                "min": 0.021896,
+                "max": 0.047757
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.state_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.003007,
+                "min": 0.001987,
+                "max": 0.004083
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.chunk.total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 10.1093845,
+                "min": 8.930253,
+                "max": 18.561206
+              },
+              "marker_counts": [
+                94,
+                97,
+                99,
+                101,
+                102,
+                103,
+                108,
+                112,
+                120,
+                158,
+                172
+              ]
+            },
+            "silero_vad.offline.audio_prepare_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.022477499999999997,
+                "min": 0.013858,
+                "max": 0.059544
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.offline.infer_total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 10.355004000000001,
+                "min": 9.119317,
+                "max": 18.994654
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.offline.total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 10.3834005,
+                "min": 9.138653,
+                "max": 19.049446
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "silero_vad.prepare.total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.11286399999999999,
+                "min": 0.064499,
+                "max": 0.322569
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family sense_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/sensevoice-asr01-r0.txt --language en",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/sensevoice-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.010526315789473684,
+          "word_errors": 1,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.08437938383861672,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": [
+          {
+            "stage": "asr",
+            "id": "sensevoice-streaming",
+            "family": "sense_asr",
+            "model": "SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+            "mode": "streaming",
+            "cli_args_template": [
+              "--task",
+              "asr",
+              "--family",
+              "sense_asr",
+              "--model",
+              "{M}/SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+              "--backend",
+              "cpu",
+              "--threads",
+              "4",
+              "--mode",
+              "streaming",
+              "--audio",
+              "{IN}",
+              "--log",
+              "--load-progress",
+              "1",
+              "--text-out",
+              "{OUT}",
+              "--language",
+              "en"
+            ],
+            "host_results": {
+              "n": 2,
+              "ok": 2,
+              "process_ms": {
+                "n": 2,
+                "median": 966.038783,
+                "min": 682.939538,
+                "max": 1249.138028
+              },
+              "load_done_ms": {
+                "n": 2,
+                "median": 566.6829885,
+                "min": 302.880234,
+                "max": 830.485743
+              },
+              "load_to_final_ms": {
+                "n": 2,
+                "median": 396.97474100000005,
+                "min": 377.96017500000005,
+                "max": 415.98930700000005
+              },
+              "post_load_rtf": 0.07525587507109005,
+              "process_rtf": 0.1831353143127962,
+              "partial_runs": 2,
+              "first_partial_ms": {
+                "n": 2,
+                "median": 941.7753200000001,
+                "min": 658.480483,
+                "max": 1225.070157
+              },
+              "native_timings": {
+                "sense_asr.decode_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 3.8777755000000003,
+                    "min": 3.421516,
+                    "max": 4.334035
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "sense_asr.encoder.graph_build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 10.374101,
+                    "min": 8.643603,
+                    "max": 12.104599
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "sense_asr.encoder_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 703.7852839999999,
+                    "min": 672.439899,
+                    "max": 735.1306689999999
+                  },
+                  "marker_counts": [
+                    2
+                  ]
+                },
+                "sense_asr.frontend_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 16.854232,
+                    "min": 12.895007,
+                    "max": 20.813457
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "sense_asr.resample_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.30934649999999997,
+                    "min": 0.29381,
+                    "max": 0.324883
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "sense_asr.session.stream.finalize_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 373.7934485,
+                    "min": 353.491054,
+                    "max": 394.095843
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "sense_asr.session.stream.wall_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 374.083008,
+                    "min": 353.75184,
+                    "max": 394.414176
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "session.wall_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 747.136551,
+                    "min": 706.693391,
+                    "max": 787.579711
+                  },
+                  "marker_counts": [
+                    2
+                  ]
+                }
+              },
+              "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family sense_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/sensevoice-streaming-asr11-r0.txt --language en",
+              "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+              "example_log": "host-stage-evidence/sensevoice-streaming-asr11-r0.log",
+              "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+              "wer": 0.06666666666666667,
+              "word_errors": 1,
+              "reference_words": 15,
+              "audio_seconds": 10.55,
+              "rtf": 0.07525587507109005,
+              "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+            },
+            "scope": "Only the two pause-bearing clips, not the 12-item WER set"
+          }
+        ]
+      },
+      {
+        "stage": "asr",
+        "id": "parakeet",
+        "family": "parakeet_tdt",
+        "model": "Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "parakeet_tdt",
+          "--model",
+          "{M}/Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline full-context primary recipe. Buffered streaming re-encodes bidirectional windows, not native cache-aware streaming.",
+        "assets": [
+          {
+            "path": "Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+            "bytes": 915735760,
+            "sha256": "6fa498f10f8cb606f041aa9512733cfee842a932359b00b0c45b9b723c4f4f4b"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 7268.228762500001,
+            "min": 6803.494757,
+            "max": 10944.585033
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 6523.73556,
+            "min": 6081.825658,
+            "max": 10182.642471
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 754.5892020000001,
+            "min": 670.5382049999998,
+            "max": 923.8243449999991
+          },
+          "post_load_rtf": 0.2135703538674352,
+          "process_rtf": 2.1680388066397693,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "parakeet.decoder.graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.143674,
+                "min": 0.115149,
+                "max": 19.988226
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet.decoder.joint_graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.032489000000000004,
+                "min": 0.02241,
+                "max": 0.070335
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet.decoder_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 55.706609,
+                "min": 43.775758,
+                "max": 68.440321
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet.frontend_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 4.317034,
+                "min": 2.183166,
+                "max": 10.66494
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 437.92242699999997,
+                "min": 400.477533,
+                "max": 640.01755
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder.graph_alloc_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.983879,
+                "min": 0.528424,
+                "max": 6.224013
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder.graph_build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 66.7089425,
+                "min": 46.261606,
+                "max": 98.873076
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder.graph_rebuild_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 66.7089425,
+                "min": 46.261606,
+                "max": 98.873076
+              },
+              "marker_counts": [
+                2
+              ]
+            },
+            "parakeet_tdt.encoder.pos_compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 35.654664999999994,
+                "min": 27.629942,
+                "max": 60.481804
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder.pos_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.44135800000000003,
+                "min": 0.362493,
+                "max": 0.7242
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.encoder_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 438.1242575,
+                "min": 400.661959,
+                "max": 640.371945
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.prepare_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 71.5537745,
+                "min": 46.528691,
+                "max": 99.073241
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "parakeet_tdt.weights.upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 6370.91841,
+                "min": 5877.797049,
+                "max": 9792.998915
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 497.777458,
+                "min": 467.126757,
+                "max": 699.68082
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family parakeet_tdt --model /mnt/zer0models/models/zlv-tts/acpp-models/Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/parakeet-asr01-r0.txt",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/parakeet-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.010526315789473684,
+          "word_errors": 1,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.2135703538674352,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": [
+          {
+            "stage": "asr",
+            "id": "parakeet-streaming",
+            "family": "parakeet_tdt",
+            "model": "Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+            "mode": "streaming",
+            "cli_args_template": [
+              "--task",
+              "asr",
+              "--family",
+              "parakeet_tdt",
+              "--model",
+              "{M}/Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+              "--backend",
+              "cpu",
+              "--threads",
+              "4",
+              "--mode",
+              "streaming",
+              "--audio",
+              "{IN}",
+              "--log",
+              "--load-progress",
+              "1",
+              "--text-out",
+              "{OUT}"
+            ],
+            "host_results": {
+              "n": 2,
+              "ok": 2,
+              "process_ms": {
+                "n": 2,
+                "median": 7764.7059174999995,
+                "min": 7523.620517,
+                "max": 8005.791318
+              },
+              "load_done_ms": {
+                "n": 2,
+                "median": 5531.941439,
+                "min": 5371.121016,
+                "max": 5692.761862
+              },
+              "load_to_final_ms": {
+                "n": 2,
+                "median": 2230.249741,
+                "min": 2150.336948,
+                "max": 2310.162534
+              },
+              "post_load_rtf": 0.42279615943127963,
+              "process_rtf": 1.4719821644549762,
+              "partial_runs": 2,
+              "first_partial_ms": {
+                "n": 2,
+                "median": 6294.02703,
+                "min": 6121.119762,
+                "max": 6466.934298
+              },
+              "native_timings": {
+                "parakeet.decoder.graph_build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.3999145,
+                    "min": 0.161286,
+                    "max": 0.638543
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "parakeet.decoder.joint_graph_build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.36259549999999996,
+                    "min": 0.059251,
+                    "max": 0.66594
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "parakeet.decoder_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 57.9301935,
+                    "min": 49.61516,
+                    "max": 66.245227
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet.frontend_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 6.6757365,
+                    "min": 6.565315,
+                    "max": 6.786158
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder.graph.compute_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1757.719822,
+                    "min": 1687.760307,
+                    "max": 1827.679337
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder.graph_alloc_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 2.840573,
+                    "min": 2.799708,
+                    "max": 2.881438
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder.graph_build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 237.895017,
+                    "min": 235.537778,
+                    "max": 240.252256
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder.graph_rebuild_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 237.895017,
+                    "min": 235.537778,
+                    "max": 240.252256
+                  },
+                  "marker_counts": [
+                    4
+                  ]
+                },
+                "parakeet_tdt.encoder.pos_compute_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 193.08712500000001,
+                    "min": 191.18915900000002,
+                    "max": 194.985091
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder.pos_upload_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 2.410407,
+                    "min": 2.348829,
+                    "max": 2.471985
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.encoder_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1880.424854,
+                    "min": 1815.973324,
+                    "max": 1944.8763840000001
+                  },
+                  "marker_counts": [
+                    3
+                  ]
+                },
+                "parakeet_tdt.prepare_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 145.718739,
+                    "min": 142.67439,
+                    "max": 148.763088
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "parakeet_tdt.weights.upload_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 5394.701799500001,
+                    "min": 5267.298832,
+                    "max": 5522.104767
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "session.wall_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1948.4304715,
+                    "min": 1874.534388,
+                    "max": 2022.326555
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                }
+              },
+              "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family parakeet_tdt --model /mnt/zer0models/models/zlv-tts/acpp-models/Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/parakeet-streaming-asr11-r0.txt",
+              "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+              "example_log": "host-stage-evidence/parakeet-streaming-asr11-r0.log",
+              "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+              "wer": 0.0,
+              "word_errors": 0,
+              "reference_words": 15,
+              "audio_seconds": 10.55,
+              "rtf": 0.42279615943127963,
+              "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+            },
+            "scope": "Only the two pause-bearing clips, not the 12-item WER set"
+          }
+        ]
+      },
+      {
+        "stage": "asr",
+        "id": "qwen3-asr",
+        "family": "qwen3_asr",
+        "model": "Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "qwen3_asr",
+          "--model",
+          "{M}/Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}",
+          "--language",
+          "English",
+          "--max-tokens",
+          "128"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "Offline primary recipe; explicit English hint and 128-token transcript cap. Buffered streaming uses duration windows (30 seconds default). Not a general Qwen3 text LLM.",
+        "assets": [
+          {
+            "path": "Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf",
+            "bytes": 1151279968,
+            "sha256": "5c53bbb9a6b2ade85c16c290c560658ca18b78a23c323378528f1f945683fcbe"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 5812.0813375,
+            "min": 3114.051675,
+            "max": 9133.925902
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 3907.8211115000004,
+            "min": 1322.016654,
+            "max": 7332.242168
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 1791.4744515000002,
+            "min": 1351.6757180000004,
+            "max": 2139.703751
+          },
+          "post_load_rtf": 0.5025495534524497,
+          "process_rtf": 1.5332648498213255,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "qwen3_asr.audio_encoder.graph.build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 5.309145,
+                "min": 0.786166,
+                "max": 52.734177
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.audio_encoder.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 299.89946150000003,
+                "min": 210.245297,
+                "max": 474.961598
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.audio_encoder.input_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0728225,
+                "min": 0.050479,
+                "max": 0.203615
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.audio_encoder.output_read_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0101055,
+                "min": 0.008757,
+                "max": 0.017001
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.audio_encoder_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 319.570083,
+                "min": 236.02082,
+                "max": 485.650137
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.frontend.log_mel_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 7.359705999999999,
+                "min": 1.42489,
+                "max": 50.29673
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.frontend.normalize_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.117495,
+                "min": 0.083108,
+                "max": 2.284838
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.frontend_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 7.930616,
+                "min": 1.554688,
+                "max": 50.438237
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.postprocess_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.050894,
+                "min": 0.033958,
+                "max": 0.082246
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.prompt_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 2.206861,
+                "min": 0.515879,
+                "max": 51.395374
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.decode.graph.build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 16.4285555,
+                "min": 12.470671,
+                "max": 20.186522
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.decode_total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 787.726487,
+                "min": 516.263665,
+                "max": 975.82831
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prefill.graph.build_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 1.442554,
+                "min": 0.875204,
+                "max": 2.956624
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prefill.graph.compute_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 433.9959625,
+                "min": 256.215587,
+                "max": 586.242386
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prefill_input_upload_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.0997615,
+                "min": 0.043687,
+                "max": 0.15888
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prefill_output_read_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 7.2765105000000005,
+                "min": 4.783402,
+                "max": 11.580818
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prefill_total_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 441.671335,
+                "min": 261.275647,
+                "max": 598.188157
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker.prompt_prepare_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 0.000246,
+                "min": 0.000155,
+                "max": 0.000746
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "qwen3_asr.thinker_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 1253.6523925,
+                "min": 809.031487,
+                "max": 1518.176739
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 1600.318213,
+                "min": 1154.35272,
+                "max": 1941.52581
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family qwen3_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/qwen3-asr-asr01-r0.txt --language English --max-tokens 128",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/qwen3-asr-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.0,
+          "word_errors": 0,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.5025495534524497,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": [
+          {
+            "stage": "asr",
+            "id": "qwen3-asr-streaming",
+            "family": "qwen3_asr",
+            "model": "Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf",
+            "mode": "streaming",
+            "cli_args_template": [
+              "--task",
+              "asr",
+              "--family",
+              "qwen3_asr",
+              "--model",
+              "{M}/Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf",
+              "--backend",
+              "cpu",
+              "--threads",
+              "4",
+              "--mode",
+              "streaming",
+              "--audio",
+              "{IN}",
+              "--log",
+              "--load-progress",
+              "1",
+              "--text-out",
+              "{OUT}",
+              "--language",
+              "English",
+              "--max-tokens",
+              "128"
+            ],
+            "host_results": {
+              "n": 2,
+              "ok": 2,
+              "process_ms": {
+                "n": 2,
+                "median": 5707.9245935,
+                "min": 5651.806316,
+                "max": 5764.042871
+              },
+              "load_done_ms": {
+                "n": 2,
+                "median": 3523.6195565,
+                "min": 3443.960054,
+                "max": 3603.279059
+              },
+              "load_to_final_ms": {
+                "n": 2,
+                "median": 2179.4713635,
+                "min": 2156.826307,
+                "max": 2202.1164200000003
+              },
+              "post_load_rtf": 0.41316992672985775,
+              "process_rtf": 1.0820710129857818,
+              "partial_runs": 2,
+              "first_partial_ms": {
+                "n": 2,
+                "median": 5485.64996,
+                "min": 5376.338766,
+                "max": 5594.961154
+              },
+              "native_timings": {
+                "qwen3_asr.audio_encoder.graph.build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 6.978273,
+                    "min": 3.978078,
+                    "max": 9.978468
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.audio_encoder.graph.compute_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 453.072685,
+                    "min": 444.49136,
+                    "max": 461.65401
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.audio_encoder.input_upload_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.12713950000000002,
+                    "min": 0.1114,
+                    "max": 0.142879
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.audio_encoder.output_read_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.023955,
+                    "min": 0.01693,
+                    "max": 0.03098
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.audio_encoder_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 460.55340950000004,
+                    "min": 448.836567,
+                    "max": 472.270252
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.frontend.log_mel_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 8.4183225,
+                    "min": 4.355182,
+                    "max": 12.481463
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.frontend.normalize_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.1554825,
+                    "min": 0.139476,
+                    "max": 0.171489
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.frontend_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 8.643734,
+                    "min": 4.60529,
+                    "max": 12.682178
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.postprocess_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.067885,
+                    "min": 0.063815,
+                    "max": 0.071955
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.prompt_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 2.4818525,
+                    "min": 0.952472,
+                    "max": 4.011233
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.session.stream.finalize_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1947.4473429999998,
+                    "min": 1915.241869,
+                    "max": 1979.652817
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.session.stream.wall_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1948.123337,
+                    "min": 1915.407122,
+                    "max": 1980.839552
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.decode.graph.build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 19.164439,
+                    "min": 17.378506,
+                    "max": 20.950372
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.decode_total_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 851.6976165000001,
+                    "min": 809.521998,
+                    "max": 893.873235
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prefill.graph.build_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1.7973789999999998,
+                    "min": 1.295939,
+                    "max": 2.298819
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prefill.graph.compute_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 560.266944,
+                    "min": 559.256083,
+                    "max": 561.277805
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prefill_input_upload_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.18262299999999998,
+                    "min": 0.172395,
+                    "max": 0.192851
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prefill_output_read_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 10.7652295,
+                    "min": 9.53204,
+                    "max": 11.998419
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prefill_total_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 571.389973,
+                    "min": 569.103376,
+                    "max": 573.67657
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker.prompt_prepare_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 0.000222,
+                    "min": 0.000221,
+                    "max": 0.000223
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "qwen3_asr.thinker_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 1475.3197599999999,
+                    "min": 1429.156239,
+                    "max": 1521.483281
+                  },
+                  "marker_counts": [
+                    1
+                  ]
+                },
+                "session.wall_ms": {
+                  "per_run_sum": {
+                    "n": 2,
+                    "median": 3895.2009909999997,
+                    "min": 3830.544007,
+                    "max": 3959.857975
+                  },
+                  "marker_counts": [
+                    2
+                  ]
+                }
+              },
+              "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family qwen3_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-ASR-0.6B-GGUF/qwen3-asr-0.6b-q8_0.gguf --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/qwen3-asr-streaming-asr11-r0.txt --language English --max-tokens 128",
+              "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+              "example_log": "host-stage-evidence/qwen3-asr-streaming-asr11-r0.log",
+              "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+              "wer": 0.0,
+              "word_errors": 0,
+              "reference_words": 15,
+              "audio_seconds": 10.55,
+              "rtf": 0.41316992672985775,
+              "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+            },
+            "scope": "Only the two pause-bearing clips, not the 12-item WER set"
+          }
+        ]
+      },
+      {
+        "stage": "asr",
+        "id": "niagara",
+        "family": "niagara_asr",
+        "model": "Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf",
+        "mode": "offline",
+        "cli_args_template": [
+          "--task",
+          "asr",
+          "--family",
+          "niagara_asr",
+          "--model",
+          "{M}/Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf",
+          "--backend",
+          "cpu",
+          "--threads",
+          "4",
+          "--mode",
+          "offline",
+          "--audio",
+          "{IN}",
+          "--log",
+          "--load-progress",
+          "1",
+          "--text-out",
+          "{OUT}"
+        ],
+        "status": "host_validated",
+        "input": {
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "format": "WAV PCM signed 16-bit little-endian",
+          "file_streaming_feed": "unpaced; NOT real-time input cadence"
+        },
+        "output": "stdout text_output and --text-out UTF-8 transcript",
+        "timing_markers": {
+          "load_done": "runtime.load.phase loaded (enable --load-progress 1)",
+          "first_partial": "partial_text= or partial_text_snapshot=; first nonempty only; null if none emitted",
+          "final_result": "text_output=",
+          "first_token": null,
+          "wall": "session.wall_ms may be absent or repeated; see observed native_timings; never interpret last chunk as total"
+        },
+        "streaming": "19M English batch checkpoint; offline only, no streaming or chunking.",
+        "assets": [
+          {
+            "path": "Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf",
+            "bytes": 255372352,
+            "sha256": "5c4b0b66e1f9bbe8270d378671d4cc71b1c4ce4b7d045cc787607b5b10f2e1a7"
+          }
+        ],
+        "host_results": {
+          "n": 12,
+          "ok": 12,
+          "process_ms": {
+            "n": 12,
+            "median": 735.5390755000001,
+            "min": 632.360361,
+            "max": 1164.89117
+          },
+          "load_done_ms": {
+            "n": 12,
+            "median": 455.88238,
+            "min": 403.576616,
+            "max": 925.062332
+          },
+          "load_to_final_ms": {
+            "n": 12,
+            "median": 227.03426499999998,
+            "min": 202.77446699999996,
+            "max": 358.811922
+          },
+          "post_load_rtf": 0.06868915446685879,
+          "process_rtf": 0.2151331452680115,
+          "partial_runs": 0,
+          "first_partial_ms": null,
+          "native_timings": {
+            "niagara.model_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 197.657481,
+                "min": 165.871981,
+                "max": 316.37732
+              },
+              "marker_counts": [
+                1
+              ]
+            },
+            "session.wall_ms": {
+              "per_run_sum": {
+                "n": 12,
+                "median": 202.5461175,
+                "min": 171.342432,
+                "max": 324.931769
+              },
+              "marker_counts": [
+                1
+              ]
+            }
+          },
+          "example_command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task asr --family niagara_asr --model /mnt/zer0models/models/zlv-tts/acpp-models/Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf --backend cpu --threads 4 --mode offline --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr01.wav --log --load-progress 1 --text-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/niagara-asr01-r0.txt",
+          "example_cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+          "example_log": "host-stage-evidence/niagara-asr01-r0.log",
+          "runs_index": "host-stage-evidence/runs-normalized.jsonl",
+          "wer": 0.021052631578947368,
+          "word_errors": 2,
+          "reference_words": 95,
+          "audio_seconds": 43.375,
+          "rtf": 0.06868915446685879,
+          "rtf_definition": "sum(FINAL receipt ms - LOADED receipt ms) / sum(input WAV duration ms); includes request preparation, excludes model load; not a persistent warm session"
+        },
+        "alternate_recipes": []
+      }
+    ],
+    "llm": []
+  },
+  "unsupported_llm_candidates": [
+    {
+      "model": "Qwen3-0.6B",
+      "status": "unsupported_in_audio_cpp",
+      "ttft_ms": null,
+      "tok_s": null
+    },
+    {
+      "model": "Qwen3-1.7B",
+      "status": "unsupported_in_audio_cpp",
+      "ttft_ms": null,
+      "tok_s": null
+    },
+    {
+      "model": "LFM2 text",
+      "status": "unsupported_in_audio_cpp",
+      "ttft_ms": null,
+      "tok_s": null
+    },
+    {
+      "model": "LFM3 text",
+      "status": "unsupported_in_audio_cpp",
+      "ttft_ms": null,
+      "tok_s": null
+    }
+  ],
+  "llm_negative_probes": [
+    {
+      "id": "qwen3-text",
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task gen --family qwen3 --model /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-TTS-12Hz-0.6B-Base-GGUF --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+      "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+      "returncode": 1,
+      "proc_ms": 11.774637,
+      "stdout": "",
+      "stderr": "audiocpp_cli failed: unsupported model family hint: qwen3\n",
+      "log": "qwen3-text-unsupported.log",
+      "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+    },
+    {
+      "id": "lfm3-text",
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task gen --family lfm3_audio --model /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+      "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+      "returncode": 1,
+      "proc_ms": 509.479518,
+      "stdout": "[TRACE ts=20261102-113629] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json\n[TRACE ts=20261102-113629] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json\n[TRACE ts=20261102-113629] runtime.model.family lfm3_audio\n[TRACE ts=20261102-113629] runtime.model.variant LFM3-Audio\n[TRACE ts=20261102-113629] runtime.model.root /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF\n[TRACE ts=20261102-113629] runtime.model.discovered_config_count 0\n[TRACE ts=20261102-113629] runtime.model.discovered_weight_count 2\n[TRACE ts=20261102-113629] runtime.model.task_count 3\n[TRACE ts=20261102-113629] runtime.model.language_count 18\n[TRACE ts=20261102-113629] runtime.model.supports_speaker_reference 0\n[TRACE ts=20261102-113629] runtime.model.supports_style_condition 0\n[TRACE ts=20261102-113629] runtime.model.supports_timestamps 0\n",
+      "stderr": "audiocpp_cli failed: LFM3-Audio supports the asr, tts and s2s tasks\n",
+      "log": "lfm3-text-unsupported.log",
+      "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+    },
+    {
+      "id": "llm-task",
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task llm --family lfm3_audio --model /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+      "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+      "returncode": 1,
+      "proc_ms": 11.464872,
+      "stdout": "",
+      "stderr": "audiocpp_cli failed: unsupported task: llm (expected vad, asr, diar, sep, gen, tts, clon, vc, s2s, align, vdes, spk, svc, midi, turn, wake, or cls)\n",
+      "log": "llm-task-unsupported.log",
+      "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+    }
+  ],
+  "failed_experiments": [
+    {
+      "recipe": "silero",
+      "item": "asr11",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr11-r0.segments.json",
+      "log": "host-stage-evidence/silero-asr11-r0.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr12",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr12.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr12-r0.segments.json",
+      "log": "host-stage-evidence/silero-asr12-r0.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr11",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr11-r1.segments.json",
+      "log": "host-stage-evidence/silero-asr11-r1.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr12",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr12.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr12-r1.segments.json",
+      "log": "host-stage-evidence/silero-asr12-r1.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr11",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr11-r2.segments.json",
+      "log": "host-stage-evidence/silero-asr11-r2.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr12",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr12.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr12-r2.segments.json",
+      "log": "host-stage-evidence/silero-asr12-r2.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr11",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr11-r3.segments.json",
+      "log": "host-stage-evidence/silero-asr11-r3.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr12",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr12.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr12-r3.segments.json",
+      "log": "host-stage-evidence/silero-asr12-r3.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr11",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr11.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr11-r4.segments.json",
+      "log": "host-stage-evidence/silero-asr11-r4.log"
+    },
+    {
+      "recipe": "silero",
+      "item": "asr12",
+      "returncode": 1,
+      "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task vad --family silero_vad --model /mnt/zer0models/models/zlv-tts/acpp-models/silero_vad --backend cpu --threads 4 --mode streaming --audio /mnt/zer0models/models/zlv-tts/acpp-models/ref/asr/asr12.wav --log --load-progress 1 --segments-out /mnt/zer0models/worktrees/ak-stages/mobile/host-stage-evidence/silero-asr12-r4.segments.json",
+      "log": "host-stage-evidence/silero-asr12-r4.log"
+    }
+  ],
+  "catalog_inventory": [
+    {
+      "family": "audio8_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en",
+        "zh",
+        "yue",
+        "ja",
+        "ko",
+        "fr",
+        "de"
+      ],
+      "status": "community",
+      "description": "Audio8-ASR-0.1B compact multilingual ASR (en/zh/yue/ja/ko/fr/de): Qwen3-ASR audio encoder with an MLP-tower adapter and an 8-layer Qwen2-style decoder. 30-second offline transcription windows. Checkpoint license: CC-BY-NC-4.0; GGUF conversion is local-only, no public redistribution is approved."
+    },
+    {
+      "family": "audio_flamingo",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "supported",
+      "description": "Audio Flamingo 3, Audio Flamingo Next, and Music Flamingo for transcription, captioning, and audio questions, with optional PEFT LoRA and SpotSound temporal grounding."
+    },
+    {
+      "family": "canary_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en",
+        "de",
+        "es",
+        "fr"
+      ],
+      "status": "supported",
+      "description": "NVIDIA Canary multilingual speech recognition and speech translation."
+    },
+    {
+      "family": "citrinet_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "supported",
+      "description": "NVIDIA CitriNet-family end-to-end English ASR model using a convolutional CTC architecture optimized for transcribing speech segments to text."
+    },
+    {
+      "family": "cohere_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en",
+        "fr",
+        "de",
+        "es",
+        "it",
+        "pt",
+        "nl",
+        "pl",
+        "el",
+        "ar",
+        "ja",
+        "zh",
+        "vi",
+        "ko"
+      ],
+      "status": "supported",
+      "description": "Cohere multilingual speech transcription with punctuation control."
+    },
+    {
+      "family": "confucius4_r2t2",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "zh",
+        "en",
+        "yue",
+        "ar",
+        "de",
+        "fr",
+        "es",
+        "pt",
+        "id",
+        "it",
+        "ko",
+        "ru",
+        "th",
+        "vi",
+        "ja",
+        "tr",
+        "hi",
+        "ms",
+        "nl",
+        "sv",
+        "da",
+        "fi",
+        "pl",
+        "cs",
+        "fil",
+        "fa",
+        "el",
+        "hu",
+        "mk",
+        "ro"
+      ],
+      "status": "community",
+      "description": "NetEase Youdao Confucius4-R2T2 real-time ASR: a Qwen3-ASR fine-tune with Longest Stable Prefix (LSP) streaming. Low-latency append-only streaming from 80 ms to 2 s chunks, context and hotword prompts, 30 languages."
+    },
+    {
+      "family": "crisperwhisper",
+      "tasks": [
+        "asr",
+        "align"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "af",
+        "am",
+        "ar",
+        "as",
+        "az",
+        "ba",
+        "be",
+        "bg",
+        "bn",
+        "bo",
+        "br",
+        "bs",
+        "ca",
+        "cs",
+        "cy",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "et",
+        "eu",
+        "fa",
+        "fi",
+        "fo",
+        "fr",
+        "gl",
+        "gu",
+        "ha",
+        "haw",
+        "he",
+        "hi",
+        "hr",
+        "ht",
+        "hu",
+        "hy",
+        "id",
+        "is",
+        "it",
+        "ja",
+        "jw",
+        "ka",
+        "kk",
+        "km",
+        "kn",
+        "ko",
+        "la",
+        "lb",
+        "ln",
+        "lo",
+        "lt",
+        "lv",
+        "mg",
+        "mi",
+        "mk",
+        "ml",
+        "mn",
+        "mr",
+        "ms",
+        "mt",
+        "my",
+        "ne",
+        "nl",
+        "nn",
+        "no",
+        "oc",
+        "pa",
+        "pl",
+        "ps",
+        "pt",
+        "ro",
+        "ru",
+        "sa",
+        "sd",
+        "si",
+        "sk",
+        "sl",
+        "sn",
+        "so",
+        "sq",
+        "sr",
+        "su",
+        "sv",
+        "sw",
+        "ta",
+        "te",
+        "tg",
+        "th",
+        "tk",
+        "tl",
+        "tr",
+        "tt",
+        "uk",
+        "ur",
+        "uz",
+        "vi",
+        "yi",
+        "yo",
+        "zh"
+      ],
+      "status": "supported",
+      "description": "Whisper-based verbatim and intended speech transcription."
+    },
+    {
+      "family": "firered_audio",
+      "tasks": [
+        "asr",
+        "tts",
+        "clone",
+        "design",
+        "edit"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "zh",
+        "en"
+      ],
+      "status": "experimental",
+      "description": "FireRedAudio native GGUF package for generation paths backed by a Qwen3.5 hybrid backbone, FireRed RedAE conditioning, RedPatchEncoder, RedDiT latent flow, and RedAE waveform decoding."
+    },
+    {
+      "family": "firered_vad",
+      "tasks": [
+        "vad"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "language_agnostic"
+      ],
+      "status": "experimental",
+      "description": "DFSMN speech activity detection with offline and causal Stream-VAD checkpoints."
+    },
+    {
+      "family": "fun_asr_nano",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "auto",
+        "zh",
+        "en",
+        "ja"
+      ],
+      "status": "wip",
+      "description": "Offline multilingual speech recognition with the FunAudioLLM Fun-ASR-Nano-2512 model."
+    },
+    {
+      "family": "gigaam_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "ru",
+        "kk",
+        "ky",
+        "uz",
+        "en"
+      ],
+      "status": "supported",
+      "description": "GigaAM v3 and Multilingual Conformer speech recognition with CTC or RNN-T decoding."
+    },
+    {
+      "family": "granite5asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en",
+        "fr",
+        "de",
+        "es",
+        "pt",
+        "it",
+        "ja"
+      ],
+      "status": "supported",
+      "description": "IBM Granite Speech 5.0 TurboCTC 470M parameter Conformer CTC model. The current checkpoint transcribes English, French, German, Spanish, Portuguese, Italian, and Japanese with punctuation and capitalization. An older English-only checkpoint still loads."
+    },
+    {
+      "family": "higgs_audio_stt",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "supported",
+      "description": "Boson AI English speech-to-text model combining a Whisper Large v3 speech encoder with a Qwen decoder for robust ASR."
+    },
+    {
+      "family": "hviske_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "ar",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "fr",
+        "it",
+        "ja",
+        "ko",
+        "nl",
+        "pl",
+        "pt",
+        "vi",
+        "zh"
+      ],
+      "status": "supported",
+      "description": "Danish-optimized Conformer encoder-decoder ASR model fine-tuned from the Hviske v5 family, with selectable Cohere ASR language prompts."
+    },
+    {
+      "family": "hviske_asr_v6",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "da"
+      ],
+      "status": "supported",
+      "description": "Danish speech recognition with a rotary Whisper encoder and Qwen3 decoder."
+    },
+    {
+      "family": "index_echo",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "zh",
+        "en",
+        "es",
+        "ja"
+      ],
+      "status": "experimental",
+      "description": "Index-Echo speech-to-text translation with bilingual timestamped subtitles."
+    },
+    {
+      "family": "kroko_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "de",
+        "en",
+        "es",
+        "fr",
+        "it",
+        "he",
+        "nl",
+        "pt",
+        "sv",
+        "tr"
+      ],
+      "status": "community",
+      "description": "Native Zipformer2 RNN-T transcription for the public free Kroko Community single-language packages, with offline and stateful streaming inference, greedy and modified beam decoding, hotwords, endpoint segments, partial results, and word timestamps."
+    },
+    {
+      "family": "lfm2_audio",
+      "tasks": [
+        "asr",
+        "tts",
+        "s2s"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en",
+        "ja"
+      ],
+      "status": "experimental",
+      "description": "Liquid AI's LFM2.5-Audio, loaded from the llama.cpp-format GGUF components Liquid publishes. ASR: a FastConformer encoder feeds an LFM2 hybrid short-conv/attention backbone. TTS: the backbone generates audio frames through a depthformer, and an LFM2 detokenizer and ISTFT turn them into 24 kHz audio. S2S: a spoken question goes in as for ASR, and the reply comes out as interleaved text and audio."
+    },
+    {
+      "family": "lfm3_audio",
+      "tasks": [
+        "asr",
+        "tts",
+        "s2s"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en",
+        "ar",
+        "da",
+        "de",
+        "el",
+        "es",
+        "fi",
+        "fr",
+        "he",
+        "it",
+        "ja",
+        "ko",
+        "nl",
+        "pl",
+        "pt",
+        "sv",
+        "tr",
+        "zh"
+      ],
+      "status": "experimental",
+      "description": "Liquid AI's LFM3-Audio-2B, from the llama.cpp-format GGUFs Liquid publishes or the upstream safetensors directory. ASR: a log-mel LFM2 encoder feeds an LFM3 hybrid conv/attention backbone. TTS: the backbone drives a bidirectional MaskGIT depth decoder (12 codebooks, 12.5 Hz) and the LiquidCodec decoder and ISTFT give 24 kHz audio. S2S: a spoken question in, interleaved text and audio out, with client-held multi-turn history."
+    },
+    {
+      "family": "ming3_audio",
+      "tasks": [
+        "asr",
+        "s2s",
+        "tts",
+        "clone"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "zh",
+        "en"
+      ],
+      "status": "experimental",
+      "description": "Whisper audio encoder and hybrid KDA/MLA mixture-of-experts Thinker, with a separate continuous-latent Talker for spoken responses."
+    },
+    {
+      "family": "moonshine_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "experimental",
+      "description": "Moonshine tiny/small/medium streaming English speech recognition models."
+    },
+    {
+      "family": "moss_transcribe_diarize",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "auto",
+        "50+ languages"
+      ],
+      "status": "supported",
+      "description": "Joint transcription, speaker diarization, and timestamps across 50+ languages with a Whisper encoder and Qwen3 decoder."
+    },
+    {
+      "family": "nemotron_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "ar-AR",
+        "bg-BG",
+        "cs-CZ",
+        "da-DK",
+        "de-DE",
+        "el-GR",
+        "en-GB",
+        "en-US",
+        "es-ES",
+        "es-US",
+        "et-EE",
+        "fi-FI",
+        "fr-CA",
+        "fr-FR",
+        "he-IL",
+        "hi-IN",
+        "hr-HR",
+        "hu-HU",
+        "it-IT",
+        "ja-JP",
+        "ko-KR",
+        "lt-LT",
+        "lv-LV",
+        "mt-MT",
+        "nb-NO",
+        "nl-NL",
+        "nn-NO",
+        "pl-PL",
+        "pt-BR",
+        "pt-PT",
+        "ro-RO",
+        "ru-RU",
+        "sk-SK",
+        "sl-SI",
+        "sv-SE",
+        "th-TH",
+        "tr-TR",
+        "uk-UA",
+        "vi-VN",
+        "zh-CN"
+      ],
+      "status": "supported",
+      "description": "NVIDIA 600M streaming ASR model for low-latency and batch transcription across 40 language-locales, with native punctuation, capitalization, automatic language detection, and configurable chunk sizes."
+    },
+    {
+      "family": "nemotron_transcribe",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "auto"
+      ],
+      "status": "experimental",
+      "description": "Experimental community port of the Nemotron-H speech language model for offline transcription, translation, audio questions, language identification, word timestamps and speaker labels."
+    },
+    {
+      "family": "niagara_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "supported",
+      "description": "ABR Niagara English batch ASR state-space models with attention, greedy CTC decoding, and SentencePiece tokenization."
+    },
+    {
+      "family": "owsm",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "abk",
+        "afr",
+        "amh",
+        "ara",
+        "asm",
+        "ast",
+        "aze",
+        "bak",
+        "bas",
+        "bel",
+        "ben",
+        "bos",
+        "bre",
+        "bul",
+        "cat",
+        "ceb",
+        "ces",
+        "chv",
+        "ckb",
+        "cmn",
+        "cnh",
+        "cym",
+        "dan",
+        "deu",
+        "dgd",
+        "div",
+        "ell",
+        "eng",
+        "epo",
+        "est",
+        "eus",
+        "fas",
+        "fil",
+        "fin",
+        "fra",
+        "frr",
+        "ful",
+        "gle",
+        "glg",
+        "grn",
+        "guj",
+        "hat",
+        "hau",
+        "heb",
+        "hin",
+        "hrv",
+        "hsb",
+        "hun",
+        "hye",
+        "ibo",
+        "ina",
+        "ind",
+        "isl",
+        "ita",
+        "jav",
+        "jpn",
+        "kab",
+        "kam",
+        "kan",
+        "kat",
+        "kaz",
+        "kea",
+        "khm",
+        "kin",
+        "kir",
+        "kmr",
+        "kor",
+        "lao",
+        "lav",
+        "lga",
+        "lin",
+        "lit",
+        "ltz",
+        "lug",
+        "luo",
+        "mal",
+        "mar",
+        "mas",
+        "mdf",
+        "mhr",
+        "mkd",
+        "mlt",
+        "mon",
+        "mri",
+        "mrj",
+        "mya",
+        "myv",
+        "nan",
+        "nep",
+        "nld",
+        "nno",
+        "nob",
+        "npi",
+        "nso",
+        "nya",
+        "oci",
+        "ori",
+        "orm",
+        "ory",
+        "pan",
+        "pol",
+        "por",
+        "pus",
+        "quy",
+        "roh",
+        "ron",
+        "rus",
+        "sah",
+        "sat",
+        "sin",
+        "skr",
+        "slk",
+        "slv",
+        "sna",
+        "snd",
+        "som",
+        "sot",
+        "spa",
+        "srd",
+        "srp",
+        "sun",
+        "swa",
+        "swe",
+        "swh",
+        "tam",
+        "tat",
+        "tel",
+        "tgk",
+        "tgl",
+        "tha",
+        "tig",
+        "tir",
+        "tok",
+        "tpi",
+        "tsn",
+        "tuk",
+        "tur",
+        "twi",
+        "uig",
+        "ukr",
+        "umb",
+        "urd",
+        "uzb",
+        "vie",
+        "vot",
+        "wol",
+        "xho",
+        "yor",
+        "yue",
+        "zho",
+        "zul"
+      ],
+      "status": "supported",
+      "description": "ESPnet Open Whisper-style multilingual speech recognition and speech translation."
+    },
+    {
+      "family": "owsm_ctc",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "abk",
+        "afr",
+        "amh",
+        "ara",
+        "asm",
+        "ast",
+        "aze",
+        "bak",
+        "bas",
+        "bel",
+        "ben",
+        "bos",
+        "bre",
+        "bul",
+        "cat",
+        "ceb",
+        "ces",
+        "chv",
+        "ckb",
+        "cmn",
+        "cnh",
+        "cym",
+        "dan",
+        "deu",
+        "dgd",
+        "div",
+        "ell",
+        "eng",
+        "epo",
+        "est",
+        "eus",
+        "fas",
+        "fil",
+        "fin",
+        "fra",
+        "frr",
+        "ful",
+        "gle",
+        "glg",
+        "grn",
+        "guj",
+        "hat",
+        "hau",
+        "heb",
+        "hin",
+        "hrv",
+        "hsb",
+        "hun",
+        "hye",
+        "ibo",
+        "ina",
+        "ind",
+        "isl",
+        "ita",
+        "jav",
+        "jpn",
+        "kab",
+        "kam",
+        "kan",
+        "kat",
+        "kaz",
+        "kea",
+        "khm",
+        "kin",
+        "kir",
+        "kmr",
+        "kor",
+        "lao",
+        "lav",
+        "lga",
+        "lin",
+        "lit",
+        "ltz",
+        "lug",
+        "luo",
+        "mal",
+        "mar",
+        "mas",
+        "mdf",
+        "mhr",
+        "mkd",
+        "mlt",
+        "mon",
+        "mri",
+        "mrj",
+        "mya",
+        "myv",
+        "nan",
+        "nep",
+        "nld",
+        "nno",
+        "nob",
+        "npi",
+        "nso",
+        "nya",
+        "oci",
+        "ori",
+        "orm",
+        "ory",
+        "pan",
+        "pol",
+        "por",
+        "pus",
+        "quy",
+        "roh",
+        "ron",
+        "rus",
+        "sah",
+        "sat",
+        "sin",
+        "skr",
+        "slk",
+        "slv",
+        "sna",
+        "snd",
+        "som",
+        "sot",
+        "spa",
+        "srd",
+        "srp",
+        "sun",
+        "swa",
+        "swe",
+        "swh",
+        "tam",
+        "tat",
+        "tel",
+        "tgk",
+        "tgl",
+        "tha",
+        "tig",
+        "tir",
+        "tok",
+        "tpi",
+        "tsn",
+        "tuk",
+        "tur",
+        "twi",
+        "uig",
+        "ukr",
+        "umb",
+        "urd",
+        "uzb",
+        "vie",
+        "vot",
+        "wol",
+        "xho",
+        "yor",
+        "yue",
+        "zho",
+        "zul"
+      ],
+      "status": "supported",
+      "description": "ESPnet non-autoregressive multilingual speech recognition and speech translation with self-conditioned CTC."
+    },
+    {
+      "family": "parakeet_tdt",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "bg",
+        "cs",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "et",
+        "fi",
+        "fr",
+        "hr",
+        "hu",
+        "it",
+        "lt",
+        "lv",
+        "mt",
+        "nl",
+        "pl",
+        "pt",
+        "ro",
+        "ru",
+        "sk",
+        "sl",
+        "sv",
+        "uk"
+      ],
+      "status": "community",
+      "description": "NVIDIA Parakeet-TDT 0.6B v3 FastConformer-TDT ASR covering 25 European languages with automatic language detection. Supports the upstream Transformers-compatible safetensors package and standalone audio.cpp GGUF, with offline full-context, bounded-window long-form, and buffered streaming; the checkpoint uses unlimited bidirectional attention and is not a native cache-aware streaming model."
+    },
+    {
+      "family": "pulsevad",
+      "tasks": [
+        "vad"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "language_agnostic"
+      ],
+      "status": "supported",
+      "description": "Speech activity detection for 16 kHz mono audio with 2.1K student and 81K teacher weights."
+    },
+    {
+      "family": "qwen3_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "zh",
+        "en",
+        "yue",
+        "ar",
+        "de",
+        "fr",
+        "es",
+        "pt",
+        "id",
+        "it",
+        "ko",
+        "ru",
+        "th",
+        "vi",
+        "ja",
+        "tr",
+        "hi",
+        "ms",
+        "nl",
+        "sv",
+        "da",
+        "fi",
+        "pl",
+        "cs",
+        "fil",
+        "fa",
+        "el",
+        "hu",
+        "mk",
+        "ro",
+        "zh dialects"
+      ],
+      "status": "supported",
+      "description": "Qwen ASR model family for language identification and speech recognition across 30 languages, 22 Chinese dialects, and multiple English accents, with robustness for noisy, long-form, and singing audio."
+    },
+    {
+      "family": "samsone",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en"
+      ],
+      "status": "supported",
+      "description": "Compact audio-language models for audio captioning, question answering, and sound, music, and speech understanding."
+    },
+    {
+      "family": "sense_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "auto",
+        "zh",
+        "en",
+        "yue",
+        "ja",
+        "ko",
+        "pt",
+        "ru",
+        "es",
+        "it",
+        "fr",
+        "de",
+        "nl",
+        "pl",
+        "tr",
+        "ar",
+        "hi",
+        "vi",
+        "th",
+        "id",
+        "ms",
+        "fa",
+        "nospeech"
+      ],
+      "status": "community",
+      "description": "SenseVoice-Small multilingual speech recognition with rich event/emotion/ITN tags via a SAN-M encoder and CTC head, ported to audio.cpp."
+    },
+    {
+      "family": "smart_turn",
+      "tasks": [
+        "turn"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "auto"
+      ],
+      "status": "supported",
+      "description": "Audio-native conversational turn-completion detection using a Whisper-Tiny encoder and attention-pooling classifier."
+    },
+    {
+      "family": "vibeasr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en",
+        "zh",
+        "fr",
+        "it",
+        "ko",
+        "pt",
+        "vi"
+      ],
+      "status": "community",
+      "description": "VibeASR.cpp's CPU-first VibeVoice ASR port: an INT8 (I8_S) audio VAE encoder feeding a ternary (I2_S) Qwen2 decoder, ported to audio.cpp."
+    },
+    {
+      "family": "vibevoice_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "auto",
+        "51 languages"
+      ],
+      "status": "supported",
+      "description": "Microsoft long-form speech-to-text model that processes up to 60 minutes of audio in one pass and produces structured transcripts with speakers, timestamps, content, hotwords, and 50+ language support."
+    },
+    {
+      "family": "vibevoice_asr_streaming",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en",
+        "zh",
+        "es",
+        "pt",
+        "de",
+        "ja",
+        "ko",
+        "fr",
+        "ru",
+        "it"
+      ],
+      "status": "supported",
+      "description": "Microsoft VibeVoice ASR Streaming models (7B and 1.5B) for chunked streaming speech-to-text with persistent decoder state."
+    },
+    {
+      "family": "voxtral_realtime",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline",
+        "streaming"
+      ],
+      "languages": [
+        "en",
+        "zh",
+        "hi",
+        "es",
+        "ar",
+        "fr",
+        "pt",
+        "ru",
+        "de",
+        "ja",
+        "ko",
+        "it",
+        "nl"
+      ],
+      "status": "supported",
+      "description": "Mistral 13-language realtime ASR model with a natively streaming causal audio encoder, configurable low-latency transcription delay, and accuracy competitive with offline open-source systems."
+    },
+    {
+      "family": "whistle_asr",
+      "tasks": [
+        "asr"
+      ],
+      "modes": [
+        "offline"
+      ],
+      "languages": [
+        "en",
+        "de",
+        "fr",
+        "es",
+        "it",
+        "nl",
+        "pl"
+      ],
+      "status": "experimental",
+      "description": "Whistle offline speech recognition with FP32 GGUF weights, a GGML encoder and a host decoder."
+    }
+  ],
+  "compiled_loader_inventory": "host-stage-evidence/loaders.json",
+  "blockers": [
+    "No standalone text-to-text Qwen3/LFM2/LFM3 CLI route in audio.cpp a01aed4. LLM 40-input-token TTFT/tokens-per-second measurements are unavailable, not zero. See llm-blockers.json and loaders.json. No unsupported chat weights were downloaded.",
+    "Smart Turn v3.2 predicts complete=true for the expected-incomplete synthetic clip asr12 (probability 0.924149751663208); this turn quality gate fails. Do not promote it on this eval set or tune/relabel the frozen fixtures to hide the failure.",
+    "Silero streaming CLI fails for these file lengths: final audio chunk must contain exactly 512 samples. Offline recipe succeeds; production streaming needs correct framing/padding and original-length accounting.",
+    "No phone or adb was used. All host numbers are smoke measurements on an Intel i9-10900KF under shared 2-CPU ancestor cgroup quota and changing system load; they do not predict S25 performance."
+  ]
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "qwen3-text",
+    "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task gen --family qwen3 --model /mnt/zer0models/models/zlv-tts/acpp-models/Qwen3-TTS-12Hz-0.6B-Base-GGUF --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+    "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+    "returncode": 1,
+    "proc_ms": 11.774637,
+    "stdout": "",
+    "stderr": "audiocpp_cli failed: unsupported model family hint: qwen3\n",
+    "log": "qwen3-text-unsupported.log",
+    "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+  },
+  {
+    "id": "lfm3-text",
+    "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task gen --family lfm3_audio --model /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+    "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+    "returncode": 1,
+    "proc_ms": 509.479518,
+    "stdout": "[TRACE ts=20261102-113629] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json\n[TRACE ts=20261102-113629] runtime.model.contract_spec /mnt/zer0models/models/zlv-tts/audio.cpp/model_specs/lfm3_audio.json\n[TRACE ts=20261102-113629] runtime.model.family lfm3_audio\n[TRACE ts=20261102-113629] runtime.model.variant LFM3-Audio\n[TRACE ts=20261102-113629] runtime.model.root /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF\n[TRACE ts=20261102-113629] runtime.model.discovered_config_count 0\n[TRACE ts=20261102-113629] runtime.model.discovered_weight_count 2\n[TRACE ts=20261102-113629] runtime.model.task_count 3\n[TRACE ts=20261102-113629] runtime.model.language_count 18\n[TRACE ts=20261102-113629] runtime.model.supports_speaker_reference 0\n[TRACE ts=20261102-113629] runtime.model.supports_style_condition 0\n[TRACE ts=20261102-113629] runtime.model.supports_timestamps 0\n",
+    "stderr": "audiocpp_cli failed: LFM3-Audio supports the asr, tts and s2s tasks\n",
+    "log": "lfm3-text-unsupported.log",
+    "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+  },
+  {
+    "id": "llm-task",
+    "command": "nice -n 10 /mnt/zer0models/models/zlv-tts/audio.cpp/build/linux-cpu/bin/audiocpp_cli --task llm --family lfm3_audio --model /mnt/zer0models/models/zlv-tts/acpp-models/LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf --backend cpu --threads 4 --text 'Please answer in one brief sentence.' --max-tokens 40 --log",
+    "cwd": "/mnt/zer0models/models/zlv-tts/audio.cpp",
+    "returncode": 1,
+    "proc_ms": 11.464872,
+    "stdout": "",
+    "stderr": "audiocpp_cli failed: unsupported task: llm (expected vad, asr, diar, sep, gen, tts, clon, vc, s2s, align, vdes, spk, svc, midi, turn, wake, or cls)\n",
+    "log": "llm-task-unsupported.log",
+    "interpretation": "Negative capability probe only; not a 40-input-token measurement. max-tokens=40 is an output cap, not a prompt token count."
+  }
+]

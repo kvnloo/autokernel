@@ -1,0 +1,5 @@
+selected moonshine_streaming_tiny_q8_0 (moonshine_asr)
+repo audio-cpp/audio.cpp-gguf@main
+target /mnt/zer0models/models/zlv-tts/acpp-models/Moonshine-Streaming-GGUF
+file remote=Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf local=Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf
+installed moonshine_streaming_tiny_q8_0 -> /mnt/zer0models/models/zlv-tts/acpp-models/Moonshine-Streaming-GGUF

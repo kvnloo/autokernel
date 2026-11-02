@@ -1,0 +1,12 @@
+test_all_recipes_executed_and_argv_exact (__main__.HostStagesTests.test_all_recipes_executed_and_argv_exact) ... ok
+test_asr_corpus_aggregation (__main__.HostStagesTests.test_asr_corpus_aggregation) ... ok
+test_download_budget (__main__.HostStagesTests.test_download_budget) ... ok
+test_evalset (__main__.HostStagesTests.test_evalset) ... ok
+test_failed_and_unsupported_not_promoted (__main__.HostStagesTests.test_failed_and_unsupported_not_promoted) ... ok
+test_referee_and_epoch1_evalset_unchanged (__main__.HostStagesTests.test_referee_and_epoch1_evalset_unchanged) ... ok
+test_wer_algorithm (__main__.HostStagesTests.test_wer_algorithm) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.077s
+
+OK

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "firered_stream_vad_f32",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "firered_stream_vad_f32",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 3.5392480599984992
+  },
+  {
+    "id": "pulsevad_2_1k_f32",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "pulsevad_2_1k_f32",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 1.1639737590157893
+  },
+  {
+    "id": "moonshine_streaming_tiny_q8_0",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "moonshine_streaming_tiny_q8_0",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 88.15582146702218
+  },
+  {
+    "id": "moonshine_streaming_small_q8_0",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "moonshine_streaming_small_q8_0",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 87.03740251099225
+  },
+  {
+    "id": "kroko_asr_community_q8_0",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "kroko_asr_community_q8_0",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 16.068869643000653
+  },
+  {
+    "id": "sensevoice_small_q8",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "sensevoice_small_q8",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 26.55147534198477
+  },
+  {
+    "id": "parakeet_tdt_q8_0",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "parakeet_tdt_q8_0",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 88.82290516101057
+  },
+  {
+    "id": "qwen3_asr_0_6b_q8_0",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "qwen3_asr_0_6b_q8_0",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 104.3815212729969
+  },
+  {
+    "id": "niagara_19m_f32",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "tools/model_manager_v2.py",
+      "install",
+      "niagara_19m_f32",
+      "--models-root",
+      "/mnt/zer0models/models/zlv-tts/acpp-models"
+    ],
+    "returncode": 0,
+    "wall_s": 29.0185733740218
+  }
+]

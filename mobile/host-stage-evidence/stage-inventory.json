@@ -1,0 +1,1222 @@
+[
+  {
+    "family": "audio8_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en",
+      "zh",
+      "yue",
+      "ja",
+      "ko",
+      "fr",
+      "de"
+    ],
+    "status": "community",
+    "description": "Audio8-ASR-0.1B compact multilingual ASR (en/zh/yue/ja/ko/fr/de): Qwen3-ASR audio encoder with an MLP-tower adapter and an 8-layer Qwen2-style decoder. 30-second offline transcription windows. Checkpoint license: CC-BY-NC-4.0; GGUF conversion is local-only, no public redistribution is approved."
+  },
+  {
+    "family": "audio_flamingo",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "supported",
+    "description": "Audio Flamingo 3, Audio Flamingo Next, and Music Flamingo for transcription, captioning, and audio questions, with optional PEFT LoRA and SpotSound temporal grounding."
+  },
+  {
+    "family": "canary_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en",
+      "de",
+      "es",
+      "fr"
+    ],
+    "status": "supported",
+    "description": "NVIDIA Canary multilingual speech recognition and speech translation."
+  },
+  {
+    "family": "citrinet_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "supported",
+    "description": "NVIDIA CitriNet-family end-to-end English ASR model using a convolutional CTC architecture optimized for transcribing speech segments to text."
+  },
+  {
+    "family": "cohere_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en",
+      "fr",
+      "de",
+      "es",
+      "it",
+      "pt",
+      "nl",
+      "pl",
+      "el",
+      "ar",
+      "ja",
+      "zh",
+      "vi",
+      "ko"
+    ],
+    "status": "supported",
+    "description": "Cohere multilingual speech transcription with punctuation control."
+  },
+  {
+    "family": "confucius4_r2t2",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "zh",
+      "en",
+      "yue",
+      "ar",
+      "de",
+      "fr",
+      "es",
+      "pt",
+      "id",
+      "it",
+      "ko",
+      "ru",
+      "th",
+      "vi",
+      "ja",
+      "tr",
+      "hi",
+      "ms",
+      "nl",
+      "sv",
+      "da",
+      "fi",
+      "pl",
+      "cs",
+      "fil",
+      "fa",
+      "el",
+      "hu",
+      "mk",
+      "ro"
+    ],
+    "status": "community",
+    "description": "NetEase Youdao Confucius4-R2T2 real-time ASR: a Qwen3-ASR fine-tune with Longest Stable Prefix (LSP) streaming. Low-latency append-only streaming from 80 ms to 2 s chunks, context and hotword prompts, 30 languages."
+  },
+  {
+    "family": "crisperwhisper",
+    "tasks": [
+      "asr",
+      "align"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "af",
+      "am",
+      "ar",
+      "as",
+      "az",
+      "ba",
+      "be",
+      "bg",
+      "bn",
+      "bo",
+      "br",
+      "bs",
+      "ca",
+      "cs",
+      "cy",
+      "da",
+      "de",
+      "el",
+      "en",
+      "es",
+      "et",
+      "eu",
+      "fa",
+      "fi",
+      "fo",
+      "fr",
+      "gl",
+      "gu",
+      "ha",
+      "haw",
+      "he",
+      "hi",
+      "hr",
+      "ht",
+      "hu",
+      "hy",
+      "id",
+      "is",
+      "it",
+      "ja",
+      "jw",
+      "ka",
+      "kk",
+      "km",
+      "kn",
+      "ko",
+      "la",
+      "lb",
+      "ln",
+      "lo",
+      "lt",
+      "lv",
+      "mg",
+      "mi",
+      "mk",
+      "ml",
+      "mn",
+      "mr",
+      "ms",
+      "mt",
+      "my",
+      "ne",
+      "nl",
+      "nn",
+      "no",
+      "oc",
+      "pa",
+      "pl",
+      "ps",
+      "pt",
+      "ro",
+      "ru",
+      "sa",
+      "sd",
+      "si",
+      "sk",
+      "sl",
+      "sn",
+      "so",
+      "sq",
+      "sr",
+      "su",
+      "sv",
+      "sw",
+      "ta",
+      "te",
+      "tg",
+      "th",
+      "tk",
+      "tl",
+      "tr",
+      "tt",
+      "uk",
+      "ur",
+      "uz",
+      "vi",
+      "yi",
+      "yo",
+      "zh"
+    ],
+    "status": "supported",
+    "description": "Whisper-based verbatim and intended speech transcription."
+  },
+  {
+    "family": "firered_audio",
+    "tasks": [
+      "asr",
+      "tts",
+      "clone",
+      "design",
+      "edit"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "zh",
+      "en"
+    ],
+    "status": "experimental",
+    "description": "FireRedAudio native GGUF package for generation paths backed by a Qwen3.5 hybrid backbone, FireRed RedAE conditioning, RedPatchEncoder, RedDiT latent flow, and RedAE waveform decoding."
+  },
+  {
+    "family": "firered_vad",
+    "tasks": [
+      "vad"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "language_agnostic"
+    ],
+    "status": "experimental",
+    "description": "DFSMN speech activity detection with offline and causal Stream-VAD checkpoints."
+  },
+  {
+    "family": "fun_asr_nano",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "auto",
+      "zh",
+      "en",
+      "ja"
+    ],
+    "status": "wip",
+    "description": "Offline multilingual speech recognition with the FunAudioLLM Fun-ASR-Nano-2512 model."
+  },
+  {
+    "family": "gigaam_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "ru",
+      "kk",
+      "ky",
+      "uz",
+      "en"
+    ],
+    "status": "supported",
+    "description": "GigaAM v3 and Multilingual Conformer speech recognition with CTC or RNN-T decoding."
+  },
+  {
+    "family": "granite5asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en",
+      "fr",
+      "de",
+      "es",
+      "pt",
+      "it",
+      "ja"
+    ],
+    "status": "supported",
+    "description": "IBM Granite Speech 5.0 TurboCTC 470M parameter Conformer CTC model. The current checkpoint transcribes English, French, German, Spanish, Portuguese, Italian, and Japanese with punctuation and capitalization. An older English-only checkpoint still loads."
+  },
+  {
+    "family": "higgs_audio_stt",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "supported",
+    "description": "Boson AI English speech-to-text model combining a Whisper Large v3 speech encoder with a Qwen decoder for robust ASR."
+  },
+  {
+    "family": "hviske_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "ar",
+      "da",
+      "de",
+      "el",
+      "en",
+      "es",
+      "fr",
+      "it",
+      "ja",
+      "ko",
+      "nl",
+      "pl",
+      "pt",
+      "vi",
+      "zh"
+    ],
+    "status": "supported",
+    "description": "Danish-optimized Conformer encoder-decoder ASR model fine-tuned from the Hviske v5 family, with selectable Cohere ASR language prompts."
+  },
+  {
+    "family": "hviske_asr_v6",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "da"
+    ],
+    "status": "supported",
+    "description": "Danish speech recognition with a rotary Whisper encoder and Qwen3 decoder."
+  },
+  {
+    "family": "index_echo",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "zh",
+      "en",
+      "es",
+      "ja"
+    ],
+    "status": "experimental",
+    "description": "Index-Echo speech-to-text translation with bilingual timestamped subtitles."
+  },
+  {
+    "family": "kroko_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "de",
+      "en",
+      "es",
+      "fr",
+      "it",
+      "he",
+      "nl",
+      "pt",
+      "sv",
+      "tr"
+    ],
+    "status": "community",
+    "description": "Native Zipformer2 RNN-T transcription for the public free Kroko Community single-language packages, with offline and stateful streaming inference, greedy and modified beam decoding, hotwords, endpoint segments, partial results, and word timestamps."
+  },
+  {
+    "family": "lfm2_audio",
+    "tasks": [
+      "asr",
+      "tts",
+      "s2s"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en",
+      "ja"
+    ],
+    "status": "experimental",
+    "description": "Liquid AI's LFM2.5-Audio, loaded from the llama.cpp-format GGUF components Liquid publishes. ASR: a FastConformer encoder feeds an LFM2 hybrid short-conv/attention backbone. TTS: the backbone generates audio frames through a depthformer, and an LFM2 detokenizer and ISTFT turn them into 24 kHz audio. S2S: a spoken question goes in as for ASR, and the reply comes out as interleaved text and audio."
+  },
+  {
+    "family": "lfm3_audio",
+    "tasks": [
+      "asr",
+      "tts",
+      "s2s"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en",
+      "ar",
+      "da",
+      "de",
+      "el",
+      "es",
+      "fi",
+      "fr",
+      "he",
+      "it",
+      "ja",
+      "ko",
+      "nl",
+      "pl",
+      "pt",
+      "sv",
+      "tr",
+      "zh"
+    ],
+    "status": "experimental",
+    "description": "Liquid AI's LFM3-Audio-2B, from the llama.cpp-format GGUFs Liquid publishes or the upstream safetensors directory. ASR: a log-mel LFM2 encoder feeds an LFM3 hybrid conv/attention backbone. TTS: the backbone drives a bidirectional MaskGIT depth decoder (12 codebooks, 12.5 Hz) and the LiquidCodec decoder and ISTFT give 24 kHz audio. S2S: a spoken question in, interleaved text and audio out, with client-held multi-turn history."
+  },
+  {
+    "family": "ming3_audio",
+    "tasks": [
+      "asr",
+      "s2s",
+      "tts",
+      "clone"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "zh",
+      "en"
+    ],
+    "status": "experimental",
+    "description": "Whisper audio encoder and hybrid KDA/MLA mixture-of-experts Thinker, with a separate continuous-latent Talker for spoken responses."
+  },
+  {
+    "family": "moonshine_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "experimental",
+    "description": "Moonshine tiny/small/medium streaming English speech recognition models."
+  },
+  {
+    "family": "moss_transcribe_diarize",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "auto",
+      "50+ languages"
+    ],
+    "status": "supported",
+    "description": "Joint transcription, speaker diarization, and timestamps across 50+ languages with a Whisper encoder and Qwen3 decoder."
+  },
+  {
+    "family": "nemotron_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "ar-AR",
+      "bg-BG",
+      "cs-CZ",
+      "da-DK",
+      "de-DE",
+      "el-GR",
+      "en-GB",
+      "en-US",
+      "es-ES",
+      "es-US",
+      "et-EE",
+      "fi-FI",
+      "fr-CA",
+      "fr-FR",
+      "he-IL",
+      "hi-IN",
+      "hr-HR",
+      "hu-HU",
+      "it-IT",
+      "ja-JP",
+      "ko-KR",
+      "lt-LT",
+      "lv-LV",
+      "mt-MT",
+      "nb-NO",
+      "nl-NL",
+      "nn-NO",
+      "pl-PL",
+      "pt-BR",
+      "pt-PT",
+      "ro-RO",
+      "ru-RU",
+      "sk-SK",
+      "sl-SI",
+      "sv-SE",
+      "th-TH",
+      "tr-TR",
+      "uk-UA",
+      "vi-VN",
+      "zh-CN"
+    ],
+    "status": "supported",
+    "description": "NVIDIA 600M streaming ASR model for low-latency and batch transcription across 40 language-locales, with native punctuation, capitalization, automatic language detection, and configurable chunk sizes."
+  },
+  {
+    "family": "nemotron_transcribe",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "auto"
+    ],
+    "status": "experimental",
+    "description": "Experimental community port of the Nemotron-H speech language model for offline transcription, translation, audio questions, language identification, word timestamps and speaker labels."
+  },
+  {
+    "family": "niagara_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "supported",
+    "description": "ABR Niagara English batch ASR state-space models with attention, greedy CTC decoding, and SentencePiece tokenization."
+  },
+  {
+    "family": "owsm",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "abk",
+      "afr",
+      "amh",
+      "ara",
+      "asm",
+      "ast",
+      "aze",
+      "bak",
+      "bas",
+      "bel",
+      "ben",
+      "bos",
+      "bre",
+      "bul",
+      "cat",
+      "ceb",
+      "ces",
+      "chv",
+      "ckb",
+      "cmn",
+      "cnh",
+      "cym",
+      "dan",
+      "deu",
+      "dgd",
+      "div",
+      "ell",
+      "eng",
+      "epo",
+      "est",
+      "eus",
+      "fas",
+      "fil",
+      "fin",
+      "fra",
+      "frr",
+      "ful",
+      "gle",
+      "glg",
+      "grn",
+      "guj",
+      "hat",
+      "hau",
+      "heb",
+      "hin",
+      "hrv",
+      "hsb",
+      "hun",
+      "hye",
+      "ibo",
+      "ina",
+      "ind",
+      "isl",
+      "ita",
+      "jav",
+      "jpn",
+      "kab",
+      "kam",
+      "kan",
+      "kat",
+      "kaz",
+      "kea",
+      "khm",
+      "kin",
+      "kir",
+      "kmr",
+      "kor",
+      "lao",
+      "lav",
+      "lga",
+      "lin",
+      "lit",
+      "ltz",
+      "lug",
+      "luo",
+      "mal",
+      "mar",
+      "mas",
+      "mdf",
+      "mhr",
+      "mkd",
+      "mlt",
+      "mon",
+      "mri",
+      "mrj",
+      "mya",
+      "myv",
+      "nan",
+      "nep",
+      "nld",
+      "nno",
+      "nob",
+      "npi",
+      "nso",
+      "nya",
+      "oci",
+      "ori",
+      "orm",
+      "ory",
+      "pan",
+      "pol",
+      "por",
+      "pus",
+      "quy",
+      "roh",
+      "ron",
+      "rus",
+      "sah",
+      "sat",
+      "sin",
+      "skr",
+      "slk",
+      "slv",
+      "sna",
+      "snd",
+      "som",
+      "sot",
+      "spa",
+      "srd",
+      "srp",
+      "sun",
+      "swa",
+      "swe",
+      "swh",
+      "tam",
+      "tat",
+      "tel",
+      "tgk",
+      "tgl",
+      "tha",
+      "tig",
+      "tir",
+      "tok",
+      "tpi",
+      "tsn",
+      "tuk",
+      "tur",
+      "twi",
+      "uig",
+      "ukr",
+      "umb",
+      "urd",
+      "uzb",
+      "vie",
+      "vot",
+      "wol",
+      "xho",
+      "yor",
+      "yue",
+      "zho",
+      "zul"
+    ],
+    "status": "supported",
+    "description": "ESPnet Open Whisper-style multilingual speech recognition and speech translation."
+  },
+  {
+    "family": "owsm_ctc",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "abk",
+      "afr",
+      "amh",
+      "ara",
+      "asm",
+      "ast",
+      "aze",
+      "bak",
+      "bas",
+      "bel",
+      "ben",
+      "bos",
+      "bre",
+      "bul",
+      "cat",
+      "ceb",
+      "ces",
+      "chv",
+      "ckb",
+      "cmn",
+      "cnh",
+      "cym",
+      "dan",
+      "deu",
+      "dgd",
+      "div",
+      "ell",
+      "eng",
+      "epo",
+      "est",
+      "eus",
+      "fas",
+      "fil",
+      "fin",
+      "fra",
+      "frr",
+      "ful",
+      "gle",
+      "glg",
+      "grn",
+      "guj",
+      "hat",
+      "hau",
+      "heb",
+      "hin",
+      "hrv",
+      "hsb",
+      "hun",
+      "hye",
+      "ibo",
+      "ina",
+      "ind",
+      "isl",
+      "ita",
+      "jav",
+      "jpn",
+      "kab",
+      "kam",
+      "kan",
+      "kat",
+      "kaz",
+      "kea",
+      "khm",
+      "kin",
+      "kir",
+      "kmr",
+      "kor",
+      "lao",
+      "lav",
+      "lga",
+      "lin",
+      "lit",
+      "ltz",
+      "lug",
+      "luo",
+      "mal",
+      "mar",
+      "mas",
+      "mdf",
+      "mhr",
+      "mkd",
+      "mlt",
+      "mon",
+      "mri",
+      "mrj",
+      "mya",
+      "myv",
+      "nan",
+      "nep",
+      "nld",
+      "nno",
+      "nob",
+      "npi",
+      "nso",
+      "nya",
+      "oci",
+      "ori",
+      "orm",
+      "ory",
+      "pan",
+      "pol",
+      "por",
+      "pus",
+      "quy",
+      "roh",
+      "ron",
+      "rus",
+      "sah",
+      "sat",
+      "sin",
+      "skr",
+      "slk",
+      "slv",
+      "sna",
+      "snd",
+      "som",
+      "sot",
+      "spa",
+      "srd",
+      "srp",
+      "sun",
+      "swa",
+      "swe",
+      "swh",
+      "tam",
+      "tat",
+      "tel",
+      "tgk",
+      "tgl",
+      "tha",
+      "tig",
+      "tir",
+      "tok",
+      "tpi",
+      "tsn",
+      "tuk",
+      "tur",
+      "twi",
+      "uig",
+      "ukr",
+      "umb",
+      "urd",
+      "uzb",
+      "vie",
+      "vot",
+      "wol",
+      "xho",
+      "yor",
+      "yue",
+      "zho",
+      "zul"
+    ],
+    "status": "supported",
+    "description": "ESPnet non-autoregressive multilingual speech recognition and speech translation with self-conditioned CTC."
+  },
+  {
+    "family": "parakeet_tdt",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "bg",
+      "cs",
+      "da",
+      "de",
+      "el",
+      "en",
+      "es",
+      "et",
+      "fi",
+      "fr",
+      "hr",
+      "hu",
+      "it",
+      "lt",
+      "lv",
+      "mt",
+      "nl",
+      "pl",
+      "pt",
+      "ro",
+      "ru",
+      "sk",
+      "sl",
+      "sv",
+      "uk"
+    ],
+    "status": "community",
+    "description": "NVIDIA Parakeet-TDT 0.6B v3 FastConformer-TDT ASR covering 25 European languages with automatic language detection. Supports the upstream Transformers-compatible safetensors package and standalone audio.cpp GGUF, with offline full-context, bounded-window long-form, and buffered streaming; the checkpoint uses unlimited bidirectional attention and is not a native cache-aware streaming model."
+  },
+  {
+    "family": "pulsevad",
+    "tasks": [
+      "vad"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "language_agnostic"
+    ],
+    "status": "supported",
+    "description": "Speech activity detection for 16 kHz mono audio with 2.1K student and 81K teacher weights."
+  },
+  {
+    "family": "qwen3_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "zh",
+      "en",
+      "yue",
+      "ar",
+      "de",
+      "fr",
+      "es",
+      "pt",
+      "id",
+      "it",
+      "ko",
+      "ru",
+      "th",
+      "vi",
+      "ja",
+      "tr",
+      "hi",
+      "ms",
+      "nl",
+      "sv",
+      "da",
+      "fi",
+      "pl",
+      "cs",
+      "fil",
+      "fa",
+      "el",
+      "hu",
+      "mk",
+      "ro",
+      "zh dialects"
+    ],
+    "status": "supported",
+    "description": "Qwen ASR model family for language identification and speech recognition across 30 languages, 22 Chinese dialects, and multiple English accents, with robustness for noisy, long-form, and singing audio."
+  },
+  {
+    "family": "samsone",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en"
+    ],
+    "status": "supported",
+    "description": "Compact audio-language models for audio captioning, question answering, and sound, music, and speech understanding."
+  },
+  {
+    "family": "sense_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "auto",
+      "zh",
+      "en",
+      "yue",
+      "ja",
+      "ko",
+      "pt",
+      "ru",
+      "es",
+      "it",
+      "fr",
+      "de",
+      "nl",
+      "pl",
+      "tr",
+      "ar",
+      "hi",
+      "vi",
+      "th",
+      "id",
+      "ms",
+      "fa",
+      "nospeech"
+    ],
+    "status": "community",
+    "description": "SenseVoice-Small multilingual speech recognition with rich event/emotion/ITN tags via a SAN-M encoder and CTC head, ported to audio.cpp."
+  },
+  {
+    "family": "smart_turn",
+    "tasks": [
+      "turn"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "auto"
+    ],
+    "status": "supported",
+    "description": "Audio-native conversational turn-completion detection using a Whisper-Tiny encoder and attention-pooling classifier."
+  },
+  {
+    "family": "vibeasr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en",
+      "zh",
+      "fr",
+      "it",
+      "ko",
+      "pt",
+      "vi"
+    ],
+    "status": "community",
+    "description": "VibeASR.cpp's CPU-first VibeVoice ASR port: an INT8 (I8_S) audio VAE encoder feeding a ternary (I2_S) Qwen2 decoder, ported to audio.cpp."
+  },
+  {
+    "family": "vibevoice_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "auto",
+      "51 languages"
+    ],
+    "status": "supported",
+    "description": "Microsoft long-form speech-to-text model that processes up to 60 minutes of audio in one pass and produces structured transcripts with speakers, timestamps, content, hotwords, and 50+ language support."
+  },
+  {
+    "family": "vibevoice_asr_streaming",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en",
+      "zh",
+      "es",
+      "pt",
+      "de",
+      "ja",
+      "ko",
+      "fr",
+      "ru",
+      "it"
+    ],
+    "status": "supported",
+    "description": "Microsoft VibeVoice ASR Streaming models (7B and 1.5B) for chunked streaming speech-to-text with persistent decoder state."
+  },
+  {
+    "family": "voxtral_realtime",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline",
+      "streaming"
+    ],
+    "languages": [
+      "en",
+      "zh",
+      "hi",
+      "es",
+      "ar",
+      "fr",
+      "pt",
+      "ru",
+      "de",
+      "ja",
+      "ko",
+      "it",
+      "nl"
+    ],
+    "status": "supported",
+    "description": "Mistral 13-language realtime ASR model with a natively streaming causal audio encoder, configurable low-latency transcription delay, and accuracy competitive with offline open-source systems."
+  },
+  {
+    "family": "whistle_asr",
+    "tasks": [
+      "asr"
+    ],
+    "modes": [
+      "offline"
+    ],
+    "languages": [
+      "en",
+      "de",
+      "fr",
+      "es",
+      "it",
+      "nl",
+      "pl"
+    ],
+    "status": "experimental",
+    "description": "Whistle offline speech recognition with FP32 GGUF weights, a GGML encoder and a host decoder."
+  }
+]
