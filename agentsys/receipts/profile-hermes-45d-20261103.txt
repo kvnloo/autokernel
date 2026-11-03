@@ -1,0 +1,105 @@
+rows 204284 valid 204278
+TOTAL tool-exec h=579  model-think h=606  think p50=8.138 p90=31.914
+
+== per tool (sorted by total hours)
+terminal                               n= 82424 p50=    0.92 p90=    32.12 p99=    302.1 hours=  361.0 share= 62.3%
+tool_call                              n=  9935 p50=    0.43 p90=   180.02 p99=    195.6 hours=   80.5 share= 13.9%
+read_file                              n= 36255 p50=    0.18 p90=     3.12 p99=     64.2 hours=   30.8 share=  5.3%
+clarify                                n=    75 p50=  105.38 p90=  3600.10 p99=   3604.1 hours=   18.9 share=  3.3%
+search_files                           n= 11533 p50=    0.37 p90=     8.56 p99=     98.5 hours=   17.7 share=  3.1%
+execute_code                           n=  8980 p50=    0.59 p90=    12.59 p99=     92.3 hours=   15.3 share=  2.6%
+patch                                  n= 13709 p50=    0.27 p90=     7.18 p99=     46.5 hours=   11.7 share=  2.0%
+vision_analyze                         n= 12858 p50=    0.29 p90=     2.96 p99=     59.2 hours=   11.3 share=  2.0%
+write_file                             n= 12412 p50=    0.17 p90=     2.48 p99=     38.4 hours=    9.6 share=  1.7%
+skill_view                             n=  8987 p50=    1.03 p90=     5.31 p99=     37.6 hours=    7.8 share=  1.3%
+browser_exec                           n=   399 p50=    5.21 p90=   123.80 p99=    420.0 hours=    5.1 share=  0.9%
+delegate_task                          n=   965 p50=    0.20 p90=     2.38 p99=    137.0 hours=    2.4 share=  0.4%
+web_extract                            n=   607 p50=    5.13 p90=    24.48 p99=     89.5 hours=    1.9 share=  0.3%
+web_search                             n=   798 p50=    1.60 p90=    17.36 p99=    133.6 hours=    1.7 share=  0.3%
+skill_manage                           n=  1618 p50=    0.74 p90=     4.20 p99=     61.9 hours=    1.6 share=  0.3%
+tool_describe                          n=  1781 p50=    0.24 p90=     5.38 p99=     70.3 hours=    1.6 share=  0.3%
+manage_connections                     n=    12 p50=    2.80 p90=   300.20 p99=    300.3 hours=    0.2 share=  0.0%
+tool_search                            n=   170 p50=    0.25 p90=     5.18 p99=     46.7 hours=    0.1 share=  0.0%
+kanban_complete                        n=   123 p50=    0.21 p90=     0.85 p99=      5.8 hours=    0.0 share=  0.0%
+kanban_show                            n=   270 p50=    0.07 p90=     0.32 p99=      1.2 hours=    0.0 share=  0.0%
+kanban_heartbeat                       n=    76 p50=    0.06 p90=     0.20 p99=     17.0 hours=    0.0 share=  0.0%
+browser_navigate                       n=     3 p50=    3.78 p90=    10.88 p99=     10.9 hours=    0.0 share=  0.0%
+kanban_list                            n=    17 p50=    0.24 p90=     4.75 p99=      5.9 hours=    0.0 share=  0.0%
+memory                                 n=    65 p50=    0.05 p90=     0.28 p99=      1.7 hours=    0.0 share=  0.0%
+skills_list                            n=     9 p50=    0.44 p90=     2.50 p99=      2.5 hours=    0.0 share=  0.0%
+kanban_comment                         n=    45 p50=    0.06 p90=     0.18 p99=      1.0 hours=    0.0 share=  0.0%
+kanban_block                           n=    39 p50=    0.07 p90=     0.12 p99=      0.2 hours=    0.0 share=  0.0%
+kanban_create                          n=    10 p50=    0.06 p90=     1.29 p99=      1.3 hours=    0.0 share=  0.0%
+browser_vault_save_login               n=     2 p50=    1.69 p90=     1.69 p99=      1.7 hours=    0.0 share=  0.0%
+browser_console                        n=     3 p50=    0.37 p90=     0.38 p99=      0.4 hours=    0.0 share=  0.0%
+
+== terminal by head command (top 25 by hours)
+sleep                  n=  1952 p50=  92.52 p90=  390.35 hours=  76.7
+python                 n= 11172 p50=   1.42 p90=   36.59 hours=  58.3
+python3                n=  9097 p50=   0.74 p90=   20.25 hours=  28.6
+export                 n=  2800 p50=   4.86 p90=   49.23 hours=  16.8
+git                    n=  7872 p50=   0.73 p90=    9.27 hours=  15.3
+for                    n=  1911 p50=   1.19 p90=   43.78 hours=  12.5
+env                    n=  1656 p50=   3.87 p90=   78.42 hours=  11.4
+flock                  n=   606 p50=  12.81 p90=  154.95 hours=   9.0
+gh                     n=  3013 p50=   2.05 p90=   11.06 hours=   7.1
+hermes                 n=   861 p50=   5.08 p90=   83.95 hours=   6.6
+node                   n=  1215 p50=   1.60 p90=   53.41 hours=   6.2
+ssh                    n=  1159 p50=   1.66 p90=   46.49 hours=   5.3
+fleet-build            n=   644 p50=   0.37 p90=   76.09 hours=   5.1
+sed                    n=  3289 p50=   0.17 p90=    3.88 hours=   5.1
+cat                    n=  2297 p50=   0.33 p90=    8.95 hours=   4.9
+mkdir                  n=   646 p50=   1.99 p90=   39.08 hours=   3.6
+S                      n=  1131 p50=   1.42 p90=   26.70 hours=   3.5
+grep                   n=  3179 p50=   0.19 p90=    2.88 hours=   3.4
+ls                     n=  2637 p50=   0.26 p90=    4.40 hours=   3.0
+R                      n=   591 p50=   0.50 p90=   33.84 hours=   3.0
+set                    n=   699 p50=   2.21 p90=   34.77 hours=   2.5
+npm                    n=   365 p50=   4.40 p90=   56.63 hours=   2.4
+nice                   n=   401 p50=   3.20 p90=   43.80 hours=   2.0
+echo                   n=   847 p50=   0.67 p90=   11.62 hours=   2.0
+printf                 n=   295 p50=   1.51 p90=   75.34 hours=   1.9
+
+== terminal sleep/poll cost
+with sleep: {'n': 4818, 'p50': 20.107, 'p90': 280.331, 'p99': 420.049, 'hours': 105.3}
+ssh: {'n': 2228, 'p50': 1.996, 'p90': 60.206, 'p99': 340.939, 'hours': 14.1}
+
+== search-in-terminal: tool x result-size bucket (p50 exec s)
+fd       <20k   n=    78 p50=  4.35 p90= 300.56
+fd       <2k    n=   209 p50=  1.55 p90= 315.43
+find     <20k   n=   434 p50=  0.39 p90=  12.26
+find     <2k    n=   914 p50=  0.81 p90=  33.08
+find     >=20k  n=    31 p50=  0.54 p90=  28.52
+git grep <20k   n=   145 p50=  0.35 p90=   3.54
+git grep <2k    n=   125 p50=  0.34 p90=   4.72
+grep     <20k   n=  4776 p50=  0.30 p90=   6.10
+grep     <2k    n= 12709 p50=  0.65 p90=  35.52
+grep     >=20k  n=   108 p50=  0.48 p90=  16.93
+rg       <20k   n=  1112 p50=  0.27 p90=   5.00
+rg       <2k    n=  1957 p50=  0.34 p90=   9.54
+rg       >=20k  n=    77 p50=  1.26 p90=  57.55
+search_files           all p50=0.37 p90=8.56 | small-result p50=0.318
+read_file              all p50=0.18 p90=3.12 | small-result p50=0.162
+z0_file_search         all p50=0.00 p90=0.00 | small-result p50=0.0
+session_search         all p50=0.00 p90=0.01 | small-result p50=0.0
+web_search             all p50=1.60 p90=17.36 | small-result p50=1.166
+web_extract            all p50=5.13 p90=24.48 | small-result p50=1.354
+browser_navigate       all p50=3.78 p90=10.88 | small-result p50=3.783
+delegate_task          all p50=0.20 p90=2.38 | small-result p50=0.145
+skill_view             all p50=1.03 p90=5.31 | small-result p50=0.809
+skills_list            all p50=0.44 p90=2.50 | small-result p50=0.707
+memory                 all p50=0.05 p90=0.28 | small-result p50=0.05
+execute_code           all p50=0.59 p90=12.59 | small-result p50=0.451
+patch                  all p50=0.27 p90=7.18 | small-result p50=0.27
+write_file             all p50=0.17 p90=2.48 | small-result p50=0.165
+
+== fanout (calls per assistant turn) distribution of results
+{1: 108367, 2: 19274, 3: 21062, 4: 20254, 5: 16758, 6: 18563}
+
+== skill usage: skill_view count by name (top 25)
+
+== discovery
+turns=130001 pure-search/read turns=40183 (31%), their wall share=25% (282h of 1127h)
+search runs: n=18412 len p50=1 p90=4 p99=12
+runs>=5 turns: n=1795 hours=92  (>=10: n=341, h=37)
+near-empty search results=3805, followed by another search=2534
