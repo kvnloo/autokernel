@@ -18,7 +18,7 @@ before and after every block, and any change aborts the run.
 """
 import argparse, datetime, hashlib, json, os, pathlib, random, re, shlex, statistics, subprocess, sys, time, wave
 
-BENCH_EPOCH = 3
+BENCH_EPOCH = 4  # epoch 4: thermal gate reads live HAL temps, not the cached list
 ROOT = pathlib.Path(__file__).resolve().parent
 STATE = ROOT / "state"
 ZLV = pathlib.Path(os.environ.get("ZLV_ROOT", "/mnt/zer0models/models/zlv-tts"))
@@ -61,7 +61,7 @@ def adb(*args, timeout=1800):
 
 def telemetry():
     out = sh("dumpsys battery | grep -E '^  (level|temperature|AC powered|USB powered|Wireless powered|current now|Charge counter|voltage):';"
-             "echo ==; dumpsys thermalservice | grep -E 'mName=(AP|SKIN|BAT),' | head -3; echo ==;"
+             "echo ==; dumpsys thermalservice | sed -n '/^Current temperatures from HAL/,/^[A-Z]/p' | grep -E 'mName=(AP|SKIN|BAT),' | head -3; echo ==;"
              "dumpsys power | grep -E '^ *lastUserActivityTime=|mWakefulness='; echo ==;"
              "dumpsys window | grep -m1 mTopFocusedDisplayId; dumpsys window | grep -m1 mCurrentFocus", timeout=60)
     t = {}
