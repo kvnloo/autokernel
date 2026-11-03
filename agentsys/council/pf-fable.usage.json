@@ -1,0 +1,37 @@
+{
+  "estimated_cost_usd": 0.128915,
+  "cost_status": "estimated",
+  "cost_source": "provider_models_api",
+  "input_tokens": 10242,
+  "output_tokens": 18,
+  "cache_read_tokens": 0,
+  "cache_write_tokens": 10238,
+  "reasoning_tokens": 0,
+  "total_tokens": 10260,
+  "api_calls": 1,
+  "model": "claude-fable-5-1",
+  "provider": "anthropic",
+  "session_id": "local-82754d2812b6e85956c40a6c14d9af3718ccb5541e4c05213ef0c4c38023e5e2",
+  "completed": true,
+  "partial": false,
+  "interrupted": false,
+  "turn_exit_reason": "text_response(finish_reason=stop)",
+  "failed": false,
+  "service_tier": null,
+  "auxiliary": {
+    "api_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0,
+    "total_tokens": 0,
+    "by_task": {}
+  },
+  "total_including_auxiliary": {
+    "estimated_cost_usd": 0.128915,
+    "total_tokens": 10260,
+    "api_calls": 1
+  }
+}

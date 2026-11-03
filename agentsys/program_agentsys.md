@@ -55,6 +55,23 @@ Reuse `mobile/` pieces on branch `z0live/s25-autoresearch` (`council.py`, screen
 Null by measurement (do not build): grep→rg swaps for small searches, CLI cold-start work,
 Rust rewrites of tools already under the 0.17 s harness floor.
 
+## v1 after council 2026-11-03 (supersedes the objective and track order above; see `council/SYNTHESIS-20261103.md`)
+
+Objective: per track (Locate now, Execute next), deadline-capped episode wall time to evidence that
+passes the frozen sufficiency rubric. Turns are co-primary. The statistic (trimmed mean or capped
+mean) is chosen on the A/A. Track B is gated on the oracle bound.
+
+| # | Experiment (2 weeks) | Owner | Falsifier |
+|---|---|---|---|
+| 1 | Per-call usage + real tool start/end + child links in Hermes; 24 h host recorder (cpu.stat of agent.slice, PSI, faults, IO) | hermes-agent, Tokenomics, .files | slice throttling <1% over 24 h → drop quota work |
+| 2 | Stratified Locate set + rubric; referee A/A | z0evals | half-width >15% → grow set or reduce noise before any KEEP |
+| 3 | Oracle entry-point bound, then toolkit card / scoped fallback A/B | z0evals, kvnloo-skills, z0int | oracle saves <15% → no locator memory |
+| 4 | Scoped-search defaults + fd/grep deadlines, with an evidence-coverage regression test | hermes-agent | fd p90 still >30 s next profile |
+| 5 | wait-until primitive (exit / file / log regex / CI) + shadow lag logging, starting with log watching (65 h) | hermes-agent, laws registry | measured detection lag <15% of sleep s |
+| 6 | Lifecycle + output budget: warm vs cold subagents, lean catalog, low vs default effort on Sol/Astra; fx/pi reference arms; lean-leaf routing arm | hermes-agent, z0evals | gains vanish at capability parity, or pass drops |
+| 7 | Model-free hardware replay: quota 2 vs higher × NVMe/SATA snapshot × first-touch/warm; ctx attribution | Kerdoios, .files, ctx | no cell moves p90 > 2× A/A spread |
+| 8 | Bounded 2-way batching of hand-labelled independent reads (69% lexical upper bound) | hermes-agent, z0int | few semantically independent pairs, or contention erases gains |
+
 ## Loop rules
 
 - Each direction gets 3 rounds, then keep, drop or redesign.
