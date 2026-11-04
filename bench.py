@@ -1129,9 +1129,10 @@ def run_performance(kernel_fn: Callable, config: dict, gpu: GPUSpec,
         finally:
             torch.cuda.empty_cache()
 
-    # If we didn't bench the primary size, use the last successful one
+    # If we didn't bench the primary size, fail closed: a fallback size scores a different
+    # problem (a shared GPU OOM on the model shape silently reported llm_mlp instead).
     if primary_result is None and all_results:
-        primary_result = all_results[-1]
+        print(f"PRIMARY_NOT_BENCHED: {primary_label}")
 
     return {
         "primary": primary_result,
