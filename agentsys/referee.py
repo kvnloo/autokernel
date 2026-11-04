@@ -56,6 +56,22 @@ def judge(task, text):
     return any(k and k in ans for k in keys), answer
 
 
+def served_model(session_id):
+    """(model, provider) Hermes recorded for this session, or None if it is not in state.db."""
+    if not session_id:
+        return None
+    import sqlite3
+    for hh in dict.fromkeys(p for p in (os.environ.get("HERMES_HOME"), f"{HOME}/.hermes/profiles/clean") if p):
+        try:
+            with sqlite3.connect(f"file:{hh}/state.db?mode=ro", uri=True, timeout=10) as db:
+                row = db.execute("select model, billing_provider from sessions where id=?", (session_id,)).fetchone()
+        except sqlite3.Error:
+            continue
+        if row:
+            return tuple(row)
+    return None
+
+
 def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
     """Block until the host is quiet enough; return the covariates seen at start."""
     t0 = time.time()
@@ -124,7 +140,12 @@ def episode(task, arm, rep, order):
     text = result.get("text") or "".join(e.get("text", "") for e in events if e.get("type") == "text")
     ok, answer = judge(task, text)
     ok = ok and not timed_out and wall <= deadline and not result.get("error")
-    return {"task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
+    served = served_model(result.get("session_id"))
+    if arm.get("model") and served and served[0] != arm["model"].split("/")[-1].replace(".", "-"):
+        # Hermes falls back silently when the arm's provider fails; such an episode measures
+        # another model, so it must not count toward this arm's verdict.
+        ok, result["error"] = False, f"served by {served[0]} via {served[1]}, not {arm['model']}"
+    return {"served_model": served, "task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
             "pass": ok, "wall_s": round(wall, 2), "charged_s": round(wall if ok else deadline, 2),
             "timed_out": timed_out, "tool_events": len(tools), "tool_turns": turns, "tool_s": round(tool_ms / 1000, 2), "answer": answer,
             "tokens": result.get("tokens"), "session_id": result.get("session_id"),
