@@ -100,7 +100,7 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
 
     BLOCK_SIZE_M = 128
     BLOCK_SIZE_N = 256
-    BLOCK_SIZE_K = 64 if A.dtype != torch.float32 else 32
+    BLOCK_SIZE_K = 32 if A.dtype != torch.float32 else 32
 
     grid = (triton.cdiv(M, BLOCK_SIZE_M) * triton.cdiv(N, BLOCK_SIZE_N),)
 
@@ -116,6 +116,6 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
         # fp32 must match an exact fp32 reference; TF32 (Ampere default) does not
         IN_PRECISION="ieee" if A.dtype == torch.float32 else "tf32",
         num_warps=8,
-        num_stages=3,
+        num_stages=4,
     )
     return C
