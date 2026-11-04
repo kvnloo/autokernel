@@ -1,0 +1,143 @@
+============================================================
+AutoKernel Benchmark Harness
+============================================================
+kernel_type: matmul
+kernel_module: kernel.py loaded successfully
+primary size from kernel.py MODEL_SHAPES: {'M': 3072, 'N': 262144, 'K': 640}
+dtypes from kernel.py MODEL_DTYPES: ['bfloat16']
+
+=== GPU INFO ===
+gpu_name: NVIDIA GeForce RTX 3080 Ti
+gpu_sm_count: 80
+gpu_memory_gb: 11.7
+gpu_peak_tflops_fp16: 119.5
+gpu_peak_tflops_bf16: 119.5
+gpu_peak_tflops_fp32: 59.75
+gpu_peak_bandwidth_gb_s: 760.3
+gpu_l2_cache_mb: 5.0
+gpu_compute_capability: 8.6
+
+=== CORRECTNESS ===
+
+--- Stage 1: Smoke Test ---
+  PASS (max_abs_error=1.525879e-05)
+
+--- Stage 2: Shape Sweep ---
+  PASS: tiny torch.bfloat16 (max_err=1.53e-05, within_tol=100.0%)
+  PASS: small torch.bfloat16 (max_err=2.50e-01, within_tol=100.0%)
+  PASS: medium torch.bfloat16 (max_err=5.00e-01, within_tol=100.0%)
+  PASS: xlarge torch.bfloat16 (max_err=1.00e+00, within_tol=100.0%)
+  PASS: tall torch.bfloat16 (max_err=5.00e-01, within_tol=100.0%)
+  PASS: wide torch.bfloat16 (max_err=5.00e-01, within_tol=100.0%)
+  PASS: deep_k torch.bfloat16 (max_err=2.00e+00, within_tol=100.0%)
+  PASS: llm_qkv torch.bfloat16 (max_err=5.00e-01, within_tol=100.0%)
+  PASS: llm_mlp torch.bfloat16 (max_err=2.00e+00, within_tol=100.0%)
+[W1104 00:51:08.918340801 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 1610612736 bytes (free: 1406140416, total: 12535791616).
+[W1104 00:51:10.949543694 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 3221225472 bytes (free: 1274019840, total: 12535791616).
+[W1104 00:51:10.968366888 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 3221225472 bytes (free: 1766850560, total: 12535791616).
+  SKIP: large torch.bfloat16 -> OOM
+  shape_sweep: PASS (10 configs, worst_err=2.00e+00)
+
+--- Stage 3: Numerical Stability ---
+  PASS: near_max -> both have NaN/Inf (expected overflow)
+  PASS: near_zero (max_err=2.27e-13)
+  PASS: mixed_scale (max_err=1.31e+05)
+  PASS: all_zeros (max_err=0.00e+00)
+  PASS: all_same (max_err=0.00e+00)
+  numerical_stability: PASS
+
+--- Stage 4: Determinism ---
+  PASS: 3 runs are bitwise identical
+
+--- Stage 5: Edge Cases ---
+  PASS: edge_1023 (max_err=5.00e-01)
+  PASS: edge_4097 (max_err=5.00e-01)
+  PASS: edge_1537 (max_err=1.00e+00)
+  edge_cases: PASS
+
+correctness: PASS
+
+--- Correctness Summary ---
+smoke_test: PASS
+shape_sweep: PASS (10 configs, worst_err=2.00e+00 at deep_k/torch.bfloat16)
+numerical_stability: PASS
+determinism: PASS
+edge_cases: PASS
+correctness: PASS
+
+=== PERFORMANCE (large: M=3072, N=262144, K=640, dtype=torch.bfloat16) ===
+
+  Benchmarking: tiny ...
+    kernel: 4.81 us | pytorch: 5.06 us | speedup: 1.054x | 0.873 TFLOPS | 0.7% peak
+
+  Benchmarking: small ...
+    kernel: 9.52 us | pytorch: 8.62 us | speedup: 0.906x | 28.187 TFLOPS | 23.6% peak
+
+  Benchmarking: medium ...
+    kernel: 31.17 us | pytorch: 25.34 us | speedup: 0.813x | 68.887 TFLOPS | 57.6% peak
+
+  Benchmarking: xlarge ...
+    kernel: 2200.28 us | pytorch: 1205.44 us | speedup: 0.548x | 62.464 TFLOPS | 52.3% peak
+
+  Benchmarking: tall ...
+    kernel: 259.99 us | pytorch: 158.55 us | speedup: 0.610x | 66.078 TFLOPS | 55.3% peak
+
+  Benchmarking: wide ...
+    kernel: 243.35 us | pytorch: 175.09 us | speedup: 0.720x | 70.598 TFLOPS | 59.1% peak
+
+  Benchmarking: deep_k ...
+    kernel: 234.79 us | pytorch: 275.59 us | speedup: 1.174x | 73.171 TFLOPS | 61.2% peak
+
+  Benchmarking: llm_qkv ...
+    kernel: 251.78 us | pytorch: 177.91 us | speedup: 0.707x | 68.234 TFLOPS | 57.1% peak
+
+  Benchmarking: llm_mlp ...
+    kernel: 6565.88 us | pytorch: 4225.41 us | speedup: 0.644x | 56.256 TFLOPS | 47.1% peak
+
+  Benchmarking: large ...
+    kernel: 15310.85 us | pytorch: 9964.99 us | speedup: 0.651x | 67.324 TFLOPS | 56.3% peak
+
+--- Performance Summary (primary: large) ---
+latency_us: 15310.85
+latency_ms: 15.3108
+throughput_tflops: 67.324
+bandwidth_gb_s: 127.4
+pct_peak_compute: 56.3%
+pct_peak_bandwidth: 16.8%
+arithmetic_intensity: 528.59
+ridge_point: 157.17
+bottleneck: compute_bound
+flops: 1030792151040
+bytes: 1950089216
+peak_vram_mb: 2123.9
+
+=== COMPARISON VS PYTORCH ===
+pytorch_latency_us: 9964.99
+pytorch_latency_ms: 9.9650
+kernel_latency_us: 15310.85
+kernel_latency_ms: 15.3108
+speedup_vs_pytorch: 0.651x
+pytorch_tflops: 103.441
+kernel_tflops: 67.324
+
+=== SIZE SWEEP ===
+size            kernel_us   pytorch_us    speedup     tflops    %peak
+------------------------------------------------------------------
+tiny                 4.81         5.06     1.054x      0.873     0.7%
+small                9.52         8.62     0.906x     28.187    23.6%
+medium              31.17        25.34     0.813x     68.887    57.6%
+xlarge            2200.28      1205.44     0.548x     62.464    52.3%
+tall               259.99       158.55     0.610x     66.078    55.3%
+wide               243.35       175.09     0.720x     70.598    59.1%
+deep_k             234.79       275.59     1.174x     73.171    61.2%
+llm_qkv            251.78       177.91     0.707x     68.234    57.1%
+llm_mlp           6565.88      4225.41     0.644x     56.256    47.1%
+large            15310.85      9964.99     0.651x     67.324    56.3%
+
+=== FINAL ===
+kernel_type: matmul
+correctness: PASS
+throughput_tflops: 67.324
+speedup_vs_pytorch: 0.651x
+pct_peak_compute: 56.3%
+bench_time_seconds: 10.0

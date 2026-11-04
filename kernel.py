@@ -1,8 +1,8 @@
 """
 AutoKernel -- Extracted kernel from model profiling.
 Op type: matmul
-Rank: 4 (4.8% of GPU time)
-Model shape: M=3072, N=2048, K=640
+Rank: 1 (13.8% of GPU time)
+Model shape: M=3072, N=262144, K=640
 
 This kernel was extracted from profiling transformers.
 The agent optimizes this to maximize throughput at the model-specific shapes.
@@ -11,16 +11,16 @@ The agent optimizes this to maximize throughput at the model-specific shapes.
 KERNEL_TYPE = "matmul"
 
 # Model-specific shapes (the shapes that matter for THIS model)
-MODEL_SHAPES = {'M': 3072, 'N': 2048, 'K': 640}
+MODEL_SHAPES = {'M': 3072, 'N': 262144, 'K': 640}
 # Dtype the model was profiled in; bench.py tests and times only this
 MODEL_DTYPES = ['bfloat16']
 
 # Benchmark config (self-describing -- bench.py can load this dynamically)
 TEST_SIZES = [
-    ("model_primary", {'M': 3072, 'N': 2048, 'K': 640}),
+    ("model_primary", {'M': 3072, 'N': 262144, 'K': 640}),
     # Also test nearby sizes for robustness
-    ("model_half", {'M': 1536, 'N': 1024, 'K': 320}),
-    ("model_double", {'M': 6144, 'N': 4096, 'K': 1280}),
+    ("model_half", {'M': 1536, 'N': 131072, 'K': 320}),
+    ("model_double", {'M': 6144, 'N': 524288, 'K': 1280}),
 ]
 
 TOLERANCES = {'float16': {'atol': 0.01, 'rtol': 0.01}, 'bfloat16': {'atol': 0.02, 'rtol': 0.02}, 'float32': {'atol': 0.0001, 'rtol': 0.0001}}
