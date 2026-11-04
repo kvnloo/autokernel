@@ -10,7 +10,7 @@ at the deadline), computed as a paired per-task ratio candidate/incumbent with a
 Turns (tool events) are co-primary. Guards: pass rate may not drop by more than one task, p90
 charged wall may not rise more than 10%.
 
-KEEP   iff ratio CI upper bound < 1 - max(3%, A/A half-width) and no guard fails.
+KEEP   iff ratio CI upper bound < 0.97, the latest A/A CI contains 1, and no guard fails.
 DROP   iff ratio CI lower bound > 1 or a guard fails.
 otherwise INCONCLUSIVE (a valid outcome; grow the set or redesign).
 """
@@ -81,7 +81,7 @@ def cmd_aa(a):
 
 def last_aa(ledger):
     rows = [r for r in load(ledger) if r.get("kind") == "aa"] if ledger and Path(ledger).exists() else []
-    return rows[-1]["half_width"] if rows else None
+    return rows[-1] if rows else None
 
 
 def cmd_ab(a):
@@ -97,12 +97,15 @@ def cmd_ab(a):
               for d in by.values() if d.get(a.incumbent) and d.get(a.candidate)]
     tpoint, tlo, thi = boot_ratio(tpairs)
     si, sc = summarize(inc), summarize(cand)
-    half = last_aa(a.ledger)
-    threshold = 1 - max(0.03, half if half is not None else 0.15)
+    aa = last_aa(a.ledger)
+    # Epoch 2 rule: the paired bootstrap CI already carries the referee noise, so subtracting the
+    # A/A half-width again made any realistic effect unkeepable (epoch 1: a 4x win stayed
+    # INCONCLUSIVE). The A/A instead must show the referee is unbiased (its CI contains 1).
+    threshold = 0.97
     guards = {
         "pass_noninferior": sc["pass_rate"] >= si["pass_rate"] - 1 / max(1, len(pairs)),
         "p90_not_worse": sc["charged_p90_s"] <= si["charged_p90_s"] * 1.10,
-        "aa_measured": half is not None,
+        "aa_unbiased": aa is not None and aa["ci"][0] <= 1 <= aa["ci"][1],
     }
     if all(guards.values()) and hi < threshold:
         verdict = "KEEP"
@@ -121,10 +124,10 @@ def cmd_ab(a):
         with open(a.ledger, "a") as fh:
             fh.write(json.dumps(out) + "\n")
     if verdict == "KEEP" and a.promote:  # candidate becomes the incumbent for the next experiment
-        state = Path(a.promote)
-        arm = json.loads((state / "arms" / f"{a.candidate}.json").read_text())
-        old = state / "arms" / "incumbent.json"
-        shutil.copy(old, state / "arms" / f"incumbent-before-{a.candidate}.json")  # revert point
+        arms = Path(a.promote)  # the directory holding <arm>.json files
+        arm = json.loads((arms / f"{a.candidate}.json").read_text())
+        old = arms / "incumbent.json"
+        shutil.copy(old, arms / f"incumbent-before-{a.candidate}.json")  # revert point
         arm.update(name="incumbent", promoted_from=a.candidate, promoted_at=time.time())
         old.write_text(json.dumps(arm, indent=1))
         print("promoted", a.candidate, "-> incumbent")

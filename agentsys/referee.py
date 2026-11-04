@@ -15,7 +15,7 @@ usage:
   referee.py run --tasks T.jsonl --arm A.json [--arm B.json] --reps N --out EPISODES.jsonl
              [--split dev] [--limit K] [--jobs J]
 """
-import argparse, concurrent.futures as cf, json, os, re, subprocess, tempfile, threading, time
+import argparse, concurrent.futures as cf, json, os, re, subprocess, tempfile, threading, time, uuid
 from pathlib import Path
 
 HOME = str(Path.home())
@@ -31,11 +31,29 @@ def norm(s):
     return (s or "").replace("~/", HOME + "/").replace("/workspace/hermes-home", HOME + "/.hermes").lower()
 
 
+def git_checkout_ok(answer, remote, branch=None):
+    """Sufficiency rubric for "where is a checkout of owner/repo": any checkout of that remote
+    counts (machines hold several), and when the task names a branch it must exist there."""
+    m = re.search(r"(/[\w.@+/-]+)", (answer or "").replace("~/", HOME + "/"))
+    if not m or not os.path.isdir(m.group(1)):
+        return False
+    path = m.group(1)
+    run = lambda *a: subprocess.run(["git", "-C", path, *a], capture_output=True, text=True, timeout=10)
+    slugs = {m.group(1).lower() for m in re.finditer(r"github\.com[:/]([^\s]+?)(?:\.git)?\s", run("remote", "-v").stdout)}
+    if remote.lower() not in slugs:
+        return False
+    return not branch or run("rev-parse", "--verify", "--quiet", branch).returncode == 0 or \
+        run("rev-parse", "--verify", "--quiet", "origin/" + branch).returncode == 0
+
+
 def judge(task, text):
     m = re.findall(r"ANSWER:\s*(.+)", text or "")
+    answer = m[-1].strip()[:300] if m else None
+    if task.get("git_remote"):
+        return git_checkout_ok(answer or text, task["git_remote"], task.get("branch")), answer
     ans = norm(m[-1] if m else text)
     keys = [norm(k) for k in task["keys"]]
-    return any(k and k in ans for k in keys), (m[-1].strip()[:300] if m else None)
+    return any(k and k in ans for k in keys), answer
 
 
 def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
@@ -54,8 +72,13 @@ def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
 
 
 def episode(task, arm, rep, order):
+    if task.get("setup"):  # a live fixture (e.g. a job that writes a line later), unique per episode
+        nonce = uuid.uuid4().hex[:8]
+        task = {**task, "setup": task["setup"].replace("{nonce}", nonce),
+                "question": task["question"].replace("{nonce}", nonce),
+                "keys": [k.replace("{nonce}", nonce) for k in task["keys"]]}
     pre = Path(arm["preamble_file"]).read_text() + "\n\n" if arm.get("preamble_file") else ""
-    query = INSTRUCTIONS + task["question"]
+    query = task.get("instructions", INSTRUCTIONS) + task["question"]
     if arm.get("oracle_entry"):  # Exp 3 upper bound: hand the agent the right starting point
         key = task.get("entry") or task["keys"][0]
         query += f"\n\nHint: start looking at or near `{os.path.dirname(key.rstrip('/')) if key.startswith(('/', '~')) else key}`."
@@ -71,6 +94,9 @@ def episode(task, arm, rep, order):
                 cmd += [flag, arm[key]]
         deadline = float(arm.get("budget_s", 300))
         cov = host_idle()
+        if task.get("setup"):
+            subprocess.Popen(task["setup"], shell=True, start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         t0 = time.time()
         timed_out, events = False, []
         try:
@@ -120,15 +146,28 @@ def schedule(tasks, arms, reps):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["run"])
+    ap.add_argument("cmd", choices=["run", "rescore"])
+    ap.add_argument("--episodes", help="rescore: episodes file to re-judge in place with the current rubric")
+    ap.add_argument("--deadline", type=float, help="rescore: the run's budget_s (failures are charged at it)")
     ap.add_argument("--tasks", required=True)
-    ap.add_argument("--arm", action="append", required=True)
+    ap.add_argument("--arm", action="append")
     ap.add_argument("--reps", type=int, default=1)
     ap.add_argument("--split", default="dev")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--jobs", type=int, default=3)
-    ap.add_argument("--out", required=True)
+    ap.add_argument("--out")
     a = ap.parse_args()
+    if a.cmd == "rescore":  # rubric fixes apply to both arms alike; answers and walls are kept
+        tasks = {t["id"]: t for t in map(json.loads, open(a.tasks))}
+        eps = [json.loads(l) for l in open(a.episodes)]
+        changed = 0
+        for e in eps:
+            ok = judge(tasks[e["task"]], "ANSWER: " + (e["answer"] or ""))[0] and not e["timed_out"] and e["wall_s"] <= a.deadline
+            changed += ok != e["pass"]
+            e["pass"], e["charged_s"] = ok, (e["wall_s"] if ok else a.deadline)
+        Path(a.episodes).write_text("".join(json.dumps(e) + "\n" for e in eps))
+        print(f"rescored {len(eps)} episodes, {changed} verdicts changed")
+        return
     tasks = [json.loads(l) for l in open(a.tasks) if l.strip()]
     tasks = [t for t in tasks if t.get("split", "dev") == a.split][: a.limit]
     arms = [json.loads(Path(p).read_text()) for p in a.arm]

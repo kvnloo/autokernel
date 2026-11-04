@@ -17,4 +17,4 @@ python3 "$here/referee.py" run --tasks "$D/locate-v1.jsonl" --split "$split" --r
 python3 "$here/loop.py" aa --episodes "$eps" --arm incumbent --ledger "$D/ledger.jsonl"
 python3 "$here/loop.py" ab --episodes "$eps" --incumbent incumbent --candidate "$cand" \
   --track "$track" --surface "$(jq -r '.preamble_file // .name' "$D/arms/$cand.json")" \
-  --ledger "$D/ledger.jsonl" --promote "$D"
+  --ledger "$D/ledger.jsonl" --promote "$D/arms"
