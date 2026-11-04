@@ -285,6 +285,12 @@ def _ref_matmul(inputs: dict) -> torch.Tensor:
     import reference
     return reference.matmul_ref(inputs["A"], inputs["B"])
 
+def _ref_matmul_exact(inputs: dict) -> torch.Tensor:
+    # True product (fp64) rounded once to the output dtype. cuBLAS's own rounding is not
+    # ground truth: at K=8192 or odd sizes it is further from fp64 than a correct kernel.
+    A, B = inputs["A"], inputs["B"]
+    return (A.double() @ B.double()).to(A.dtype)
+
 def _ref_softmax(inputs: dict) -> torch.Tensor:
     import reference
     return reference.softmax_ref(inputs["x"])
@@ -354,6 +360,7 @@ KERNEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "bytes_fn": lambda s, dt: (s["M"] * s["K"] + s["K"] * s["N"] + s["M"] * s["N"]) * _dtype_bytes(dt),
         "input_generator": gen_matmul_inputs,
         "reference_fn": _ref_matmul,
+        "correctness_reference_fn": _ref_matmul_exact,
         "edge_sizes": [
             ("edge_1023",  {"M": 1023, "N": 1023, "K": 1023}),
             ("edge_4097",  {"M": 4097, "N": 4097, "K": 512}),
@@ -653,7 +660,8 @@ def run_correctness(kernel_fn: Callable, config: dict, quick: bool = False) -> d
     all_pass = True
 
     gen_fn = config["input_generator"]
-    ref_fn = config["reference_fn"]
+    # correctness may use a truer reference than the timed PyTorch baseline
+    ref_fn = config.get("correctness_reference_fn", config["reference_fn"])
     sizes = config["test_sizes"]
     dtypes = config["test_dtypes"]
     tols = config["tolerances"]
@@ -1261,6 +1269,20 @@ def main():
         sys.exit(1)
 
     config = KERNEL_CONFIGS[kernel_type]
+
+    # extract.py writes the profiled model's shape into kernel.py as MODEL_SHAPES.
+    # Make it the primary ("large") perf size so the climb is scored on the real model.
+    model_shapes = getattr(kernel_module, "MODEL_SHAPES", None) if not args.kernel else None
+    if isinstance(model_shapes, dict) and set(model_shapes) == set(config["test_sizes"][0][1]):
+        config = {**config, "test_sizes": [(l, s) for l, s in config["test_sizes"] if l != "large"]
+                  + [("large", dict(model_shapes))]}
+        print(f"primary size from kernel.py MODEL_SHAPES: {model_shapes}")
+    model_dtypes = getattr(kernel_module, "MODEL_DTYPES", None) if not args.kernel else None
+    if model_dtypes:
+        dts = [getattr(torch, d) for d in model_dtypes if isinstance(getattr(torch, d, None), torch.dtype)]
+        if dts:
+            config = {**config, "test_dtypes": dts}
+            print(f"dtypes from kernel.py MODEL_DTYPES: {model_dtypes}")
 
     # ------------------------------------------------------------------
     # GPU Detection

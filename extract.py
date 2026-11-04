@@ -188,6 +188,12 @@ def parse_shape_info(shape_info_str: str, op_type: str) -> Optional[Dict[str, in
     if not shape_info_str or not isinstance(shape_info_str, str):
         return None
 
+    # profile.py records torch.profiler input shapes: "[[M, K], [K, N]]" for aten::mm.
+    if op_type == "matmul" and shape_info_str.lstrip().startswith("[["):
+        dims = [[int(x) for x in re.findall(r"\d+", g)] for g in re.findall(r"\[([\d,\s]+)\]", shape_info_str)]
+        if len(dims) >= 2 and len(dims[0]) == 2 and len(dims[1]) == 2 and dims[0][1] == dims[1][0]:
+            return {"M": dims[0][0], "N": dims[1][1], "K": dims[0][1]}
+
     # Match key=value pairs
     pairs = re.findall(r"([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(\d+)", shape_info_str)
     if not pairs:
@@ -296,6 +302,7 @@ def generate_kernel_file(
     gpu_time_ms: float,
     starter_code: str,
     backend: str = "triton",
+    model_dtype: str = "",
 ) -> str:
     """Generate the complete kernel file content for extraction."""
 
@@ -342,6 +349,9 @@ def generate_kernel_file(
     # Model-specific shapes
     lines.append("# Model-specific shapes (the shapes that matter for THIS model)")
     lines.append(f"MODEL_SHAPES = {repr(model_shape)}")
+    if model_dtype:
+        lines.append("# Dtype the model was profiled in; bench.py tests and times only this")
+        lines.append(f"MODEL_DTYPES = {[model_dtype]!r}")
     lines.append("")
 
     # Benchmark config
@@ -552,6 +562,7 @@ def extract_kernels(
             gpu_time_ms=gpu_time_ms,
             starter_code=starter_code,
             backend=backend,
+            model_dtype=str(report.get("dtype", "")),
         )
 
         # Write to workspace
