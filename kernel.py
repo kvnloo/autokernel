@@ -54,10 +54,17 @@ def matmul_kernel(
     BLOCK_SIZE_N: tl.constexpr,
     BLOCK_SIZE_K: tl.constexpr,
     IN_PRECISION: tl.constexpr = "tf32",
+    GROUP_M: tl.constexpr = 8,
 ):
-    """Basic tiled matmul. The agent improves this."""
-    pid_m = tl.program_id(0)
-    pid_n = tl.program_id(1)
+    """Tiled matmul with grouped block order so neighbouring programs reuse B tiles in L2."""
+    pid = tl.program_id(0)
+    num_pid_m = tl.cdiv(M, BLOCK_SIZE_M)
+    num_pid_n = tl.cdiv(N, BLOCK_SIZE_N)
+    group = GROUP_M * num_pid_n
+    first_m = (pid // group) * GROUP_M
+    gsize = min(num_pid_m - first_m, GROUP_M)
+    pid_m = first_m + (pid % group) % gsize
+    pid_n = (pid % group) // gsize
 
     offs_m = pid_m * BLOCK_SIZE_M + tl.arange(0, BLOCK_SIZE_M)
     offs_n = pid_n * BLOCK_SIZE_N + tl.arange(0, BLOCK_SIZE_N)
@@ -91,11 +98,11 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
 
     C = torch.empty((M, N), device=A.device, dtype=A.dtype)
 
-    BLOCK_SIZE_M = 64
-    BLOCK_SIZE_N = 64
-    BLOCK_SIZE_K = 32
+    BLOCK_SIZE_M = 128
+    BLOCK_SIZE_N = 128
+    BLOCK_SIZE_K = 64 if A.dtype != torch.float32 else 32
 
-    grid = (triton.cdiv(M, BLOCK_SIZE_M), triton.cdiv(N, BLOCK_SIZE_N))
+    grid = (triton.cdiv(M, BLOCK_SIZE_M) * triton.cdiv(N, BLOCK_SIZE_N),)
 
     matmul_kernel[grid](
         A, B, C,
@@ -108,5 +115,7 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
         BLOCK_SIZE_K=BLOCK_SIZE_K,
         # fp32 must match an exact fp32 reference; TF32 (Ampere default) does not
         IN_PRECISION="ieee" if A.dtype == torch.float32 else "tf32",
+        num_warps=8,
+        num_stages=3,
     )
     return C
