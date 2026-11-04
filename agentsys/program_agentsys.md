@@ -72,6 +72,20 @@ mean) is chosen on the A/A. Track B is gated on the oracle bound.
 | 7 | Model-free hardware replay: quota 2 vs higher × NVMe/SATA snapshot × first-touch/warm; ctx attribution | Kerdoios, .files, ctx | no cell moves p90 > 2× A/A spread |
 | 8 | Bounded 2-way batching of hand-labelled independent reads (69% lexical upper bound) | hermes-agent, z0int | few semantically independent pairs, or contention erases gains |
 
+## Running the loop (implemented 2026-11-03)
+
+| AutoKernel | AgentSys file |
+|---|---|
+| `prepare.py` (fixed inputs) | `mine_locate.py` mines candidates from state.db; the frozen set is `$AGENTSYS_DATA/locate-v1.jsonl` (private) |
+| `bench.py` (correctness + time) | `referee.py`: real `hermes chat --oneshot` episodes, ABBA, idle-gated, failures charged at the deadline |
+| keep/revert + `results.tsv` | `loop.py aa` (noise floor) and `loop.py ab` (KEEP/DROP/INCONCLUSIVE, promotes the arm), `ledger.jsonl` |
+| one experiment | `experiment.sh <exp> <track> <candidate-arm>` |
+
+Arms are JSON in `$AGENTSYS_DATA/arms/` (`incumbent.json` is the current best). A surface is whatever
+the arm changes: `preamble_file` (toolkit card), model/provider/reasoning, max turns. The referee runs on
+the free Kilo Opus 5.5 lane by default so the loop does not consume paid subscriptions.
+`AGENTSYS_DATA` defaults to `/mnt/zer0models/sft-svlm/data/agentsys` (0700; trace-derived, never commit).
+
 ## Loop rules
 
 - Each direction gets 3 rounds, then keep, drop or redesign.
