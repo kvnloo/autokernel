@@ -99,7 +99,7 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
     C = torch.empty((M, N), device=A.device, dtype=A.dtype)
 
     BLOCK_SIZE_M = 128
-    BLOCK_SIZE_N = 128
+    BLOCK_SIZE_N = 256
     BLOCK_SIZE_K = 64 if A.dtype != torch.float32 else 32
 
     grid = (triton.cdiv(M, BLOCK_SIZE_M) * triton.cdiv(N, BLOCK_SIZE_N),)
