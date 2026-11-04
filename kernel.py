@@ -1,20 +1,42 @@
 """
-AutoKernel -- The file the agent modifies.
+AutoKernel -- Extracted kernel from model profiling.
+Op type: matmul
+Rank: 4 (4.8% of GPU time)
+Model shape: M=3072, N=2048, K=640
 
-Current kernel: Matrix Multiplication
-Target metric: throughput_tflops (higher is better)
-Secondary: correctness must ALWAYS pass
-
-The agent can change anything in this file:
-  - Block sizes, warps, stages
-  - Tiling strategy, memory access patterns
-  - Split-K, persistent kernels, autotune configs
-  - Any Triton feature or trick
-
-The agent CANNOT change bench.py, reference.py, or the evaluation.
+This kernel was extracted from profiling transformers.
+The agent optimizes this to maximize throughput at the model-specific shapes.
 """
 
-KERNEL_TYPE = "matmul"  # must match a key in bench.py KERNEL_CONFIGS
+KERNEL_TYPE = "matmul"
+
+# Model-specific shapes (the shapes that matter for THIS model)
+MODEL_SHAPES = {'M': 3072, 'N': 2048, 'K': 640}
+# Dtype the model was profiled in; bench.py tests and times only this
+MODEL_DTYPES = ['bfloat16']
+
+# Benchmark config (self-describing -- bench.py can load this dynamically)
+TEST_SIZES = [
+    ("model_primary", {'M': 3072, 'N': 2048, 'K': 640}),
+    # Also test nearby sizes for robustness
+    ("model_half", {'M': 1536, 'N': 1024, 'K': 320}),
+    ("model_double", {'M': 6144, 'N': 4096, 'K': 1280}),
+]
+
+TOLERANCES = {'float16': {'atol': 0.01, 'rtol': 0.01}, 'bfloat16': {'atol': 0.02, 'rtol': 0.02}, 'float32': {'atol': 0.0001, 'rtol': 0.0001}}
+
+
+def FLOPS_FN(s):
+    return 2 * s["M"] * s["N"] * s["K"]
+
+
+def BYTES_FN(s, dt_bytes):
+    return (s["M"] * s["K"] + s["K"] * s["N"] + s["M"] * s["N"]) * dt_bytes
+
+
+# ======================================================================
+# Triton kernel code (from kernels/matmul.py)
+# ======================================================================
 
 import torch
 import triton
@@ -31,6 +53,7 @@ def matmul_kernel(
     BLOCK_SIZE_M: tl.constexpr,
     BLOCK_SIZE_N: tl.constexpr,
     BLOCK_SIZE_K: tl.constexpr,
+    IN_PRECISION: tl.constexpr = "tf32",
 ):
     """Basic tiled matmul. The agent improves this."""
     pid_m = tl.program_id(0)
@@ -48,7 +71,7 @@ def matmul_kernel(
     for k in range(0, K, BLOCK_SIZE_K):
         a = tl.load(a_ptrs, mask=(offs_m[:, None] < M) & (offs_k[None, :] < K), other=0.0)
         b = tl.load(b_ptrs, mask=(offs_k[:, None] < K) & (offs_n[None, :] < N), other=0.0)
-        acc += tl.dot(a, b)
+        acc += tl.dot(a, b, input_precision=IN_PRECISION)
         a_ptrs += BLOCK_SIZE_K * stride_ak
         b_ptrs += BLOCK_SIZE_K * stride_bk
         offs_k += BLOCK_SIZE_K
@@ -83,5 +106,7 @@ def kernel_fn(A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:
         BLOCK_SIZE_M=BLOCK_SIZE_M,
         BLOCK_SIZE_N=BLOCK_SIZE_N,
         BLOCK_SIZE_K=BLOCK_SIZE_K,
+        # fp32 must match an exact fp32 reference; TF32 (Ampere default) does not
+        IN_PRECISION="ieee" if A.dtype == torch.float32 else "tf32",
     )
     return C

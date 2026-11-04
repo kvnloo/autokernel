@@ -1,4 +1,6 @@
 # AutoKernel -- Autonomous GPU Kernel Optimization Agent
+> **z0 run note (only change from upstream):** use `PY="/mnt/zer0models/venvs/unsloth/bin/python -P"` wherever this file says `uv run` (`uv sync` would download a second torch onto a 92%-full disk; `-P` stops the repo's `profile.py` shadowing the stdlib `profile` module). Setup (A1–A4) is already done: the model is functiongemma-270m, the smallest shadow-network model, profiled at batch 16 x 192 tokens (p90 of real shadow-trace inputs is 165) in bfloat16, on an RTX 3080 Ti that other jobs share, so re-run a result that looks like noise. Kernels to optimize, in plan order: `workspace/kernel_matmul_1.py` (LM head, 3072x262144x640), `kernel_matmul_4.py` (MLP gate/up, 3072x2048x640), `kernel_matmul_13.py` (MLP down, 3072x640x2048). Branch `autokernel/nov4-fg270` exists. Do not push.
+
 
 You are an autonomous GPU kernel optimization researcher. You accept a full PyTorch
 model, profile it, identify bottleneck kernels, and optimize each one in priority
@@ -40,13 +42,13 @@ Record these details. You will use them throughout the run.
 Run profiling to identify where the model spends its time:
 
 ```bash
-uv run profile.py --model <path> --class-name <name> --input-shape <shape>
+$PY profile.py --model <path> --class-name <name> --input-shape <shape>
 ```
 
 Or for HuggingFace models:
 
 ```bash
-uv run profile.py --module transformers --class-name AutoModelForCausalLM --pretrained <model_name> --input-shape <shape>
+$PY profile.py --module transformers --class-name AutoModelForCausalLM --pretrained <model_name> --input-shape <shape>
 ```
 
 Read the output. The profiler reports:
@@ -85,7 +87,7 @@ Top bottleneck ops:
 ### A4. Extract kernels for optimization
 
 ```bash
-uv run extract.py --top 5
+$PY extract.py --top 5
 ```
 
 This extracts the top bottleneck kernels into the workspace:
@@ -149,7 +151,7 @@ Read every file in the repo:
 ### A9. Verify environment
 
 ```bash
-uv run prepare.py
+$PY prepare.py
 ```
 
 Confirm that `~/.cache/autokernel/` contains `test_data/` and `baselines.json`.
@@ -174,7 +176,7 @@ progress across all kernels and tells you when to move on.
 ### B1. Check orchestrator for next kernel
 
 ```bash
-uv run orchestrate.py next
+$PY orchestrate.py next
 ```
 
 The orchestrator returns one of:
@@ -198,13 +200,13 @@ Verify:
 ### B3. Run baseline for this kernel
 
 ```bash
-uv run bench.py > run.log 2>&1
+$PY bench.py > run.log 2>&1
 ```
 
 Record this as the baseline:
 
 ```bash
-uv run orchestrate.py record kernel_<type>_<rank>.py <tflops> keep "baseline"
+$PY orchestrate.py record kernel_<type>_<rank>.py <tflops> keep "baseline"
 ```
 
 ### B4. Single-kernel experiment loop
@@ -245,7 +247,7 @@ Always commit before running. This lets you cleanly revert if the experiment fai
 #### 4. Run
 
 ```bash
-uv run bench.py > run.log 2>&1
+$PY bench.py > run.log 2>&1
 ```
 
 **IMPORTANT**: Always redirect to `run.log`. Do NOT use `tee`. Do NOT let output flood your
@@ -283,7 +285,7 @@ simpler, KEEP it.
 #### 7. Record with orchestrator
 
 ```bash
-uv run orchestrate.py record <file> <tflops> keep|revert "<description>"
+$PY orchestrate.py record <file> <tflops> keep|revert "<description>"
 ```
 
 #### 8. Analyze roofline
@@ -313,7 +315,7 @@ memory-bound (as reported by `bench.py`'s `bottleneck:` output).
 #### 10. Check orchestrator
 
 ```bash
-uv run orchestrate.py next
+$PY orchestrate.py next
 ```
 
 - If `CONTINUE` -- repeat from step 1
@@ -330,7 +332,7 @@ cp kernel.py workspace/kernel_<type>_<rank>_optimized.py
 ### B6. Check aggregate progress
 
 ```bash
-uv run orchestrate.py status
+$PY orchestrate.py status
 ```
 
 This shows:
@@ -346,17 +348,17 @@ Go back to step B1. Repeat until the orchestrator says `DONE` or all kernels are
 
 ```
 FOR each kernel in priority order:
-    B1. Check orchestrator: uv run orchestrate.py next
+    B1. Check orchestrator: $PY orchestrate.py next
     B2. If DONE → go to Phase C
     B3. Copy kernel: cp workspace/kernel_{type}_{rank}.py kernel.py
-    B4. Run baseline: uv run bench.py > run.log 2>&1
-    B5. Record baseline: uv run orchestrate.py record <file> <tflops> keep "baseline"
+    B4. Run baseline: $PY bench.py > run.log 2>&1
+    B5. Record baseline: $PY orchestrate.py record <file> <tflops> keep "baseline"
     B6. LOOP (single-kernel optimization):
         - Hypothesize, edit, commit, run, check, keep/revert
-        - uv run orchestrate.py record ...
-        - uv run orchestrate.py next → break if not CONTINUE
+        - $PY orchestrate.py record ...
+        - $PY orchestrate.py next → break if not CONTINUE
     B7. Save: cp kernel.py workspace/kernel_{type}_{rank}_optimized.py
-    B8. Status: uv run orchestrate.py status
+    B8. Status: $PY orchestrate.py status
     B9. Next kernel
 ```
 
@@ -369,13 +371,13 @@ After all kernels are optimized (or the orchestrator says `DONE`), verify the en
 ### C1. Run end-to-end verification
 
 ```bash
-uv run verify.py --model <path> --class-name <name> --input-shape <shape>
+$PY verify.py --model <path> --class-name <name> --input-shape <shape>
 ```
 
 Or for HuggingFace models:
 
 ```bash
-uv run verify.py --module transformers --class-name AutoModelForCausalLM \
+$PY verify.py --module transformers --class-name AutoModelForCausalLM \
  --pretrained <model_name> --input-shape <shape>
 ```
 
@@ -400,7 +402,7 @@ The verifier:
 If correctness fails:
 
 ```bash
-uv run verify.py --model <path> --class-name <name> --input-shape <shape> --diagnose
+$PY verify.py --model <path> --class-name <name> --input-shape <shape> --diagnose
 ```
 
 This tests each kernel replacement individually. The output tells you which kernel caused
@@ -408,19 +410,19 @@ the failure. Fix that kernel:
 
 1. Copy the problematic optimized kernel back to `kernel.py`
 2. Relax its optimization (e.g., use fp32 accumulator instead of fp16)
-3. Re-run the single-kernel correctness check: `uv run bench.py > run.log 2>&1`
+3. Re-run the single-kernel correctness check: `$PY bench.py > run.log 2>&1`
 4. Save the fixed kernel back to workspace
 5. Re-run verification
 
 ### C4. Generate final report
 
 ```bash
-uv run orchestrate.py report
+$PY orchestrate.py report
 ```
 
 ### C5. Analysis (optional)
 
-After experiments, you can run `uv run analysis.py` to generate:
+After experiments, you can run `$PY analysis.py` to generate:
 - `progress.png` -- visual plot of all experiments with the research frontier
 - `report.md` -- markdown summary of the session
 - Terminal summary with top improvements and statistics
@@ -836,14 +838,14 @@ If the orchestration state becomes corrupted:
 cat workspace/orchestration_state.json       # Check state
 # If corrupted: delete and re-initialize
 rm workspace/orchestration_state.json
-uv run extract.py --top 5                    # Re-generates plan + state
+$PY extract.py --top 5                    # Re-generates plan + state
 ```
 
 ### Verification OOM
 
 ```bash
-uv run verify.py --model <path> --class-name <name> --input-shape 1,512
-uv run verify.py --model <path> --class-name <name> --input-shape 1,2048 --warmup 3 --timed 10
+$PY verify.py --model <path> --class-name <name> --input-shape 1,512
+$PY verify.py --model <path> --class-name <name> --input-shape 1,2048 --warmup 3 --timed 10
 ```
 
 ### Timeouts
