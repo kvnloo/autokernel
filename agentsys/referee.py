@@ -38,7 +38,7 @@ def judge(task, text):
     return any(k and k in ans for k in keys), (m[-1].strip()[:300] if m else None)
 
 
-def host_idle(min_avail_gb=3.0, max_mem_full=1.0, wait_s=600):
+def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
     """Block until the host is quiet enough; return the covariates seen at start."""
     t0 = time.time()
     while True:
@@ -56,6 +56,9 @@ def host_idle(min_avail_gb=3.0, max_mem_full=1.0, wait_s=600):
 def episode(task, arm, rep, order):
     pre = Path(arm["preamble_file"]).read_text() + "\n\n" if arm.get("preamble_file") else ""
     query = INSTRUCTIONS + task["question"]
+    if arm.get("oracle_entry"):  # Exp 3 upper bound: hand the agent the right starting point
+        key = task.get("entry") or task["keys"][0]
+        query += f"\n\nHint: start looking at or near `{os.path.dirname(key.rstrip('/')) if key.startswith(('/', '~')) else key}`."
     if pre:
         query = pre + query
     with tempfile.TemporaryDirectory(prefix="agsys-") as wd:
@@ -83,13 +86,21 @@ def episode(task, arm, rep, order):
             pass
     result = next((e for e in reversed(events) if e.get("type") == "result"), {})
     tools = [e for e in events if e.get("type") == "tool_use"]
+    # A model turn that calls tools emits its tool_use events back to back; a tool_use right
+    # after a tool_result starts the next turn. Batched calls therefore share one turn.
+    turns, prev = 0, None
+    for e in events:
+        if e.get("type") == "tool_use" and prev != "tool_use":
+            turns += 1
+        if e.get("type") in ("tool_use", "tool_result"):
+            prev = e["type"]
     tool_ms = sum(e.get("duration_ms") or 0 for e in events if e.get("type") == "tool_result")
     text = result.get("text") or "".join(e.get("text", "") for e in events if e.get("type") == "text")
     ok, answer = judge(task, text)
     ok = ok and not timed_out and wall <= deadline and not result.get("error")
     return {"task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
             "pass": ok, "wall_s": round(wall, 2), "charged_s": round(wall if ok else deadline, 2),
-            "timed_out": timed_out, "tool_events": len(tools), "tool_s": round(tool_ms / 1000, 2), "answer": answer,
+            "timed_out": timed_out, "tool_events": len(tools), "tool_turns": turns, "tool_s": round(tool_ms / 1000, 2), "answer": answer,
             "tokens": result.get("tokens"), "session_id": result.get("session_id"),
             "error": result.get("error"), "ts": time.time(), "host": cov}
 

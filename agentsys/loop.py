@@ -56,6 +56,7 @@ def summarize(eps):
             "charged_mean_s": round(mean([e["charged_s"] for e in eps]), 1),
             "charged_p90_s": round(p90([e["charged_s"] for e in eps]), 1),
             "tools_mean": round(mean([e["tool_events"] for e in eps]), 2),
+            "turns_mean": round(mean([e.get("tool_turns", e["tool_events"]) + 1 for e in eps]), 2),
             "tokens_mean": round(mean([(e.get("tokens") or {}).get("total", 0) for e in eps]))}
 
 
@@ -91,7 +92,8 @@ def cmd_ab(a):
     pairs = [(mean([e["charged_s"] for e in d[a.incumbent]]), mean([e["charged_s"] for e in d[a.candidate]]))
              for d in by.values() if d.get(a.incumbent) and d.get(a.candidate)]
     point, lo, hi = boot_ratio(pairs)
-    tpairs = [(mean([e["tool_events"] for e in d[a.incumbent]]) + 1, mean([e["tool_events"] for e in d[a.candidate]]) + 1)
+    turns = lambda e: e.get("tool_turns", e["tool_events"]) + 1  # +1 is the final answer turn
+    tpairs = [(mean([turns(e) for e in d[a.incumbent]]), mean([turns(e) for e in d[a.candidate]]))
               for d in by.values() if d.get(a.incumbent) and d.get(a.candidate)]
     tpoint, tlo, thi = boot_ratio(tpairs)
     si, sc = summarize(inc), summarize(cand)
@@ -110,8 +112,8 @@ def cmd_ab(a):
         verdict = "INCONCLUSIVE"
     out = {"kind": "ab", "track": a.track, "surface": a.surface, "incumbent": a.incumbent,
            "candidate": a.candidate, "tasks": len(pairs), "wall_ratio": round(point, 3),
-           "wall_ci": [round(lo, 3), round(hi, 3)], "tool_ratio": round(tpoint, 3),
-           "tool_ci": [round(tlo, 3), round(thi, 3)], "keep_threshold": round(threshold, 3),
+           "wall_ci": [round(lo, 3), round(hi, 3)], "turn_ratio": round(tpoint, 3),
+           "turn_ci": [round(tlo, 3), round(thi, 3)], "keep_threshold": round(threshold, 3),
            "guards": guards, "incumbent_summary": si, "candidate_summary": sc, "verdict": verdict,
            "ts": time.time(), "episodes": a.episodes}
     print(json.dumps(out, indent=1))
