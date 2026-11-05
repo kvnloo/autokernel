@@ -54,9 +54,9 @@ class BuildInterfaceTests(unittest.TestCase):
 
     def test_batch_continues_after_failed_variant(self):
         self.env["ALLOW_LOCAL_BUILD"] = "1"
-        result = self.call("omp", "armv86")
+        result = self.call("omp", "armv86", "streammark")
         self.assertEqual(result.returncode, 1)
-        for name in ("omp", "armv86"):
+        for name in ("omp", "armv86", "streammark"):
             data = json.loads((self.root / "out" / name / "BUILD.json").read_text())
             self.assertFalse(data["built"])
             self.assertEqual(data["variant"], name)

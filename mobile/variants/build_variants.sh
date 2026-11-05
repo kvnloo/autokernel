@@ -20,11 +20,12 @@ build_kleidiai() { build_one kleidiai; }
 build_vulkan() { build_one vulkan; }
 build_opencl() { build_one opencl; }
 build_o3lto() { build_one o3lto; }
-if [[ $# == 0 ]]; then set -- omp armv86 kleidiai vulkan opencl o3lto; fi
+build_streammark() { build_one streammark; }
+if [[ $# == 0 ]]; then set -- omp armv86 kleidiai vulkan opencl o3lto streammark; fi
 status=0
 for variant in "$@"; do
     case "$variant" in
-        omp|armv86|kleidiai|vulkan|opencl|o3lto) "build_$variant" || status=1 ;;
+        omp|armv86|kleidiai|vulkan|opencl|o3lto|streammark) "build_$variant" || status=1 ;;
         *) printf 'Unknown variant: %s\n' "$variant" >&2; status=1 ;;
     esac
 done

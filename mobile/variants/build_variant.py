@@ -20,6 +20,9 @@ DEPS = {
     "Vulkan-Headers": ("v1.4.328", "9a0f3099c8a9607a7c0f3127d8abfdc19a93e8c5"),
     "SPIRV-Headers": ("vulkan-sdk-1.4.328.1", "01e0577914a75a2569c846778c2f93aa8e6feddd"),
 }
+# Source-patch variants: base flags plus one patch, applied in a private clone so the
+# shared audio.cpp checkout stays pristine (its tracked-clean check still guards it).
+PATCHES = {"streammark": Path(__file__).resolve().parent / "patches/streammark.patch"}
 STOCK_LIBS = {"libc.so", "libm.so", "libdl.so", "liblog.so", "libvulkan.so"}
 
 
@@ -28,7 +31,7 @@ def output(argv):
 
 
 def main(name):
-    if name not in {"omp", "armv86", "kleidiai", "vulkan", "opencl", "o3lto"}:
+    if name not in {"omp", "armv86", "kleidiai", "vulkan", "opencl", "o3lto", *PATCHES}:
         raise ValueError("unknown variant")
     source = Path(os.environ["AUDIOCPP_SOURCE"]).resolve()
     ndk = Path(os.environ["ANDROID_NDK"]).resolve()
@@ -104,6 +107,16 @@ def main(name):
             raise RuntimeError("audio.cpp revision mismatch: " + actual_source)
         if output(["git", "-C", str(source), "status", "--porcelain", "--untracked-files=no"]):
             raise RuntimeError("audio.cpp tracked sources are dirty")
+        cmake_source = source
+        if name in PATCHES:
+            cmake_source = source / "build" / ("src-" + name)
+            shutil.rmtree(cmake_source, ignore_errors=True)
+            run(["git", "clone", "--quiet", "--no-checkout", source, cmake_source])
+            run(["git", "-C", cmake_source, "checkout", "--quiet", "--detach", SOURCE_SHA])
+            run(["git", "-C", cmake_source, "apply", "--whitespace=nowarn", PATCHES[name]])
+            record["source_patch"] = {"file": "variants/patches/" + PATCHES[name].name,
+                                      "sha256": hashlib.sha256(PATCHES[name].read_bytes()).hexdigest()}
+            record["notes"].append("Base flags; audio.cpp a01aed4 plus " + PATCHES[name].name + " in a private clone.")
         if name == "omp":
             setflag("ENGINE_ENABLE_OPENMP", "ON")
             setflag("GGML_OPENMP", "ON")
@@ -188,7 +201,7 @@ def main(name):
                 "environment": {k: os.environ[k] for k in ("CCACHE_DIR", "CCACHE_BASEDIR", "CCACHE_NOHASHDIR")},
             }
         record["flags"] = flags
-        command = ["cmake", "-G", "Ninja", "-S", str(source), "-B", str(build), *flags]
+        command = ["cmake", "-G", "Ninja", "-S", str(cmake_source), "-B", str(build), *flags]
         record["cmake_command"] = shlex.join(command)
         run(command)
         cache = {}
