@@ -1,0 +1,11 @@
+{
+ "id": "asr-niagara-base",
+ "track": "asr/niagara_asr",
+ "lane": "asr",
+ "family": "niagara_asr",
+ "model": "Niagara-ASR-GGUF/niagara-19m-batch.en-f32.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: niagara_asr CPU 4 threads, offline"
+}

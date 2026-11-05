@@ -1,0 +1,15 @@
+{
+ "id": "asr-sensevoice-base",
+ "track": "asr/sense_asr",
+ "lane": "asr",
+ "family": "sense_asr",
+ "model": "SenseVoice-Small-GGUF/sensevoice-small-q8-audiocpp-v1.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "extra_args": [
+  "--language",
+  "en"
+ ],
+ "hypothesis": "baseline: sense_asr CPU 4 threads, offline"
+}

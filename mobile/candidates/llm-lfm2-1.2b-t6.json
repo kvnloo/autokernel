@@ -1,0 +1,11 @@
+{
+ "id": "llm-lfm2-1.2b-t6",
+ "track": "llm/lfm2-1.2b",
+ "lane": "llm",
+ "family": "lfm2-1.2b",
+ "model": "LFM2-1.2B-Q4_0.gguf",
+ "threads": 6,
+ "objective": "ms_per_tok",
+ "timeout_s": 600,
+ "hypothesis": "6 threads (2 prime + 4 perf cores) beat 4 for decode"
+}

@@ -1,0 +1,11 @@
+{
+ "id": "vad-marblenet-base",
+ "track": "vad/marblenet_vad",
+ "lane": "vad",
+ "family": "marblenet_vad",
+ "model": "marblenet_vad",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: marblenet_vad CPU 4 threads, offline"
+}

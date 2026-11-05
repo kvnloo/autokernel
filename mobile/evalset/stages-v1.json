@@ -1,0 +1,307 @@
+{
+ "version": "stages-v1",
+ "frozen": "2026-11-05. Never edit in place: add stages-v2 and re-baseline every asr/vad/turn/llm incumbent.",
+ "source": "ref/asr/transcripts.json: kokoro 0.9.4; hexgrad/Kokoro-82M; CPU 4 threads; seed 7; speed 1; Synthetic clean-speech smoke set, not natural speech or robust turn-quality validation. Terminal silence 300 ms; leading silence 100 ms. Pause-bearing complete/incomplete cases have 800 ms inserted between independently synthesized clauses.",
+ "asr": [
+  {
+   "id": "asr01",
+   "audio": "ref/asr/asr01.wav",
+   "text": "Could you remind me to water the plants tonight?",
+   "duration_s": 3.225,
+   "expected_end_of_turn": true,
+   "sha256": "31cbe6988597385056f26ed3cc93fe42013e66d7365244e6c96908804be52bf9"
+  },
+  {
+   "id": "asr02",
+   "audio": "ref/asr/asr02.wav",
+   "text": "Please set a timer for five minutes.",
+   "duration_s": 3.075,
+   "expected_end_of_turn": true,
+   "sha256": "cb99804bbfc3012c28b324e6cc3be78422a65bc7735629c7ec930407885414fc"
+  },
+  {
+   "id": "asr03",
+   "audio": "ref/asr/asr03.wav",
+   "text": "What is the easiest way to cook brown rice?",
+   "duration_s": 3.575,
+   "expected_end_of_turn": true,
+   "sha256": "2f6e5a368166f7613143abb2edd253d48814bd0815123483ff8036a7f23fa9bc"
+  },
+  {
+   "id": "asr04",
+   "audio": "ref/asr/asr04.wav",
+   "text": "Turn the living room lights down a little.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "7074c1aca25dd5fae24b43e517d783288ab7fb229242dff92ca39ca29d8829ec"
+  },
+  {
+   "id": "asr05",
+   "audio": "ref/asr/asr05.wav",
+   "text": "I think we should leave after lunch.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "1082ef9c761a99cb8503349dd87bd1702da21774252c13d9767987e16ce63cca"
+  },
+  {
+   "id": "asr06",
+   "audio": "ref/asr/asr06.wav",
+   "text": "Can you help me find my blue notebook?",
+   "duration_s": 3.15,
+   "expected_end_of_turn": true,
+   "sha256": "092e80aacd95aabcc599ed993b36f25dd56844118bd27fb533fad1dce44129ed"
+  },
+  {
+   "id": "asr07",
+   "audio": "ref/asr/asr07.wav",
+   "text": "No thanks, I already have enough coffee.",
+   "duration_s": 3.275,
+   "expected_end_of_turn": true,
+   "sha256": "410baae061b567aeadbacfd46588bfbcbd3f1f4678dadc38075a7d67ed362650"
+  },
+  {
+   "id": "asr08",
+   "audio": "ref/asr/asr08.wav",
+   "text": "Move my meeting with Alex to Friday afternoon.",
+   "duration_s": 3.825,
+   "expected_end_of_turn": true,
+   "sha256": "5250cb050cc951d7f91c73b79a71f1c2eea28e8495d5ea44807be0a69d67f277"
+  },
+  {
+   "id": "asr09",
+   "audio": "ref/asr/asr09.wav",
+   "text": "Let me check the address before we go.",
+   "duration_s": 3.25,
+   "expected_end_of_turn": true,
+   "sha256": "a5541d93ddebe7916fa22089cf9d0e0dfe9f499a6863be723658bf09771cd2ef"
+  },
+  {
+   "id": "asr10",
+   "audio": "ref/asr/asr10.wav",
+   "text": "That sounds good, but can we make it earlier?",
+   "duration_s": 3.45,
+   "expected_end_of_turn": true,
+   "sha256": "2b925d7db3e5f2d90ecb268a8e1195420ff09c9d9d96e932f69b83c0b68ccb56"
+  },
+  {
+   "id": "asr11",
+   "audio": "ref/asr/asr11.wav",
+   "text": "Before we leave, please close the kitchen window.",
+   "duration_s": 5.5,
+   "expected_end_of_turn": true,
+   "sha256": "d627968a6e57a66b5fe1662e9bf485462e31c34753c3223a4b09768fe26027b5"
+  },
+  {
+   "id": "asr12",
+   "audio": "ref/asr/asr12.wav",
+   "text": "So what I wanted to ask was...",
+   "duration_s": 5.05,
+   "expected_end_of_turn": false,
+   "sha256": "2f30edd7c644b03a7fd6c9a302a7570f5d659be9497b10a52104084c19280aa6"
+  }
+ ],
+ "vad": [
+  {
+   "id": "asr01",
+   "audio": "ref/asr/asr01.wav",
+   "text": "Could you remind me to water the plants tonight?",
+   "duration_s": 3.225,
+   "expected_end_of_turn": true,
+   "sha256": "31cbe6988597385056f26ed3cc93fe42013e66d7365244e6c96908804be52bf9"
+  },
+  {
+   "id": "asr02",
+   "audio": "ref/asr/asr02.wav",
+   "text": "Please set a timer for five minutes.",
+   "duration_s": 3.075,
+   "expected_end_of_turn": true,
+   "sha256": "cb99804bbfc3012c28b324e6cc3be78422a65bc7735629c7ec930407885414fc"
+  },
+  {
+   "id": "asr03",
+   "audio": "ref/asr/asr03.wav",
+   "text": "What is the easiest way to cook brown rice?",
+   "duration_s": 3.575,
+   "expected_end_of_turn": true,
+   "sha256": "2f6e5a368166f7613143abb2edd253d48814bd0815123483ff8036a7f23fa9bc"
+  },
+  {
+   "id": "asr04",
+   "audio": "ref/asr/asr04.wav",
+   "text": "Turn the living room lights down a little.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "7074c1aca25dd5fae24b43e517d783288ab7fb229242dff92ca39ca29d8829ec"
+  },
+  {
+   "id": "asr05",
+   "audio": "ref/asr/asr05.wav",
+   "text": "I think we should leave after lunch.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "1082ef9c761a99cb8503349dd87bd1702da21774252c13d9767987e16ce63cca"
+  },
+  {
+   "id": "asr06",
+   "audio": "ref/asr/asr06.wav",
+   "text": "Can you help me find my blue notebook?",
+   "duration_s": 3.15,
+   "expected_end_of_turn": true,
+   "sha256": "092e80aacd95aabcc599ed993b36f25dd56844118bd27fb533fad1dce44129ed"
+  },
+  {
+   "id": "asr07",
+   "audio": "ref/asr/asr07.wav",
+   "text": "No thanks, I already have enough coffee.",
+   "duration_s": 3.275,
+   "expected_end_of_turn": true,
+   "sha256": "410baae061b567aeadbacfd46588bfbcbd3f1f4678dadc38075a7d67ed362650"
+  },
+  {
+   "id": "asr08",
+   "audio": "ref/asr/asr08.wav",
+   "text": "Move my meeting with Alex to Friday afternoon.",
+   "duration_s": 3.825,
+   "expected_end_of_turn": true,
+   "sha256": "5250cb050cc951d7f91c73b79a71f1c2eea28e8495d5ea44807be0a69d67f277"
+  },
+  {
+   "id": "asr09",
+   "audio": "ref/asr/asr09.wav",
+   "text": "Let me check the address before we go.",
+   "duration_s": 3.25,
+   "expected_end_of_turn": true,
+   "sha256": "a5541d93ddebe7916fa22089cf9d0e0dfe9f499a6863be723658bf09771cd2ef"
+  },
+  {
+   "id": "asr10",
+   "audio": "ref/asr/asr10.wav",
+   "text": "That sounds good, but can we make it earlier?",
+   "duration_s": 3.45,
+   "expected_end_of_turn": true,
+   "sha256": "2b925d7db3e5f2d90ecb268a8e1195420ff09c9d9d96e932f69b83c0b68ccb56"
+  },
+  {
+   "id": "asr11",
+   "audio": "ref/asr/asr11.wav",
+   "text": "Before we leave, please close the kitchen window.",
+   "duration_s": 5.5,
+   "expected_end_of_turn": true,
+   "sha256": "d627968a6e57a66b5fe1662e9bf485462e31c34753c3223a4b09768fe26027b5"
+  },
+  {
+   "id": "asr12",
+   "audio": "ref/asr/asr12.wav",
+   "text": "So what I wanted to ask was...",
+   "duration_s": 5.05,
+   "expected_end_of_turn": false,
+   "sha256": "2f30edd7c644b03a7fd6c9a302a7570f5d659be9497b10a52104084c19280aa6"
+  }
+ ],
+ "turn": [
+  {
+   "id": "asr01",
+   "audio": "ref/asr/asr01.wav",
+   "text": "Could you remind me to water the plants tonight?",
+   "duration_s": 3.225,
+   "expected_end_of_turn": true,
+   "sha256": "31cbe6988597385056f26ed3cc93fe42013e66d7365244e6c96908804be52bf9"
+  },
+  {
+   "id": "asr02",
+   "audio": "ref/asr/asr02.wav",
+   "text": "Please set a timer for five minutes.",
+   "duration_s": 3.075,
+   "expected_end_of_turn": true,
+   "sha256": "cb99804bbfc3012c28b324e6cc3be78422a65bc7735629c7ec930407885414fc"
+  },
+  {
+   "id": "asr03",
+   "audio": "ref/asr/asr03.wav",
+   "text": "What is the easiest way to cook brown rice?",
+   "duration_s": 3.575,
+   "expected_end_of_turn": true,
+   "sha256": "2f6e5a368166f7613143abb2edd253d48814bd0815123483ff8036a7f23fa9bc"
+  },
+  {
+   "id": "asr04",
+   "audio": "ref/asr/asr04.wav",
+   "text": "Turn the living room lights down a little.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "7074c1aca25dd5fae24b43e517d783288ab7fb229242dff92ca39ca29d8829ec"
+  },
+  {
+   "id": "asr05",
+   "audio": "ref/asr/asr05.wav",
+   "text": "I think we should leave after lunch.",
+   "duration_s": 3.0,
+   "expected_end_of_turn": true,
+   "sha256": "1082ef9c761a99cb8503349dd87bd1702da21774252c13d9767987e16ce63cca"
+  },
+  {
+   "id": "asr06",
+   "audio": "ref/asr/asr06.wav",
+   "text": "Can you help me find my blue notebook?",
+   "duration_s": 3.15,
+   "expected_end_of_turn": true,
+   "sha256": "092e80aacd95aabcc599ed993b36f25dd56844118bd27fb533fad1dce44129ed"
+  },
+  {
+   "id": "asr07",
+   "audio": "ref/asr/asr07.wav",
+   "text": "No thanks, I already have enough coffee.",
+   "duration_s": 3.275,
+   "expected_end_of_turn": true,
+   "sha256": "410baae061b567aeadbacfd46588bfbcbd3f1f4678dadc38075a7d67ed362650"
+  },
+  {
+   "id": "asr08",
+   "audio": "ref/asr/asr08.wav",
+   "text": "Move my meeting with Alex to Friday afternoon.",
+   "duration_s": 3.825,
+   "expected_end_of_turn": true,
+   "sha256": "5250cb050cc951d7f91c73b79a71f1c2eea28e8495d5ea44807be0a69d67f277"
+  },
+  {
+   "id": "asr09",
+   "audio": "ref/asr/asr09.wav",
+   "text": "Let me check the address before we go.",
+   "duration_s": 3.25,
+   "expected_end_of_turn": true,
+   "sha256": "a5541d93ddebe7916fa22089cf9d0e0dfe9f499a6863be723658bf09771cd2ef"
+  },
+  {
+   "id": "asr10",
+   "audio": "ref/asr/asr10.wav",
+   "text": "That sounds good, but can we make it earlier?",
+   "duration_s": 3.45,
+   "expected_end_of_turn": true,
+   "sha256": "2b925d7db3e5f2d90ecb268a8e1195420ff09c9d9d96e932f69b83c0b68ccb56"
+  },
+  {
+   "id": "asr11",
+   "audio": "ref/asr/asr11.wav",
+   "text": "Before we leave, please close the kitchen window.",
+   "duration_s": 5.5,
+   "expected_end_of_turn": true,
+   "sha256": "d627968a6e57a66b5fe1662e9bf485462e31c34753c3223a4b09768fe26027b5"
+  },
+  {
+   "id": "asr12",
+   "audio": "ref/asr/asr12.wav",
+   "text": "So what I wanted to ask was...",
+   "duration_s": 5.05,
+   "expected_end_of_turn": false,
+   "sha256": "2f30edd7c644b03a7fd6c9a302a7570f5d659be9497b10a52104084c19280aa6"
+  }
+ ],
+ "llm": [
+  {
+   "id": "pp128-tg32",
+   "n_prompt": 128,
+   "n_gen": 32,
+   "reps": 3
+  }
+ ]
+}

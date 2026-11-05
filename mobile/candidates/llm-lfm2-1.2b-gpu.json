@@ -1,0 +1,12 @@
+{
+ "id": "llm-lfm2-1.2b-gpu",
+ "track": "llm/lfm2-1.2b",
+ "lane": "llm",
+ "family": "lfm2-1.2b",
+ "model": "LFM2-1.2B-Q4_0.gguf",
+ "threads": 4,
+ "objective": "ms_per_tok",
+ "timeout_s": 600,
+ "device": "GPUOpenCL",
+ "hypothesis": "Adreno 830 OpenCL offload (-ngl 99) cuts decode ms/token"
+}

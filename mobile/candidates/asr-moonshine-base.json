@@ -1,0 +1,11 @@
+{
+ "id": "asr-moonshine-base",
+ "track": "asr/moonshine_asr",
+ "lane": "asr",
+ "family": "moonshine_asr",
+ "model": "Moonshine-Streaming-GGUF/moonshine-streaming-tiny-q8_0.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "streaming",
+ "hypothesis": "baseline: moonshine_asr CPU 4 threads, streaming"
+}

@@ -1,0 +1,15 @@
+{
+ "id": "asr-kroko-base",
+ "track": "asr/kroko_asr",
+ "lane": "asr",
+ "family": "kroko_asr",
+ "model": "Kroko-ASR-GGUF/kroko-en-community-64-l-q8_0.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "streaming",
+ "extra_args": [
+  "--language",
+  "en"
+ ],
+ "hypothesis": "baseline: kroko_asr CPU 4 threads, streaming"
+}

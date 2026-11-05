@@ -32,6 +32,10 @@ OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "90"))
 MAX_AP_C, MAX_BAT_C = 42.0, 38.0
 MIN_BATT = int(os.environ.get("ZLV_MIN_BATT", "30"))  # gate only; owner: level is irrelevant at home (fulltime.py sets 0)
 EVALSET = json.loads((ROOT / "evalset" / "v1.json").read_text())
+# Realtime-stage lanes (asr/vad/turn/llm) use their own frozen set; v1 (tts/s2s) is untouched.
+EVALSET.update({k: v for k, v in json.loads((ROOT / "evalset" / "stages-v1.json").read_text()).items() if k in ("asr", "vad", "turn", "llm")})
+INPUT_LANES = ("asr", "vad", "turn")
+LLM_DIR = "/data/local/tmp/z0live-ar/llm"  # pre-staged llama.cpp (CPU/OpenCL/Hexagon) + GGUFs; not managed by sync()
 
 
 # ---------------------------------------------------------------- adb plumbing
@@ -64,7 +68,8 @@ def telemetry():
     out = sh("dumpsys battery | grep -E '^  (level|temperature|AC powered|USB powered|Wireless powered|current now|Charge counter|voltage):';"
              "echo ==; dumpsys thermalservice | sed -n '/^Current temperatures from HAL/,/^[A-Z]/p' | grep -E 'mName=(AP|SKIN|BAT),' | head -3; echo ==;"
              "dumpsys power | grep -E '^ *lastUserActivityTime=|mWakefulness='; echo ==;"
-             "dumpsys window | grep -m1 mTopFocusedDisplayId; dumpsys window | grep -m1 mCurrentFocus", timeout=60)
+             "dumpsys window | grep -m1 mTopFocusedDisplayId; dumpsys window | grep -m1 mCurrentFocus;"
+             "dumpsys telephony.registry 2>/dev/null | grep -m1 mCallState=; dumpsys audio 2>/dev/null | grep -m1 mAudioModeOwner", timeout=60)
     t = {}
     for k, key in (("level", "level"), ("temperature", "batt_dC"), ("current now", "current_uA"), ("Charge counter", "charge_uAh"), ("voltage", "voltage_mV")):
         m = re.search(rf"^  {k}: (-?\d+)", out, re.M)
@@ -80,6 +85,10 @@ def telemetry():
     t["focus_display"] = int(m[1]) if m else None
     m = re.search(r"mCurrentFocus=(.*)", out)
     t["focus"] = m[1].strip() if m else None
+    m = re.search(r"mCallState=(\d)", out)
+    t["call_state"] = int(m[1]) if m else None  # 0 idle, 1 ringing, 2 offhook
+    m = re.search(r"mAudioModeOwner:.*?mMode=(\d+)", out)
+    t["audio_mode"] = int(m[1]) if m else None  # 1 ringtone, 2 in call, 3 in communication (VoIP)
     t["at"] = datetime.datetime.now().isoformat(timespec="seconds")
     return t
 
@@ -126,7 +135,9 @@ def binary(cfg):
 
 def model_paths(cfg):
     paths = [cfg["model"].split("/")[0]] + list(cfg.get("assets", []))
-    if cfg.get("lane") == "s2s":
+    if cfg.get("lane") == "llm":
+        return []  # lives in LLM_DIR, staged once (2026-11-02)
+    if cfg.get("lane") in ("s2s", *INPUT_LANES):
         paths.append("ref")
     if cfg.get("spec_override"):
         paths.append("specs")
@@ -134,7 +145,7 @@ def model_paths(cfg):
 
 
 def kill_phone_jobs():
-    sh("for p in $(ps -A -o PID,ARGS | grep -E 'block\\.s[h]|z0live-ar/bi[n]' | awk '{print $1}'); do kill $p; done", timeout=30)
+    sh("for p in $(ps -A -o PID,ARGS | grep -E 'block\\.s[h]|z0live-ar/bi[n]|z0live-ar/llm/bi[n]' | awk '{print $1}'); do kill $p; done", timeout=30)
 
 
 def sync(cfgs):
@@ -182,6 +193,21 @@ def cmdline(cfg, item, out_wav):
         a += ["--audio", f"{PD}/m/{item['audio']}", "--text-out", out_wav[:-4] + ".txt"]
         if cfg.get("spec_override"):
             a += ["--model-spec-override", f"{PD}/m/{cfg['spec_override']}"]
+    elif cfg["lane"] in INPUT_LANES:
+        a = [b, "--task", cfg["lane"]] + a[1:]
+        i = a.index("--out"); del a[i:i + 2]
+        a += ["--audio", f"{PD}/m/{item['audio']}", "--load-progress", "1"]
+        a += {"asr": ["--text-out", out_wav], "vad": ["--segments-out", out_wav], "turn": []}[cfg["lane"]]
+    elif cfg["lane"] == "llm":
+        dev = cfg.get("device")  # None = CPU, "GPUOpenCL", "HTP0"
+        a = [f"{LLM_DIR}/bin/llama-bench", "-m", f"{LLM_DIR}/m/{cfg['model']}", "-p", str(item["n_prompt"]), "-n", str(item["n_gen"]),
+             "-r", str(item["reps"]), "-t", str(cfg.get("threads", 4)), "-o", "jsonl"] + (["-dev", dev, "-ngl", "99"] if dev else ["-dev", "none", "-ngl", "0"])
+        a += [str(x) for x in cfg.get("extra_args", [])]
+        env = {"LD_LIBRARY_PATH": f"{LLM_DIR}/lib", "ADSP_LIBRARY_PATH": f"{LLM_DIR}/lib", **cfg.get("env", {})}
+        pre = " ".join(f"{k}={shlex.quote(str(v))}" for k, v in env.items())
+        mask = cfg.get("cpu_mask")
+        return (f"{pre} timeout {int(cfg.get('timeout_s', 300))} " + (f"taskset {mask} " if mask else "")
+                + " ".join(shlex.quote(x) for x in a) + f" > {out_wav} 2>/dev/null; cat {out_wav}")
     else:
         raise SystemExit(f"lane {cfg['lane']} not wired in bench epoch {BENCH_EPOCH}")
     a += [x.replace("{M}", f"{PD}/m") for x in cfg.get("extra_args", [])]
@@ -201,6 +227,7 @@ def phone_block(jobs):
                      f"*text.prepare_ms*|*prompt_ms*|*voice.prepare_ms*) echo \"EV {tag} LOADED $(N)\";; "
                      f"audio_output_id=*) echo \"EV {tag} FIRST $(N)\";; "
                      f"*session.wall_ms*) echo \"EV {tag} WALL ${{l##* }}\";; "
+                     f"*avg_ts*) echo \"EV {tag} JSON $l\";; "
                      f"*rror*|*failed*|*Abort*) echo \"EV {tag} ERR $l\";; esac; done")
         lines.append(f"echo \"EV {tag} END $(N) $(wc -c < {wav} 2>/dev/null || echo 0)\"")
     return "\n".join(lines) + "\n"
@@ -222,6 +249,8 @@ def parse_events(text):
         elif p[2] == "END":
             a, b = p[3].split()
             r["end"], r["wav_bytes"] = int(a), int(b)
+        elif p[2] == "JSON":
+            r.setdefault("json", []).append(p[3])
         elif p[2] == "ERR":
             r["errs"].append(p[3][:200])
     return runs
@@ -273,7 +302,8 @@ def measure(cfgs, rounds, run_dir, log=print):
             for it in items:
                 tag = f"{c['_slot']}-{it['id']}-r{r}"
                 e = ev.get(tag, {"errs": ["no events"]})
-                secs = wav_seconds(run_dir / "wav" / f"{tag}.wav")
+                lane = c["lane"]
+                secs = it.get("duration_s") if lane in INPUT_LANES else (1.0 if lane == "llm" else wav_seconds(run_dir / "wav" / f"{tag}.wav"))
                 rec = {"tag": tag, "item": it["id"], "round": r, "errs": e["errs"], "audio_s": secs, "contaminated": contaminated}
                 if "first" in e:
                     rec["start_to_first_ms"] = (e["first"] - e["start"]) / 1e6
@@ -281,8 +311,19 @@ def measure(cfgs, rounds, run_dir, log=print):
                         rec["load_to_first_ms"] = (e["first"] - e["loaded"]) / 1e6
                 if "end" in e:
                     rec["proc_ms"] = (e["end"] - e["start"]) / 1e6
-                if "wall_ms" in e and secs:
+                if "wall_ms" in e and secs and lane not in INPUT_LANES + ("llm",):
                     rec["rtf"] = e["wall_ms"] / 1000 / secs
+                if lane in INPUT_LANES and "proc_ms" in rec:
+                    rec["rtf"] = rec["proc_ms"] / 1000 / secs  # process RTF incl. model load (one process per clip)
+                if lane == "llm":
+                    rows = [json.loads(x) for x in e.get("json", []) if x.startswith("{")]
+                    tg = [x for x in rows if x.get("n_gen")]; pp = [x for x in rows if x.get("n_prompt") and not x.get("n_gen")]
+                    if tg:
+                        rec["ms_per_tok"] = 1000 / tg[0]["avg_ts"]; rec["tg_tps"] = tg[0]["avg_ts"]
+                    if pp:
+                        rec["pp_tps"] = pp[0]["avg_ts"]; rec["pp_ms_per_tok"] = 1000 / pp[0]["avg_ts"]
+                    if not tg:
+                        rec["errs"] = rec["errs"] + ["no llama-bench tg row"]
                 recs[c["_slot"]].append(rec)
             ch = (t0["charge_uAh"] or 0) - (t1["charge_uAh"] or 0)
             log(f"  {c['_slot']} r{r}: {sum(1 for x in recs[c['_slot']] if x['round']==r and not x['errs'])}/{len(items)} ok, "
@@ -299,7 +340,7 @@ def summarize(rs, objective):
     ok = [r for r in rs if not r["errs"] and r.get("audio_s") and not (OWNER_IDLE_S and r["contaminated"])]
     s_busy = sum(1 for r in rs if r["contaminated"])
     s = {"n": len(rs), "ok": len(ok), "owner_active_runs": s_busy}
-    for k in ("load_to_first_ms", "start_to_first_ms", "rtf", "proc_ms"):
+    for k in ("load_to_first_ms", "start_to_first_ms", "rtf", "proc_ms", "ms_per_tok", "tg_tps", "pp_tps", "pp_ms_per_tok"):
         v = [r[k] for r in ok if r.get(k) is not None]
         if v:
             s[k] = {"p50": round(statistics.median(v), 2), "p90": round(q(v, .9), 2), "n": len(v)}
@@ -307,7 +348,8 @@ def summarize(rs, objective):
     return s
 
 
-OBJ_KEY = {"ttfa_warm": "load_to_first_ms", "ttfa_cold": "start_to_first_ms", "rtf": "rtf", "wall": "proc_ms"}
+OBJ_KEY = {"ttfa_warm": "load_to_first_ms", "ttfa_cold": "start_to_first_ms", "rtf": "rtf", "wall": "proc_ms",
+           "ms_per_tok": "ms_per_tok", "prefill_ms_per_tok": "pp_ms_per_tok"}
 
 
 def paired_ratio_ci(inc, cand, key, n=4000, seed=7):
@@ -332,7 +374,26 @@ def paired_ratio_ci(inc, cand, key, n=4000, seed=7):
     return {"lo": round(ratios[int(.025 * n)], 4), "mid": round(statistics.median(ratios), 4), "hi": round(ratios[int(.975 * n)], 4)}
 
 
+def wer(ref, hyp):
+    r, h = re.findall(r"[a-z0-9]+", ref.lower().replace("'", "")), re.findall(r"[a-z0-9]+", hyp.lower().replace("'", ""))
+    d = list(range(len(h) + 1))
+    for i in range(1, len(r) + 1):
+        prev, d[0] = d[0], i
+        for j in range(1, len(h) + 1):
+            prev, d[j] = d[j], min(d[j] + 1, d[j - 1] + 1, prev + (r[i - 1] != h[j - 1]))
+    return d[len(h)] / max(1, len(r))
+
+
 def quality(run_dir, slots, lane):
+    if lane == "asr":  # text-out files pulled into wav/; WER vs the frozen transcripts
+        ref = {i["id"]: i["text"] for i in EVALSET["asr"]}
+        out = {"slots": {}}
+        for s in slots:
+            ws = [wer(ref[f.name.split("-")[1]], f.read_text(errors="ignore")) for f in sorted((run_dir / "wav").glob(f"{s}-asr*-r*.wav"))]
+            out["slots"][s] = {"wer": round(statistics.mean(ws), 4), "n": len(ws)} if ws else {"wer": None, "n": 0}
+        return out
+    if lane in ("vad", "turn", "llm"):
+        return {"status": "latency-only lane (no quality scorer wired yet)"}
     qpy = ROOT / "quality.py"
     if not qpy.exists():
         return {"status": "unavailable"}

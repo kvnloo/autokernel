@@ -1,0 +1,11 @@
+{
+ "id": "vad-firered-base",
+ "track": "vad/firered_vad",
+ "lane": "vad",
+ "family": "firered_vad",
+ "model": "FireRedVAD-GGUF/firered-stream-vad-f32.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "streaming",
+ "hypothesis": "baseline: firered_vad CPU 4 threads, streaming"
+}

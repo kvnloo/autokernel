@@ -1,0 +1,11 @@
+{
+ "id": "llm-qwen3-0.6b-base",
+ "track": "llm/qwen3-0.6b",
+ "lane": "llm",
+ "family": "qwen3-0.6b",
+ "model": "Qwen3-0.6B-Q4_0.gguf",
+ "threads": 4,
+ "objective": "ms_per_tok",
+ "timeout_s": 600,
+ "hypothesis": "baseline: llama.cpp CPU 4 threads, pp128/tg32 decode ms/token"
+}

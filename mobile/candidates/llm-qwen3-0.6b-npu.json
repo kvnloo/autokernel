@@ -1,0 +1,12 @@
+{
+ "id": "llm-qwen3-0.6b-npu",
+ "track": "llm/qwen3-0.6b",
+ "lane": "llm",
+ "family": "qwen3-0.6b",
+ "model": "Qwen3-0.6B-Q4_0.gguf",
+ "threads": 4,
+ "objective": "ms_per_tok",
+ "timeout_s": 600,
+ "device": "HTP0",
+ "hypothesis": "Hexagon v79 HTP offload (-ngl 99) cuts decode ms/token"
+}

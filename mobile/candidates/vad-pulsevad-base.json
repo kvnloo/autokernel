@@ -1,0 +1,11 @@
+{
+ "id": "vad-pulsevad-base",
+ "track": "vad/pulsevad",
+ "lane": "vad",
+ "family": "pulsevad",
+ "model": "PulseVAD-GGUF/pulsevad-2.1k-f32.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: pulsevad CPU 4 threads, offline"
+}

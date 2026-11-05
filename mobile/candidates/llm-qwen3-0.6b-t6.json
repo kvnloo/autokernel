@@ -1,0 +1,11 @@
+{
+ "id": "llm-qwen3-0.6b-t6",
+ "track": "llm/qwen3-0.6b",
+ "lane": "llm",
+ "family": "qwen3-0.6b",
+ "model": "Qwen3-0.6B-Q4_0.gguf",
+ "threads": 6,
+ "objective": "ms_per_tok",
+ "timeout_s": 600,
+ "hypothesis": "6 threads (2 prime + 4 perf cores) beat 4 for decode"
+}

@@ -1,0 +1,12 @@
+{
+ "id": "asr-parakeet-base",
+ "track": "asr/parakeet_tdt",
+ "lane": "asr",
+ "family": "parakeet_tdt",
+ "model": "Parakeet-TDT-0.6B-v3-GGUF/parakeet-tdt-0.6b-v3-q8_0.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: parakeet_tdt CPU 4 threads, offline",
+ "timeout_s": 300
+}

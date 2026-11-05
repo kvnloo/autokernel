@@ -1,0 +1,11 @@
+{
+ "id": "turn-smartturn-base",
+ "track": "turn/smart_turn",
+ "lane": "turn",
+ "family": "smart_turn",
+ "model": "Smart-Turn-v3-GGUF/smart-turn-v3.2-f32.gguf",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: smart_turn CPU 4 threads, offline"
+}

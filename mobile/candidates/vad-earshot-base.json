@@ -1,0 +1,11 @@
+{
+ "id": "vad-earshot-base",
+ "track": "vad/earshot_vad",
+ "lane": "vad",
+ "family": "earshot_vad",
+ "model": "earshot_vad",
+ "variant": "base",
+ "threads": 4,
+ "mode": "streaming",
+ "hypothesis": "baseline: earshot_vad CPU 4 threads, streaming"
+}

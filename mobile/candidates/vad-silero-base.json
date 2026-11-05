@@ -1,0 +1,11 @@
+{
+ "id": "vad-silero-base",
+ "track": "vad/silero_vad",
+ "lane": "vad",
+ "family": "silero_vad",
+ "model": "silero_vad",
+ "variant": "base",
+ "threads": 4,
+ "mode": "offline",
+ "hypothesis": "baseline: silero_vad CPU 4 threads, offline"
+}
