@@ -140,6 +140,42 @@ def run_opencode(arm, query, deadline):
     return events, timed_out
 
 
+def run_fx(arm, query, deadline):
+    """One fresh `fx ask --json` episode (GPT via fx is the owner-sanctioned GPT route).
+    fx reports steps (model turns), tool calls with durations and main-agent token usage."""
+    cmd = ["fx", "ask", "--json", "--model", arm["model"]]
+    if arm.get("effort"):
+        cmd += ["--effort", arm["effort"]]
+    cmd += ["--", query]
+    try:
+        out = subprocess.run(cmd, cwd=HOME, capture_output=True, text=True, timeout=deadline + 30).stdout
+    except subprocess.TimeoutExpired:
+        return [{"type": "result", "error": "timeout"}], True
+    try:
+        d = json.loads(out)
+    except ValueError:
+        return [{"type": "result", "error": "fx returned no JSON: " + out[-200:]}], False
+    calls = d.get("tool_calls") or []
+    steps = int(d.get("steps") or 0)
+    events = []
+    # fx gives totals, not a per-turn stream: spread calls over the tool-calling steps so the
+    # shared turn counter sees `steps - 1` tool turns (the last step is the answer).
+    tool_steps = max(0, steps - 1) if calls else 0
+    per = [calls[i::tool_steps] for i in range(tool_steps)] if tool_steps else []
+    for group in per:
+        events += [{"type": "tool_use", "name": c.get("name")} for c in group]
+        events += [{"type": "tool_result", "duration_ms": (c.get("command_result") or {}).get("duration_ms") or 0}
+                   for c in group]
+    u = d.get("usage") or {}
+    tok = {"input": u.get("input_tokens") or 0, "output": u.get("output_tokens") or 0}
+    tok["total"] = tok["input"] + tok["output"]
+    err = None if d.get("exit_code") == 0 else f"fx exit {d.get('exit_code')}"
+    events.append({"type": "result", "session_id": d.get("session_id"), "text": d.get("final_output") or d.get("output") or "",
+                   "tokens": tok, "served": [d.get("model"), d.get("resolved_provider") or "fx-codex-subscription"],
+                   **({"error": err} if err else {})})
+    return events, False
+
+
 def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
     """Block until the host is quiet enough; return the covariates seen at start."""
     t0 = time.time()
@@ -185,8 +221,8 @@ def episode(task, arm, rep, order):
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         t0 = time.time()
         timed_out, events = False, []
-        if arm.get("harness") == "opencode":
-            events, timed_out = run_opencode(arm, query, deadline)
+        if arm.get("harness") in ("opencode", "fx"):
+            events, timed_out = (run_opencode if arm["harness"] == "opencode" else run_fx)(arm, query, deadline)
             raw = ""
         else:
             try:
@@ -221,13 +257,17 @@ def episode(task, arm, rep, order):
             if served:
                 break
             time.sleep(1)
+    if arm.get("harness") == "fx":
+        served = tuple(result["served"]) if result.get("served") and result["served"][0] else None
     canon = lambda m: (m or "").split("/")[-1].replace(".", "-").lower()
     if arm.get("model") and (not served or canon(served[0]) != canon(arm["model"])):
         # Hermes falls back silently when the arm's provider fails; such an episode measures
         # another model, so it must not count toward this arm's verdict.
         ok, result["error"] = False, (f"served by {served[0]} via {served[1]}, not {arm['model']}" if served
                                       else f"served model unverifiable (session {result.get('session_id')} not in state.db)")
-    return {"served_model": served, "task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
+    infra = bool(re.search(r"429|rate.?limit|usage limit|quota|sign up for free|credentials|api key",
+                           str(result.get("error") or ""), re.I))
+    return {"infra_error": infra, "served_model": served, "task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
             "pass": ok, "wall_s": round(wall, 2), "charged_s": round(wall if ok else deadline, 2),
             "timed_out": timed_out, "tool_events": len(tools), "tool_turns": turns, "tool_s": round(tool_ms / 1000, 2), "answer": answer,
             "tokens": result.get("tokens"), "session_id": result.get("session_id"),
@@ -284,8 +324,15 @@ def main():
     print(f"{len(tasks)} tasks x {len(arms)} arm(s) x {a.reps} rep(s): {len(jobs)} episodes to run", flush=True)
     with cf.ThreadPoolExecutor(a.jobs) as ex:
         futs = [ex.submit(episode, *j) for j in jobs]
+        infra_run = 0
         for f in cf.as_completed(futs):
             e = f.result()
+            infra_run = infra_run + 1 if e.get("infra_error") else 0
+            if infra_run >= 3:  # quota/auth outage: stop instead of charging deadlines to every arm
+                print("ABORT: 3 consecutive infrastructure errors:", e.get("error"), flush=True)
+                for g in futs:
+                    g.cancel()
+                os._exit(3)
             with LOCK, open(a.out, "a") as fh:
                 fh.write(json.dumps(e) + "\n")
             print(f"{e['task']:<10} {e['arm']:<14} r{e['rep']}o{e['order']} pass={int(e['pass'])} "
