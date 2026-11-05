@@ -29,7 +29,8 @@ OWNER_IDLE_S = int(os.environ.get("ZLV_OWNER_IDLE_S", "90"))
 # Epoch 2 ran while the owner used the phone: an A/A test (same config both sides) differed by 1.38-1.73x,
 # so decisions need idle windows. Epoch 3 splits tiers: `--tier screen` runs any time (no idle gate) and only
 # nominates big wins (PROMISING); `confirm` (default) is idle-gated and is the only tier that can KEEP.
-MAX_AP_C, MAX_BAT_C, MIN_BATT = 42.0, 38.0, 30
+MAX_AP_C, MAX_BAT_C = 42.0, 38.0
+MIN_BATT = int(os.environ.get("ZLV_MIN_BATT", "30"))  # gate only; owner: level is irrelevant at home (fulltime.py sets 0)
 EVALSET = json.loads((ROOT / "evalset" / "v1.json").read_text())
 
 
