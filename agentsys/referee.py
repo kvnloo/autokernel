@@ -108,6 +108,8 @@ def episode(task, arm, rep, order):
         for flag, key in (("-m", "model"), ("--provider", "provider"), ("--reasoning", "reasoning")):
             if arm.get(key):
                 cmd += [flag, arm[key]]
+        if arm.get("ignore_rules"):  # no SOUL/AGENTS/memory/skills: the preamble is the only surface
+            cmd += ["--ignore-rules"]
         deadline = float(arm.get("budget_s", 300))
         cov = host_idle()
         if task.get("setup"):
@@ -141,10 +143,12 @@ def episode(task, arm, rep, order):
     ok, answer = judge(task, text)
     ok = ok and not timed_out and wall <= deadline and not result.get("error")
     served = served_model(result.get("session_id"))
-    if arm.get("model") and served and served[0] != arm["model"].split("/")[-1].replace(".", "-"):
+    canon = lambda m: (m or "").split("/")[-1].replace(".", "-").lower()
+    if arm.get("model") and (not served or canon(served[0]) != canon(arm["model"])):
         # Hermes falls back silently when the arm's provider fails; such an episode measures
         # another model, so it must not count toward this arm's verdict.
-        ok, result["error"] = False, f"served by {served[0]} via {served[1]}, not {arm['model']}"
+        ok, result["error"] = False, (f"served by {served[0]} via {served[1]}, not {arm['model']}" if served
+                                      else f"served model unverifiable (session {result.get('session_id')} not in state.db)")
     return {"served_model": served, "task": task["id"], "kind": task.get("kind"), "arm": arm["name"], "rep": rep, "order": order,
             "pass": ok, "wall_s": round(wall, 2), "charged_s": round(wall if ok else deadline, 2),
             "timed_out": timed_out, "tool_events": len(tools), "tool_turns": turns, "tool_s": round(tool_ms / 1000, 2), "answer": answer,
