@@ -62,7 +62,11 @@ def summarize(eps):
 
 def cmd_aa(a):
     eps = load(a.episodes)
-    if a.arm:  # A/A from an A/B run: the incumbent's rep 0 vs rep 1 on the same tasks
+    if a.pair:  # within-block A/A: two identically configured arms interleaved in the same blocks
+        x, y = a.pair.split(",")
+        eps = [e for e in eps if e["arm"] in (x, y)]
+        by = per_task(eps, lambda e: 0 if e["arm"] == x else 1)
+    elif a.arm:  # A/A from an A/B run: the incumbent's rep 0 vs rep 1 on the same tasks
         eps = [e for e in eps if e["arm"] == a.arm]
         by = per_task(eps, lambda e: e["rep"])
     else:
@@ -140,6 +144,7 @@ def main():
     s.add_argument("--episodes", required=True)
     s.add_argument("--ledger")
     s.add_argument("--arm", help="derive A/A from this arm's rep 0 vs rep 1")
+    s.add_argument("--pair", help="A,B: A/A between two identical arms run in the same blocks")
     s.set_defaults(fn=cmd_aa)
     s = sub.add_parser("ab")
     for k in ("episodes", "incumbent", "candidate", "track", "surface"):
