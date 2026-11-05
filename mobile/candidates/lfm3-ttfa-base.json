@@ -1,0 +1,13 @@
+{
+ "id": "lfm3-ttfa-base",
+ "track": "s2s/lfm3-ttfa",
+ "lane": "s2s",
+ "family": "lfm3_audio",
+ "model": "LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf",
+ "spec_override": "specs/lfm3_audio.json",
+ "variant": "streammark",
+ "threads": 4,
+ "objective": "ttfa_warm",
+ "warm": true,
+ "hypothesis": "baseline: LFM3-Audio 2B Q4_0 s2s time to first audio after model load (runtime.load.phase loaded -> first stream_audio chunk), primed block; base build + variants/patches/streammark.patch"
+}

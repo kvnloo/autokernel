@@ -1,0 +1,15 @@
+--- a/app/cli/main.cpp
++++ b/app/cli/main.cpp
+@@ -585,6 +585,12 @@
+                 std::nullopt,
+                 std::nullopt,
+                 outputs.wav_options);
++            // Time-to-first-audio seam (z0 S25 bench, s2s ttfa track): one flushed line per streamed audio chunk, so a
++            // pipe reader can timestamp the first sample instead of waiting for the WAV written at exit.
++            if (event.audio_output.has_value() && !event.audio_output->samples.empty()) {
++                std::cout << "stream_audio samples=" << event.audio_output->samples.size()
++                          << " sample_rate=" << event.audio_output->sample_rate << "\n" << std::flush;
++            }
+             for (const auto & activity : event.voice_activity) {
+                 std::cout << "event=";
+                 switch (activity.kind) {

@@ -168,6 +168,8 @@ def next_item():
     L = [x for x in ledger() if x.get("epoch") == b.BENCH_EPOCH]
     inc = json.loads((STATE / "incumbents.json").read_text()) if (STATE / "incumbents.json").exists() else {}
     cands = {p.stem: json.loads(p.read_text()) for p in sorted((ROOT / "candidates").glob("*.json"))}
+    # a candidate whose build variant is not built yet waits; queueing it would burn its 3 attempts on SystemExit
+    cands = {k: c for k, c in cands.items() if (b.VARIANTS / c.get("variant", "base") / "audiocpp_cli").exists()}
     measured = {x.get("id") for x in L}
     # done = finished cleanly, or failed 3 times; a GATE timeout (thermal/owner wait) is not an attempt
     ends = [r for r in map(json.loads, open(RECEIPTS)) if r.get("kind") == "end"] if RECEIPTS.exists() else []

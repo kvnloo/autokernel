@@ -224,6 +224,8 @@ def cmdline(cfg, item, out_wav):
         a += ["--audio", f"{PD}/m/{item['audio']}", "--text-out", out_wav[:-4] + ".txt"]
         if cfg.get("spec_override"):
             a += ["--model-spec-override", f"{PD}/m/{cfg['spec_override']}"]
+        if is_ttfa(cfg):  # ttfa tracks only: wall tracks keep their exact epoch-4 command
+            a += ["--load-progress", "1"]
     elif cfg["lane"] in INPUT_LANES:
         a = [b, "--task", cfg["lane"]] + a[1:]
         i = a.index("--out"); del a[i:i + 2]
@@ -249,14 +251,34 @@ def cmdline(cfg, item, out_wav):
     return (pre + " " if pre else "") + cap + (f"taskset {mask} " if mask else "") + " ".join(shlex.quote(x) for x in a)
 
 
+def is_ttfa(cfg):
+    """s2s time-to-first-audio track: LOADED = `runtime.load.phase loaded` (--load-progress 1), FIRST = the first
+    `stream_audio` line (variants/patches/streammark.patch). Its own track, since objectives never change inside one."""
+    return cfg.get("lane") == "s2s" and cfg.get("objective", "").startswith("ttfa")
+
+
+def block_jobs(c, items, r):
+    """One block = every eval item once. `warm: true` runs a discarded first item so flash pages and CPU clocks are
+    warm, the way a resident phone app would be; its tag matches no eval item, so no record reads it."""
+    jobs = []
+    if c.get("warm"):
+        wav = f"{PD}/out/{c['_slot']}-warm-r{r}.wav"
+        jobs.append((f"{c['_slot']}-warm-r{r}", cmdline(c, items[0], wav), wav))
+    for it in items:
+        tag = f"{c['_slot']}-{it['id']}-r{r}"
+        wav = f"{PD}/out/{tag}.wav"
+        jobs.append((tag, cmdline(c, it, wav), wav))
+    return jobs
+
+
 def phone_block(jobs):
     """jobs: list of (tag, cmd, wav). Emits raw ns timestamps; arithmetic happens on groot (mksh is 32-bit)."""
     lines = ["N() { date +%s%N; }"]
     for tag, cmd, wav in jobs:
         lines.append(f"echo \"EV {tag} START $(N)\"")
         lines.append(f"{cmd} 2>&1 | while IFS= read -r l; do case \"$l\" in "
-                     f"*text.prepare_ms*|*prompt_ms*|*voice.prepare_ms*) echo \"EV {tag} LOADED $(N)\";; "
-                     f"audio_output_id=*) echo \"EV {tag} FIRST $(N)\";; "
+                     f"*text.prepare_ms*|*prompt_ms*|*voice.prepare_ms*|*\"runtime.load.phase loaded\"*) echo \"EV {tag} LOADED $(N)\";; "
+                     f"audio_output_id=*|stream_audio\\ *) echo \"EV {tag} FIRST $(N)\";; "
                      f"*session.wall_ms*) echo \"EV {tag} WALL ${{l##* }}\";; "
                      f"*avg_ts*) echo \"EV {tag} JSON $l\";; "
                      f"*rror*|*failed*|*Abort*) echo \"EV {tag} ERR $l\";; esac; done")
@@ -308,11 +330,7 @@ def measure(cfgs, rounds, run_dir, log=print):
         order = cfgs if r % 2 == 0 else list(reversed(cfgs))
         for c in order:
             t0 = wait_for_gates(log=log)
-            jobs = []
-            for it in items:
-                tag = f"{c['_slot']}-{it['id']}-r{r}"
-                wav = f"{PD}/out/{tag}.wav"
-                jobs.append((tag, cmdline(c, it, wav), wav))
+            jobs = block_jobs(c, items, r)
             sh(f"rm -f {PD}/out/{c['_slot']}-*-r{r}.*")
             script = phone_block(jobs)
             (run_dir / f"{c['_slot']}-r{r}.sh").write_text(script)

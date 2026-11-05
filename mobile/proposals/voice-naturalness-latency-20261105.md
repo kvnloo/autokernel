@@ -34,6 +34,15 @@ warm model) is not measured. Epoch-5 seam (needs the driver's OK, it changes the
 - warm session: one resident process per block (`--request-sequence`) so model load is
   paid once, the way the phone app would.
 
+Implemented (branch z0i/p1a2-ttfa-seam, no epoch bump: the s2s/lfm3 wall track keeps its byte-identical
+epoch-4 command, test-pinned). New track `s2s/lfm3-ttfa` (candidates/lfm3-ttfa-base.json, objective
+`ttfa_warm` = `runtime.load.phase loaded` -> first `stream_audio` line). FIRST needs the `streammark` build
+variant = base + variants/patches/streammark.patch (one flushed stdout line per streamed chunk in
+app/cli/main.cpp run_streaming; `git apply --check` clean on a01aed4). "warm" here is a primed block (one
+discarded run first) plus load excluded from the number, not a resident process: the CLI's resident mode
+(`--request-sequence`) is offline-only and so has no first chunk. fulltime.py skips a candidate until its
+variant binary exists. Host test: tests/test_ttfa_seam.py.
+
 ## 3. End-to-end time-to-first-audio candidate (needs the epoch-2 `e2e` seam)
 
 `proposals/bench-epoch2.md` section 3 already specifies the honest runner (actual VAD
