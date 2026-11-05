@@ -178,6 +178,19 @@ def run_fx(arm, query, deadline):
     tok = {"input": u.get("input_tokens") or 0, "output": u.get("output_tokens") or 0}
     tok["total"] = tok["input"] + tok["output"]
     err = None if d.get("exit_code") == 0 else f"fx exit {d.get('exit_code')}"
+    # Native per-call provenance: every assistant message in fx's session log records the
+    # provider/model that produced it. Any other source (or none) is a hard failure.
+    srcs = set()
+    log = Path(HOME) / ".fx/sessions/v2" / str(d.get("session_id")) / "log.jsonl"
+    if log.exists():
+        for line in log.read_text().splitlines():
+            r = json.loads(line)
+            if r.get("type") == "assistant":
+                s = ((r.get("data") or {}).get("provider_replay") or {}).get("source") or {}
+                srcs.add(f"{s.get('provider')}/{s.get('model')}")
+    if srcs != {f"codex/{arm['model']}"}:
+        err = f"native per-call sources {sorted(srcs) or 'missing'} != codex/{arm['model']}"
+        d["model"] = "MIXED:" + ",".join(sorted(srcs)) if srcs else None
     events.append({"type": "result", "session_id": d.get("session_id"), "text": d.get("final_output") or d.get("output") or "",
                    "tokens": tok, "served": [d.get("model"), d.get("resolved_provider") or "fx-codex-subscription"],
                    **({"error": err} if err else {})})
