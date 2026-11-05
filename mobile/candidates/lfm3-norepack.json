@@ -1,0 +1,16 @@
+{
+ "id": "lfm3-norepack",
+ "track": "s2s/lfm3",
+ "lane": "s2s",
+ "family": "lfm3_audio",
+ "model": "LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf",
+ "spec_override": "specs/lfm3_audio.json",
+ "variant": "base",
+ "threads": 4,
+ "objective": "wall",
+ "extra_args": [
+  "--session-option",
+  "lfm3_audio.cpu_repack=false"
+ ],
+ "hypothesis": "the 7.4 s is a cold process (load + full reply); CPU weight repack of 1.3 GB at load may cost more than it saves on one short reply"
+}

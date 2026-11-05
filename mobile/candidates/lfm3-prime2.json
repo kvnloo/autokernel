@@ -1,0 +1,13 @@
+{
+ "id": "lfm3-prime2",
+ "track": "s2s/lfm3",
+ "lane": "s2s",
+ "family": "lfm3_audio",
+ "model": "LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf",
+ "spec_override": "specs/lfm3_audio.json",
+ "variant": "base",
+ "threads": 2,
+ "objective": "wall",
+ "cpu_mask": "c0",
+ "hypothesis": "2 threads pinned to the 2 prime cores (taskset c0): batch-1 backbone decode is latency bound"
+}
