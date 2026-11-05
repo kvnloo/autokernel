@@ -12,7 +12,8 @@ Keeps the phone busy with AutoKernel's mobile loop, model-free:
 Guards, on top of bench_s25.py's own gates (AP <= 42 C, battery <= 38 C before every block, focus-change abort):
   - watchdog thread polls HAL temperatures every 20 s; battery > 40 C, skin > 44 C, or AP > 60 C for 60 s kills the phone jobs at once and holds new work until AP < 42 C and battery < 37.5 C (battery-health
     guard; level is ignored at home). A run cut by a trip is re-queued.
-  - owner yield: no work while the owner is in the foreground (awake, input < 120 s ago) or on a call (telephony
+  - owner yield: no work while the owner is in the foreground (awake, owner input < 120 s ago; agent pokes and
+    virtual-display input do not count, see bench_s25.owner_activity) or on a call (telephony
     or VoIP audio mode); polled every 20 s, running phone jobs are killed and re-queued.
   - kill switch: `touch mobile/state/STOP` on groot, or `adb shell touch /data/local/tmp/z0live-ar/STOP`,
     or `systemctl --user stop z0live-fulltime`. Any of them kills phone jobs and exits.
@@ -96,7 +97,8 @@ def watchdog():
             if busy and not why_hold["owner"]:
                 why_hold["owner"] = True
                 halt_work()
-                log("owner_yield", reason=busy, owner_idle_s=t.get("owner_idle_s"), call_state=t.get("call_state"),
+                log("owner_yield", reason=busy, owner_idle_s=t.get("owner_idle_s"), activity_idle_s=t.get("activity_idle_s"),
+                    agent_sources=t.get("agent_sources"), call_state=t.get("call_state"),
                     audio_mode=t.get("audio_mode"), action="killed phone jobs, holding")
             elif why_hold["owner"] and not busy:
                 why_hold["owner"] = False
@@ -107,7 +109,8 @@ def watchdog():
             if n % 3 == 0 or hold.is_set() != watchdog.last_hold:
                 watchdog.last_hold = hold.is_set()
                 log("telemetry", AP=ap, SKIN=t.get("SKIN"), battery_C=bat, level=t.get("level"), plugged=t.get("plugged"),
-                    owner_idle_s=t.get("owner_idle_s"), call_state=t.get("call_state"), focus_display=t.get("focus_display"),
+                    owner_idle_s=t.get("owner_idle_s"), activity_idle_s=t.get("activity_idle_s"), agent_sources=t.get("agent_sources"),
+                    call_state=t.get("call_state"), focus_display=t.get("focus_display"),
                     hold=hold.is_set(), why=[k for k, v in why_hold.items() if v])
             why = stop_requested()
             if why:

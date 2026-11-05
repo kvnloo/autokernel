@@ -1,0 +1,167 @@
+{
+ "source": "state/fulltime.jsonl telemetry rows 04:37:59-04:53:28 (supervisor pid 2897631, owner_yield hold since 04:37:59)",
+ "rows": [
+  {
+   "at": "2026-11-05T04:37:59",
+   "owner_idle_s": 1.339,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:38:19",
+   "owner_idle_s": 1.186,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:39:20",
+   "owner_idle_s": 1.775,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:40:21",
+   "owner_idle_s": 0.318,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:41:21",
+   "owner_idle_s": 0.996,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:42:22",
+   "owner_idle_s": 1.469,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:43:22",
+   "owner_idle_s": 1.911,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:44:23",
+   "owner_idle_s": 0.447,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:45:24",
+   "owner_idle_s": 1.101,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:46:24",
+   "owner_idle_s": 1.653,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:47:25",
+   "owner_idle_s": 0.409,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:48:26",
+   "owner_idle_s": 0.909,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:49:26",
+   "owner_idle_s": 1.411,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:50:27",
+   "owner_idle_s": 1.2,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:51:27",
+   "owner_idle_s": 1.749,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:52:28",
+   "owner_idle_s": 0.29,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  },
+  {
+   "at": "2026-11-05T04:53:28",
+   "owner_idle_s": 0.793,
+   "focus_display": 0,
+   "hold": true,
+   "why": [
+    "owner"
+   ]
+  }
+ ],
+ "phone": {
+  "note": "live S25 dumpsys captured 05:02 CT, same state as the rows: agent_dark.py (pid 1207) woke the phone at 04:37:44 with `input keyevent WAKEUP` (mLastWakeUpReason 6) and runs `PanelPower hold`, which calls IPowerManager.userActivity every 2 s; scrcpy VD 105 (com.android.shell) live since 02:43; last physical display-0 touch (sec_touchscreen, DeviceId 6) at uptime 208578.3 s",
+  "wake_time_ms": 210578625,
+  "wake_wall": "2026-11-05T04:37:45",
+  "wake_reason": 6,
+  "down_times": "{DeviceId(-1): 195160410000000, DeviceId(6): 208578346888000}",
+  "viewport_vd": "Viewport VIRTUAL: displayId=105, uniqueId=virtual:com.android.shell,2000,scrcpy,98, port=<none>, orientation=0, densityDpi=420",
+  "panel_hold_procs": 1
+ }
+}

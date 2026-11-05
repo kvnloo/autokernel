@@ -64,12 +64,44 @@ def adb(*args, timeout=1800):
     return subprocess.run(["adb", "-s", SER, *args], capture_output=True, text=True, timeout=timeout)
 
 
+# Owner activity (2026-11-05 false yield): lastUserActivityTime is per power group, and agents poke it too:
+# agent_dark.py's `PanelPower hold` calls IPowerManager.userActivity every 2 s, and input injected on a virtual
+# display in power group 0 counts as well. While such an agent source is live, owner activity is only what an
+# agent cannot fake: a physical-device touch DOWN on display 0, or a wake that no agent issues. If the phone does
+# not expose the display-0 touch record, the raw signal is kept (fail safe: yield). Display 0 is never relaxed.
+AGENT_WAKE_REASONS = (2, 6)  # WAKE_REASON_APPLICATION, WAKE_REASON_WAKE_KEY (`input keyevent WAKEUP`)
+
+
+def owner_activity(out):
+    ago = lambda pat: (lambda m: int(m[1]) / 1000 if m else None)(re.search(pat, out))
+    act = ago(r"lastUserActivityTime=\d+ \((\d+) ms ago\)")
+    wake = ago(r"mLastWakeTime=\d+ \((\d+) ms ago\)")
+    m = re.search(r"mLastWakeUpReason: (\d+)", out)
+    reason = int(m[1]) if m else None
+    m = re.search(r"lastUserActivityTime=(\d+) \((\d+) ms ago\)", out) or re.search(r"mLastWakeTime=(\d+) \((\d+) ms ago\)", out)
+    now_ms = int(m[1]) + int(m[2]) if m else None  # uptime clock, same base as input event times
+    m = re.search(r"Filter verifier on display 0:\s*\n\s*Down times by device: \{([^}]*)\}", out)
+    downs = [int(ns) for dev, ns in re.findall(r"DeviceId\((-?\d+)\): (\d+)", m[1]) if int(dev) >= 0] if m else None
+    touch = (now_ms - max(downs) / 1e6) / 1000 if downs and now_ms else None
+    m = re.search(r"agent_panel_hold=(\d+)", out)
+    sources = (["panel_hold"] if m and int(m[1]) else []) + \
+        [f"vd:{d}" for d in sorted(set(map(int, re.findall(r"Viewport VIRTUAL: displayId=(\d+)", out))))]
+    owner = act
+    if sources and downs is not None and now_ms:
+        seen = [x for x in (touch, None if reason in AGENT_WAKE_REASONS else wake) if x is not None]
+        owner = min(seen) if seen else max(x for x in (wake, act, 0) if x is not None)
+    return {"owner_idle_s": owner, "activity_idle_s": act, "touch0_idle_s": touch, "wake_idle_s": wake,
+            "wake_reason": reason, "agent_sources": sources}
+
+
 def telemetry():
     out = sh("dumpsys battery | grep -E '^  (level|temperature|AC powered|USB powered|Wireless powered|current now|Charge counter|voltage):';"
              "echo ==; dumpsys thermalservice | sed -n '/^Current temperatures from HAL/,/^[A-Z]/p' | grep -E 'mName=(AP|SKIN|BAT),' | head -3; echo ==;"
-             "dumpsys power | grep -E '^ *lastUserActivityTime=|mWakefulness='; echo ==;"
+             "dumpsys power | grep -E '^ *lastUserActivityTime=|mWakefulness=|^  mLastWakeTime=|^  mLastWakeUpReason:'; echo ==;"
              "dumpsys window | grep -m1 mTopFocusedDisplayId; dumpsys window | grep -m1 mCurrentFocus;"
-             "dumpsys telephony.registry 2>/dev/null | grep -m1 mCallState=; dumpsys audio 2>/dev/null | grep -m1 mAudioModeOwner", timeout=60)
+             "dumpsys telephony.registry 2>/dev/null | grep -m1 mCallState=; dumpsys audio 2>/dev/null | grep -m1 mAudioModeOwner;"
+             "echo ==; dumpsys input | sed '/at time of last ANR/q' | grep -E 'Viewport VIRTUAL|Filter verifier on display|Down times by device';"
+             "echo agent_panel_hold=$(ps -A -o ARGS | grep -c '[P]anelPower hold')", timeout=60)
     t = {}
     for k, key in (("level", "level"), ("temperature", "batt_dC"), ("current now", "current_uA"), ("Charge counter", "charge_uAh"), ("voltage", "voltage_mV")):
         m = re.search(rf"^  {k}: (-?\d+)", out, re.M)
@@ -78,8 +110,7 @@ def telemetry():
     for name in ("AP", "SKIN", "BAT"):
         m = re.search(rf"mValue=([\d.]+), mType=\d+, mName={name},", out)
         t[name] = float(m[1]) if m else None
-    m = re.search(r"lastUserActivityTime=\d+ \((\d+) ms ago\)", out)
-    t["owner_idle_s"] = int(m[1]) / 1000 if m else None
+    t.update(owner_activity(out))
     t["awake"] = "mWakefulness=Awake" in out
     m = re.search(r"mTopFocusedDisplayId=(\d+)", out)
     t["focus_display"] = int(m[1]) if m else None
