@@ -53,7 +53,15 @@ def judge(task, text):
         return git_checkout_ok(answer or text, task["git_remote"], task.get("branch")), answer
     ans = norm(m[-1] if m else text)
     keys = [norm(k) for k in task["keys"]]
-    return any(k and k in ans for k in keys), answer
+    if any(k and k in ans for k in keys):
+        return True, answer
+    # A symlinked alias of the labelled path is the same evidence (e.g. ~/.agentsview -> data dir).
+    pm = re.search(r"(/[\w.@+/-]+)", ans)
+    if pm and os.path.exists(pm.group(1)):
+        real = os.path.realpath(pm.group(1)).lower()
+        return any(k.startswith("/") and os.path.exists(k) and os.path.realpath(k).lower() == real
+                   for k in keys), answer
+    return False, answer
 
 
 def served_model(session_id):
