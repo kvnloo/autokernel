@@ -10,8 +10,9 @@ Keeps the phone busy with AutoKernel's mobile loop, model-free:
   5. otherwise wait 15 min and rescan candidates/ (driver sessions add new ones)
 
 Guards, on top of bench_s25.py's own gates (AP <= 42 C, battery <= 38 C before every block, focus-change abort):
-  - watchdog thread polls HAL temperatures every 60 s; AP > 46 C or battery > 40 C kills the phone jobs at once
-    and holds new work until AP < 42 C and battery < 37.5 C (battery-health guard; level is ignored at home)
+  - watchdog thread polls HAL temperatures every 60 s; battery > 40 C, skin > 44 C, or AP > 60 C on two polls in
+    a row kills the phone jobs at once and holds new work until AP < 42 C and battery < 37.5 C (battery-health
+    guard; level is ignored at home). A run cut by a trip is re-queued.
   - kill switch: `touch mobile/state/STOP` on groot, or `adb shell touch /data/local/tmp/z0live-ar/STOP`,
     or `systemctl --user stop z0live-fulltime`. Any of them kills phone jobs and exits.
 Everything runs over adb shell in /data/local/tmp (no app, UI, mic, speaker or focus change).
@@ -25,7 +26,9 @@ os.environ.setdefault("ZLV_MIN_BATT", "0")  # owner: battery level is irrelevant
 sys.path.insert(0, str(ROOT))
 import bench_s25 as b  # noqa: E402
 
-TRIP_AP, TRIP_BAT, RESUME_AP, RESUME_BAT = 46.0, 40.0, 42.0, 37.5  # resume at the bench gate (AP 42) so owner use alone cannot pin a hold
+# Trip on battery heat (battery health) or skin heat (owner comfort) at once; the AP die spikes to 50-58 C for
+# seconds under any heavy block, so AP trips only when it stays above 60 C for two polls in a row.
+TRIP_AP, TRIP_SKIN, TRIP_BAT, RESUME_AP, RESUME_BAT = 60.0, 44.0, 40.0, 42.0, 37.5
 AA_EVERY_S = 86400
 RECEIPTS = STATE / "fulltime.jsonl"
 hold = threading.Event()   # set = thermal trip active, do not start new work
@@ -55,7 +58,9 @@ def watchdog():
         try:
             t = b.telemetry()
             ap, bat = t.get("AP"), (t.get("batt_dC") or 0) / 10
-            tripped = (ap and ap > TRIP_AP) or bat > TRIP_BAT
+            hot_ap = bool(ap and ap > TRIP_AP)
+            tripped = (hot_ap and watchdog.prev_hot) or bat > TRIP_BAT or (t.get("SKIN") or 0) > TRIP_SKIN
+            watchdog.prev_hot = hot_ap
             if tripped and not hold.is_set():
                 hold.set()
                 b.kill_phone_jobs()
@@ -74,6 +79,9 @@ def watchdog():
         except Exception as e:  # adb hiccup: keep polling
             log("telemetry_error", error=f"{type(e).__name__}: {e}"[:200])
         stop.wait(60)
+
+
+watchdog.prev_hot = False
 
 
 def bench(*args):
@@ -106,7 +114,12 @@ def next_item():
     for r in ends:
         if r["rc"] and not any("GATE" in l for l in r.get("tail", [])):
             fails[r["args"][-1]] = fails.get(r["args"][-1], 0) + 1
-    tried = {r["args"][-1] for r in ends if r["rc"] == 0} | {k for k, n in fails.items() if n >= 3}
+    # a run cut by a thermal trip is not an attempt either: it is re-queued (its partial ledger row stays as a receipt)
+    trips = [r["at"] for r in map(json.loads, open(RECEIPTS)) if r.get("kind") == "thermal_trip"] if RECEIPTS.exists() else []
+    def cut(r):
+        t1 = datetime.datetime.fromisoformat(r["at"]); t0 = t1 - datetime.timedelta(seconds=r.get("wall_s", 0))
+        return any(t0 <= datetime.datetime.fromisoformat(x) <= t1 for x in trips)
+    tried = {r["args"][-1] for r in ends if r["rc"] == 0 and not cut(r)} | {k for k, n in fails.items() if n >= 3}
     for cid, c in cands.items():
         if c["track"] not in inc and cid.endswith("-base") and f"candidates/{cid}.json" not in tried:
             return ["baseline", "--tier", "screen", "--candidate", f"candidates/{cid}.json"]
