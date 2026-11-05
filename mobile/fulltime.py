@@ -100,7 +100,13 @@ def next_item():
     inc = json.loads((STATE / "incumbents.json").read_text()) if (STATE / "incumbents.json").exists() else {}
     cands = {p.stem: json.loads(p.read_text()) for p in sorted((ROOT / "candidates").glob("*.json"))}
     measured = {x.get("id") for x in L}
-    tried = {r["args"][-1] for r in map(json.loads, open(RECEIPTS)) if r.get("kind") == "end"} if RECEIPTS.exists() else set()
+    # done = finished cleanly, or failed 3 times; a GATE timeout (thermal/owner wait) is not an attempt
+    ends = [r for r in map(json.loads, open(RECEIPTS)) if r.get("kind") == "end"] if RECEIPTS.exists() else []
+    fails = {}
+    for r in ends:
+        if r["rc"] and not any("GATE" in l for l in r.get("tail", [])):
+            fails[r["args"][-1]] = fails.get(r["args"][-1], 0) + 1
+    tried = {r["args"][-1] for r in ends if r["rc"] == 0} | {k for k, n in fails.items() if n >= 3}
     for cid, c in cands.items():
         if c["track"] not in inc and cid.endswith("-base") and f"candidates/{cid}.json" not in tried:
             return ["baseline", "--tier", "screen", "--candidate", f"candidates/{cid}.json"]
