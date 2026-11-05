@@ -131,7 +131,9 @@ def wait_for_gates(max_wait_s=int(os.environ.get("ZLV_MAX_WAIT_S", "1800")), log
         why = []
         if not t["plugged"] and (t["level"] or 0) < MIN_BATT:
             why.append(f"battery {t['level']}% < {MIN_BATT}% and not charging")
-        if t["AP"] and t["AP"] > MAX_AP_C:
+        # the 42 C AP pre-gate keeps confirm (KEEP-capable) runs comparable; screen runs go while the owner uses
+        # the phone (owner 2026-11-05) and record AP instead. Battery caps and the supervisor's hard trips stay.
+        if OWNER_IDLE_S and t["AP"] and t["AP"] > MAX_AP_C:
             why.append(f"AP {t['AP']}C > {MAX_AP_C}")
         if t["batt_dC"] and t["batt_dC"] / 10 > MAX_BAT_C:
             why.append(f"battery {t['batt_dC']/10}C > {MAX_BAT_C}")
@@ -335,7 +337,9 @@ def measure(cfgs, rounds, run_dir, log=print):
                 e = ev.get(tag, {"errs": ["no events"]})
                 lane = c["lane"]
                 secs = it.get("duration_s") if lane in INPUT_LANES else (1.0 if lane == "llm" else wav_seconds(run_dir / "wav" / f"{tag}.wav"))
-                rec = {"tag": tag, "item": it["id"], "round": r, "errs": e["errs"], "audio_s": secs, "contaminated": contaminated}
+                busy0 = t0["owner_idle_s"] is not None and t0["owner_idle_s"] < 90
+                rec = {"tag": tag, "item": it["id"], "round": r, "errs": e["errs"], "audio_s": secs, "contaminated": contaminated,
+                       "owner_state": "in_use" if (contaminated or busy0) else "idle", "AP_start": t0.get("AP")}
                 if "first" in e:
                     rec["start_to_first_ms"] = (e["first"] - e["start"]) / 1e6
                     if "loaded" in e:
@@ -376,6 +380,14 @@ def summarize(rs, objective):
         if v:
             s[k] = {"p50": round(statistics.median(v), 2), "p90": round(q(v, .9), 2), "n": len(v)}
     s["objective"] = (s.get(OBJ_KEY[objective]) or {}).get("p50")
+    # in-use vs idle split (owner 2026-11-05) so we can see whether using the phone changes the numbers
+    key = OBJ_KEY[objective]
+    s["by_owner_state"] = {}
+    for st in ("idle", "in_use"):
+        v = [r[key] for r in rs if r.get("owner_state", "in_use" if r["contaminated"] else "idle") == st
+             and not r["errs"] and r.get("audio_s") and r.get(key) is not None]
+        if v:
+            s["by_owner_state"][st] = {"p50": round(statistics.median(v), 2), "n": len(v)}
     return s
 
 
@@ -458,7 +470,17 @@ def ledger(entry):
     with open(STATE / "results.tsv", "a") as f:
         f.write("\t".join(str(x) for x in (entry["at"], entry["cmd"], entry.get("lane"), entry.get("id"), entry.get("decision"),
                                              (s.get("cand") or s.get("only") or {}).get("objective"), (s.get("inc") or {}).get("objective"),
-                                             (entry.get("ci") or {}).get("mid"), entry.get("hypothesis", "")[:120])) + "\n")
+                                             (entry.get("ci") or {}).get("mid"), entry.get("hypothesis", "")[:120], owner_split(s))) + "\n")
+
+
+def owner_split(s):
+    """results.tsv column 10: objective p50 per owner state, e.g. 'idle=88.1(n12) in_use=97.4(n20)'."""
+    parts = []
+    for slot in ("cand", "only", "inc"):
+        bo = (s.get(slot) or {}).get("by_owner_state") or {}
+        if bo:
+            parts.append(slot + ":" + " ".join(f"{k}={v['p50']}(n{v['n']})" for k, v in bo.items()))
+    return "; ".join(parts) or "-"
 
 
 def cfg_load(path):

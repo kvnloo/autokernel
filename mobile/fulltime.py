@@ -70,10 +70,22 @@ def stop_requested():
     return None
 
 
+# Owner 2026-11-05: "run autokernel all day while im using [the phone]... just label the data as in use vs idle".
+# So foreground use no longer holds work (set ZLV_YIELD_TO_OWNER=1 to restore it); only a real telephony
+# call does. Audio mode alone no longer counts: z0live itself holds a communication audio session.
+YIELD_TO_OWNER = os.environ.get("ZLV_YIELD_TO_OWNER", "0") == "1"
+
+
+def owner_state(t):
+    return "in_use" if bool(t.get("awake")) and (t.get("owner_idle_s") is None or t["owner_idle_s"] < YIELD_IDLE_S) else "idle"
+
+
 def owner_busy(t):
-    call = (t.get("call_state") or 0) != 0 or (t.get("audio_mode") or 0) in (1, 2, 3)
-    fg = bool(t.get("awake")) and (t.get("owner_idle_s") is None or t["owner_idle_s"] < YIELD_IDLE_S)
-    return ("call" if call else "foreground") if (call or fg) else None
+    if (t.get("call_state") or 0) != 0:
+        return "call"
+    if YIELD_TO_OWNER and ((t.get("audio_mode") or 0) in (1, 2, 3) or owner_state(t) == "in_use"):
+        return "foreground"
+    return None
 
 
 def watchdog():
@@ -109,7 +121,7 @@ def watchdog():
             if n % 3 == 0 or hold.is_set() != watchdog.last_hold:
                 watchdog.last_hold = hold.is_set()
                 log("telemetry", AP=ap, SKIN=t.get("SKIN"), battery_C=bat, level=t.get("level"), plugged=t.get("plugged"),
-                    owner_idle_s=t.get("owner_idle_s"), activity_idle_s=t.get("activity_idle_s"), agent_sources=t.get("agent_sources"),
+                    owner_state=owner_state(t), owner_idle_s=t.get("owner_idle_s"), activity_idle_s=t.get("activity_idle_s"), agent_sources=t.get("agent_sources"),
                     call_state=t.get("call_state"), focus_display=t.get("focus_display"),
                     hold=hold.is_set(), why=[k for k, v in why_hold.items() if v])
             why = stop_requested()
