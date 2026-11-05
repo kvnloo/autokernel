@@ -11,7 +11,7 @@ Keeps the phone busy with AutoKernel's mobile loop, model-free:
 
 Guards, on top of bench_s25.py's own gates (AP <= 42 C, battery <= 38 C before every block, focus-change abort):
   - watchdog thread polls HAL temperatures every 60 s; AP > 46 C or battery > 40 C kills the phone jobs at once
-    and holds new work until AP < 40 C and battery < 36 C (battery-health guard; level is ignored at home)
+    and holds new work until AP < 42 C and battery < 37.5 C (battery-health guard; level is ignored at home)
   - kill switch: `touch mobile/state/STOP` on groot, or `adb shell touch /data/local/tmp/z0live-ar/STOP`,
     or `systemctl --user stop z0live-fulltime`. Any of them kills phone jobs and exits.
 Everything runs over adb shell in /data/local/tmp (no app, UI, mic, speaker or focus change).
@@ -25,7 +25,7 @@ os.environ.setdefault("ZLV_MIN_BATT", "0")  # owner: battery level is irrelevant
 sys.path.insert(0, str(ROOT))
 import bench_s25 as b  # noqa: E402
 
-TRIP_AP, TRIP_BAT, RESUME_AP, RESUME_BAT = 46.0, 40.0, 40.0, 36.0
+TRIP_AP, TRIP_BAT, RESUME_AP, RESUME_BAT = 46.0, 40.0, 42.0, 37.5  # resume at the bench gate (AP 42) so owner use alone cannot pin a hold
 AA_EVERY_S = 86400
 RECEIPTS = STATE / "fulltime.jsonl"
 hold = threading.Event()   # set = thermal trip active, do not start new work
