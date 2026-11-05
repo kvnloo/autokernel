@@ -72,6 +72,74 @@ def served_model(session_id):
     return None
 
 
+OPENCODE_DB = Path(os.environ.get("OPENCODE_DB", f"{HOME}/.local/share/opencode/opencode.db"))
+
+
+def opencode_served(session_id):
+    """(model, provider) for an opencode session, from every assistant message; None if absent.
+    Returns ('MIXED:<ids>', provider) when one session was served by more than one model."""
+    if not session_id or not OPENCODE_DB.exists():
+        return None
+    import sqlite3
+    try:
+        with sqlite3.connect(f"file:{OPENCODE_DB}?mode=ro", uri=True, timeout=10) as db:
+            rows = db.execute("select data from session_message where session_id=? and type='assistant'",
+                              (session_id,)).fetchall()
+    except sqlite3.Error:
+        return None
+    models = {(m.get("id"), m.get("providerID")) for (d,) in rows
+              for m in [json.loads(d).get("model") or {}] if m.get("id")}
+    if not models:
+        return None
+    if len(models) > 1:
+        return ("MIXED:" + ",".join(sorted(str(i) for i, _ in models)), ",".join(sorted({str(p) for _, p in models})))
+    return next(iter(models))
+
+
+def run_opencode(arm, query, deadline):
+    """One fresh `opencode run` episode (plan agent = no file edits). Returns Hermes-shaped events."""
+    cmd = ["opencode", "run", "--agent", arm.get("agent", "plan"), "-m", arm["model"],
+           "--format", "json", "--auto", query]
+    timed_out = False
+    try:
+        raw = subprocess.run(cmd, cwd=HOME, capture_output=True, text=True, timeout=deadline + 30).stdout
+    except subprocess.TimeoutExpired as exc:
+        timed_out, raw = True, (exc.stdout or b"").decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+    events, sid, tok, err = [], None, {"input": 0, "output": 0, "reasoning": 0, "cache_read": 0}, None
+    step_uses, step_results = [], []
+
+    def flush():  # one model step = one turn: its tool calls are emitted back to back
+        events.extend(step_uses + step_results)
+        step_uses.clear(); step_results.clear()
+    for line in raw.splitlines():
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        sid = sid or e.get("sessionID")
+        p = e.get("part") or {}
+        if e.get("type") == "step_start":
+            flush()
+        elif e.get("type") == "tool_use":  # opencode emits completed tool parts; map to use+result
+            t = ((p.get("state") or {}).get("time") or {})
+            step_uses.append({"type": "tool_use", "name": p.get("tool")})
+            step_results.append({"type": "tool_result", "duration_ms": (t.get("end") or 0) - (t.get("start") or 0)})
+        elif e.get("type") == "text":
+            events.append({"type": "text", "text": p.get("text", "")})
+        elif e.get("type") == "step_finish":
+            k = p.get("tokens") or {}
+            for f in ("input", "output", "reasoning"):
+                tok[f] += k.get(f) or 0
+            tok["cache_read"] += (k.get("cache") or {}).get("read") or 0
+        elif e.get("type") == "error":
+            err = str((e.get("error") or {}).get("message") or e.get("error"))[:200]
+    flush()
+    tok["total"] = tok["input"] + tok["cache_read"] + tok["output"] + tok["reasoning"]  # all processed tokens
+    text = "".join(e["text"] for e in events if e["type"] == "text")
+    events.append({"type": "result", "session_id": sid, "text": text, "tokens": tok, **({"error": err} if err else {})})
+    return events, timed_out
+
+
 def host_idle(min_avail_gb=3.0, max_mem_full=5.0, wait_s=600):
     """Block until the host is quiet enough; return the covariates seen at start."""
     t0 = time.time()
@@ -117,11 +185,15 @@ def episode(task, arm, rep, order):
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         t0 = time.time()
         timed_out, events = False, []
-        try:
-            p = subprocess.run(cmd, cwd=HOME, capture_output=True, text=True, timeout=deadline + 30)
-            raw = p.stdout
-        except subprocess.TimeoutExpired as exc:
-            timed_out, raw = True, (exc.stdout or b"").decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        if arm.get("harness") == "opencode":
+            events, timed_out = run_opencode(arm, query, deadline)
+            raw = ""
+        else:
+            try:
+                p = subprocess.run(cmd, cwd=HOME, capture_output=True, text=True, timeout=deadline + 30)
+                raw = p.stdout
+            except subprocess.TimeoutExpired as exc:
+                timed_out, raw = True, (exc.stdout or b"").decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
         wall = time.time() - t0
     for line in raw.splitlines():
         try:
@@ -143,6 +215,12 @@ def episode(task, arm, rep, order):
     ok, answer = judge(task, text)
     ok = ok and not timed_out and wall <= deadline and not result.get("error")
     served = served_model(result.get("session_id"))
+    if arm.get("harness") == "opencode":
+        for _ in range(5):  # the opencode service may commit the session a moment after exit
+            served = opencode_served(result.get("session_id"))
+            if served:
+                break
+            time.sleep(1)
     canon = lambda m: (m or "").split("/")[-1].replace(".", "-").lower()
     if arm.get("model") and (not served or canon(served[0]) != canon(arm["model"])):
         # Hermes falls back silently when the arm's provider fails; such an episode measures
