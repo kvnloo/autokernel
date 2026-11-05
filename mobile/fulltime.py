@@ -47,6 +47,17 @@ def log(kind, **kw):
     print(json.dumps(rec), flush=True)
 
 
+current = {"proc": None}
+
+
+def halt_work():
+    """Kill the running bench (it would otherwise go on to its next block) and every phone job."""
+    pr = current.get("proc")
+    if pr and pr.poll() is None:
+        pr.kill()
+    b.kill_phone_jobs()
+
+
 def stop_requested():
     if (STATE / "STOP").exists():
         return "groot STOP file"
@@ -77,20 +88,21 @@ def watchdog():
             busy = owner_busy(t)
             if tripped and not why_hold["thermal"]:
                 why_hold["thermal"] = True
-                b.kill_phone_jobs()
+                halt_work()
                 log("thermal_trip", AP=ap, battery_C=bat, SKIN=t.get("SKIN"), action="killed phone jobs, holding")
             elif why_hold["thermal"] and (ap or 0) < RESUME_AP and bat < RESUME_BAT:
                 why_hold["thermal"] = False
                 log("thermal_resume", AP=ap, battery_C=bat)
             if busy and not why_hold["owner"]:
                 why_hold["owner"] = True
-                b.kill_phone_jobs()
+                halt_work()
                 log("owner_yield", reason=busy, owner_idle_s=t.get("owner_idle_s"), call_state=t.get("call_state"),
                     audio_mode=t.get("audio_mode"), action="killed phone jobs, holding")
             elif why_hold["owner"] and not busy:
                 why_hold["owner"] = False
                 log("owner_resume", owner_idle_s=t.get("owner_idle_s"))
             hold.set() if any(why_hold.values()) else hold.clear()
+            watchdog.polled.set()
             n += 1
             if n % 3 == 0 or hold.is_set() != watchdog.last_hold:
                 watchdog.last_hold = hold.is_set()
@@ -109,6 +121,7 @@ def watchdog():
 
 
 watchdog.hot_n = 0
+watchdog.polled = threading.Event()
 watchdog.last_hold = None
 
 
@@ -119,8 +132,12 @@ def bench(*args):
         return None
     log("start", args=list(args))
     t0 = time.time()
-    p = subprocess.run([sys.executable, str(ROOT / "bench_s25.py"), *args], cwd=ROOT, capture_output=True, text=True,
-                       env={**os.environ, "S25_SERIAL": b.SER})
+    p = subprocess.Popen([sys.executable, str(ROOT / "bench_s25.py"), *args], cwd=ROOT, stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT, text=True, env={**os.environ, "S25_SERIAL": b.SER})
+    current["proc"] = p
+    out, _ = p.communicate()
+    current["proc"] = None
+    p.stdout, p.stderr = out or "", ""
     tail = [l for l in (p.stdout + p.stderr).splitlines() if any(k in l for k in ("METRIC", "decision", "GATE", "ABORT", "rror"))]
     log("end", args=list(args), rc=p.returncode, wall_s=round(time.time() - t0), tail=tail[-6:])
     return p.returncode
@@ -177,6 +194,7 @@ def main():
     (STATE / "STOP").unlink(missing_ok=True) if os.environ.get("ZLV_CLEAR_STOP") else None
     log("supervisor_start", serial=b.SER, epoch=b.BENCH_EPOCH, pid=os.getpid(), min_batt=os.environ["ZLV_MIN_BATT"])
     threading.Thread(target=watchdog, daemon=True).start()
+    watchdog.polled.wait(120)  # never start work before the first owner/thermal poll
     while not stop.is_set():
         item = next_item()
         if item is None:
