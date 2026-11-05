@@ -1,0 +1,19 @@
+{
+ "id": "qwen3tts-kleidiai",
+ "track": "tts/qwen3",
+ "lane": "tts",
+ "family": "qwen3_tts",
+ "model": "Qwen3-TTS-12Hz-0.6B-Base-GGUF",
+ "variant": "kleidiai",
+ "threads": 4,
+ "assets": [
+  "ref"
+ ],
+ "extra_args": [
+  "--voice-ref",
+  "{M}/ref/clone.wav",
+  "--reference-text",
+  "Okay. Yeah. I resent you. I love you. I respect you. But you know what? You blew it! And thanks to you."
+ ],
+ "hypothesis": "KleidiAI micro-kernels for Qwen3-TTS q8 matmuls"
+}

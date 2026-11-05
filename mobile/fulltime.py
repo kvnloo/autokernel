@@ -125,6 +125,19 @@ watchdog.polled = threading.Event()
 watchdog.last_hold = None
 
 
+def live_serial():
+    """The S25's current adb serial. Wireless debugging changes port on reconnect, so a startup pin goes stale."""
+    def state(ser):
+        r = subprocess.run(["adb", "-s", ser, "get-state"], capture_output=True, text=True, timeout=15)
+        return r.stdout.strip()
+    if b.SER and state(b.SER) == "device":
+        return b.SER
+    out = subprocess.run(["adb", "devices", "-l"], capture_output=True, text=True, timeout=15).stdout
+    hits = sorted((l.split()[0] for l in out.splitlines() if "model:SM_S938U" in l and " device " in l),
+                  key=lambda s: ("_adb-tls" in s, s))
+    return hits[0] if hits else None
+
+
 def bench(*args):
     while hold.is_set() and not stop.is_set():
         time.sleep(30)
@@ -157,7 +170,8 @@ def next_item():
     ends = [r for r in map(json.loads, open(RECEIPTS)) if r.get("kind") == "end"] if RECEIPTS.exists() else []
     fails = {}
     for r in ends:
-        if r["rc"] and not any("GATE" in l for l in r.get("tail", [])):
+        # adb transport loss (phone asleep/offline, port change) says nothing about the candidate
+        if r["rc"] and not any("GATE" in l or "adb shell failed" in l or "not attached" in l for l in r.get("tail", [])):
             fails[r["args"][-1]] = fails.get(r["args"][-1], 0) + 1
     # a run cut by a thermal trip is not an attempt either: it is re-queued (its partial ledger row stays as a receipt)
     trips = [r["at"] for r in map(json.loads, open(RECEIPTS)) if r.get("kind") in ("thermal_trip", "owner_yield")] if RECEIPTS.exists() else []
@@ -190,7 +204,7 @@ def main():
     STATE.mkdir(exist_ok=True)
     lock = open("/tmp/s25-fulltime.lock", "w")  # one supervisor; bench_s25.py itself serialises on s25-bench.lock
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    b.SER = b.serial()
+    b.SER = live_serial() or os.environ.get("S25_SERIAL")
     (STATE / "STOP").unlink(missing_ok=True) if os.environ.get("ZLV_CLEAR_STOP") else None
     log("supervisor_start", serial=b.SER, epoch=b.BENCH_EPOCH, pid=os.getpid(), min_batt=os.environ["ZLV_MIN_BATT"])
     threading.Thread(target=watchdog, daemon=True).start()
@@ -201,6 +215,14 @@ def main():
             log("idle", note="queue empty; rescanning candidates in 15 min")
             stop.wait(900)
             continue
+        ser = live_serial()
+        if ser is None:  # unreachable phone is a wait, not a failed attempt (it burned whole queues at 02:45)
+            log("phone_unreachable", last_serial=b.SER)
+            stop.wait(120)
+            continue
+        if ser != b.SER:
+            log("serial_changed", old=b.SER, new=ser)
+            b.SER = ser
         bench(*item)
         time.sleep(5)
 

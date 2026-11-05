@@ -1,0 +1,12 @@
+{
+ "id": "lfm3-t8",
+ "track": "s2s/lfm3",
+ "lane": "s2s",
+ "family": "lfm3_audio",
+ "model": "LFM3-Audio-2B-GGUF/LFM3-Audio-2B-Q4_0.gguf",
+ "spec_override": "specs/lfm3_audio.json",
+ "variant": "base",
+ "threads": 8,
+ "objective": "wall",
+ "hypothesis": "all 8 cores for LFM3-Audio s2s prefill"
+}
