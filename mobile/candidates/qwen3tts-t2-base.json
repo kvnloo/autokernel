@@ -1,0 +1,19 @@
+{
+ "id": "qwen3tts-t2-base",
+ "track": "tts/qwen3",
+ "lane": "tts",
+ "family": "qwen3_tts",
+ "model": "Qwen3-TTS-12Hz-0.6B-Base-GGUF",
+ "variant": "base",
+ "threads": 2,
+ "assets": [
+  "ref"
+ ],
+ "extra_args": [
+  "--voice-ref",
+  "{M}/ref/clone.wav",
+  "--reference-text",
+  "Okay. Yeah. I resent you. I love you. I respect you. But you know what? You blew it! And thanks to you."
+ ],
+ "hypothesis": "baseline: Qwen3-TTS 0.6B q8 voice clone, 2 threads (thermal-safe re-queue: qwen3tts-base at 4 threads tripped the battery guard 3x on 2026-11-05 05:40/05:52/06:02, battery 40.1-40.3 C > 40.0 at 4-6 min, AP 51-52 C; fewer threads chosen over a cooldown gate; new id gives it 3 fresh attempts, so it stays bounded)"
+}
