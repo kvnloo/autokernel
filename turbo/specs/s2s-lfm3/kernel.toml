@@ -1,0 +1,24 @@
+# Scheduling weights are neutral policy defaults, not measured speedups.
+id = "s2s-lfm3"
+objective = "speed"
+metric = "proc_ms"
+direction = "lower"
+device_class = "phone"
+devices = ["s25","s22"]
+referee = ["python3","{repo}/turbo/mobile.py","--track","s2s/lfm3"]
+max_runtime = 3600
+amdahl_share = 1.0
+expected_gain = 1.0
+cost = 1.0
+oracle_status = "ready"
+
+[resources]
+mem = 8589934592
+cpus = 1
+gpu_mem = 0
+
+[oracle]
+kind = "mobile"
+check = "Existing fixed mobile referee, complete artifacts and quality gates, idle-only confirmation"
+track = "s2s/lfm3"
+
