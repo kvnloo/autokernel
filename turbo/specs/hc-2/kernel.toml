@@ -1,0 +1,27 @@
+# Scheduling weights are neutral policy defaults, not measured speedups.
+id = "hc-2-memory-scrub"
+objective = "speed"
+metric = "runtime_seconds"
+direction = "lower"
+device_class = "cpu"
+devices = ["groot-cpu","mbp"]
+referee = ["python3","/mnt/zer0models/workspace/zer0/data/operations/z19-research-20261105/hc2/bench_hc2.py"]
+working_directory = "/mnt/zer0models/workspace/zer0/data/operations/z19-research-20261105/hc2"
+max_runtime = 3600
+amdahl_share = 1.0
+expected_gain = 1.0
+cost = 1.0
+oracle_status = "pending-fixture"
+
+[resources]
+mem = 1073741824
+cpus = 1
+gpu_mem = 0
+
+[oracle]
+kind = "byte-equal"
+check = "Byte-equal complete-corpus redaction, including adversarial overlapping secrets"
+fixture = "fixtures/hc2-redaction.jsonl"
+# Intentionally unknown: pending-fixture forbids KEEP until a real corpus is pinned.
+sha256 = ""
+
