@@ -196,7 +196,10 @@ def parse_phone(parts: dict[str, str], measured_at: float) -> Reading:
         if displays[0] in scoped:
             focuses = re.findall(r"^\s*mCurrentFocus=(.+)$", scoped[displays[0]], re.MULTILINE)[:1]
     if displays and focuses:
-        focus = hashlib.sha256("\0".join([displays[0], *(f.strip() for f in focuses)]).encode()).hexdigest()
+        # Drop the per-instance window token (Window{3d727c1 u0 ...}): a
+        # launcher recreated under memory pressure is not an owner action.
+        names = [re.sub(r"^Window\{[0-9a-f]+ ", "Window{", f.strip()) for f in focuses]
+        focus = hashlib.sha256("\0".join([displays[0], *names]).encode()).hexdigest()
     registry = parts["telephony.registry"]
     calls = [int(x) for x in re.findall(r"\bmCallState=(\d+)\b", registry)]
     if not calls and re.search(r"^\s*mDefaultPhoneId=-1\s*$", registry, re.MULTILINE):

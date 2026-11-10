@@ -180,6 +180,8 @@ def test_agent_virtual_display_focus_changes_do_not_hold_the_phone():
     first = parse_phone(parts, 100).focus
     parts["window"] = base.format(agent="Window{2 u0 chatgpt}", owner="Window{1 u0 launcher}")
     assert parse_phone(parts, 100).focus == first  # agent display churn is ignored
+    parts["window"] = base.format(agent="null", owner="Window{9 u0 launcher}")
+    assert parse_phone(parts, 100).focus == first  # recreated window, same app
     parts["window"] = base.format(agent="null", owner="Window{3 u0 owner-app}")
     assert parse_phone(parts, 100).focus != first  # owner display change still holds
 

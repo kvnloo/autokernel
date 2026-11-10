@@ -32,6 +32,11 @@ def finalize_phone(directory, state, device, decision):
     finalize(directory, state, device, decision)
 
 
+def bench_lock_holder(device_name):
+    from turbo.mobile import bench_lock_holder as holder
+    return holder(device_name)
+
+
 @dataclass
 class Run:
     token: str
@@ -51,7 +56,9 @@ class Run:
 class Dispatcher:
     def __init__(self, queue, devices, probe=None, repo=ROOT, *, popen=subprocess.Popen,
                  runner=subprocess.run, clock=time.monotonic, wall_clock=time.time,
-                 prepare=stage, phone_finalize=finalize_phone, interval=5.0):
+                 prepare=stage, phone_finalize=finalize_phone, interval=5.0,
+                 bench_busy=bench_lock_holder):
+        self.bench_busy = bench_busy
         self.queue = queue
         self.devices = tuple(devices)
         self.probe = probe or hardware.Probe()
@@ -331,6 +338,14 @@ class Dispatcher:
             if device.name in self.phone_hold:
                 reasons.append(self.phone_hold[device.name])
                 continue
+            if device.device_class == "phone" and not any(
+                    r.device.name == device.name for r in self.active.values()):
+                busy = self.bench_busy(device.name)
+                if busy:
+                    # Another owner loop (z0live-fulltime on S25) is already
+                    # benchmarking this phone; that is real work, not a FAIL.
+                    reasons.append(busy)
+                    continue
             count = sum(r.device.name == device.name for r in self.active.values())
             for _ in range(device.capacity - count):
                 if self.terminate or (self.state / "STOP").exists():

@@ -161,6 +161,20 @@ def phone_lock(state_root, device_name, before_release=None):
                 before_release()
 
 
+def bench_lock_holder(device_name: str) -> str | None:
+    """Name the busy legacy bench lock without taking it for long."""
+    legacy = LOCK_ROOT / ("s25-bench.lock" if device_name == "s25" else f"hc-turbo-{device_name}-bench.lock")
+    if not legacy.exists():
+        return None
+    with legacy.open("a") as handle:
+        try:
+            fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return f"phone bench lock {legacy.name} held by another benchmark loop"
+        fcntl.flock(handle, fcntl.LOCK_UN)
+    return None
+
+
 def finalize(run_dir: Path, state_root: Path, device_name: str, decision: str) -> None:
     """Commit a complete proposal only after the parent's last live gate.
 

@@ -417,3 +417,13 @@ def test_real_referee_keep_is_only_a_proposal_until_parent_finalization(
     mobile.finalize(Path(args.run_dir), state, "s25", "NOISE")
     after = json.loads((state / "s25" / "state.json").read_text())
     assert after["incumbents"] == before["incumbents"]
+
+
+def test_bench_lock_holder_reports_a_held_legacy_lock(tmp_path, monkeypatch):
+    import fcntl
+    monkeypatch.setattr(mobile, "LOCK_ROOT", tmp_path)
+    assert mobile.bench_lock_holder("s25") is None
+    with (tmp_path / "s25-bench.lock").open("a") as held:
+        fcntl.flock(held, fcntl.LOCK_EX)
+        assert "s25-bench.lock" in mobile.bench_lock_holder("s25")
+    assert mobile.bench_lock_holder("s25") is None

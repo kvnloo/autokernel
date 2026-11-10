@@ -94,7 +94,8 @@ def make_dispatcher(tmp_path, specs=None, devices=None, **kwargs):
                       probe=kwargs.pop("probe", FakeProbe()), popen=FakeProcess,
                       clock=lambda: 100, wall_clock=lambda: 1000,
                       phone_finalize=kwargs.pop("phone_finalize", lambda *args: None),
-                      prepare=kwargs.pop("prepare", prepare), **kwargs)
+                      prepare=kwargs.pop("prepare", prepare),
+                      bench_busy=kwargs.pop("bench_busy", lambda name: None), **kwargs)
 
 
 def complete(dispatcher, run, **changes):
@@ -368,7 +369,7 @@ check = "fixed referee equivalence"
 checks = ["equivalent"]
 ''')
     queue = Queue(specs, tmp_path / "state")
-    dispatcher = Dispatcher(queue, [Device("groot-cpu", "cpu", 1)],
+    dispatcher = Dispatcher(queue, [Device("groot-cpu", "cpu", 1)], bench_busy=lambda name: None,
         probe=FakeProbe(), popen=FakeProcess, clock=lambda: 100,
         wall_clock=lambda: 1000, prepare=prepare)
     dispatcher.tick()
@@ -380,3 +381,11 @@ checks = ["equivalent"]
     assert row["oracle_passed"] is True
     assert report["devices"]["groot-cpu"]["runs_per_hour"] == 1
     assert (queue.state_dir / "ledger.jsonl").read_text().endswith("\n")
+
+
+def test_phone_busy_with_another_bench_loop_is_skipped_not_failed(tmp_path):
+    dispatcher = make_dispatcher(tmp_path, bench_busy=lambda name: "lock held" if name == "s25" else None)
+    dispatcher.fill()
+    assert not any(run.device.name == "s25" for run in dispatcher.active.values())
+    assert dispatcher.skips["s25"] == ["lock held"]
+    assert any(run.device.name == "s22" for run in dispatcher.active.values())
