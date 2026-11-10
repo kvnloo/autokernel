@@ -435,3 +435,18 @@ def test_display0_focus_change_labels_but_never_aborts_the_cli_bench(tmp_path):
     before, after = t.telemetry(), t.telemetry()
     assert before["focus"] == after["focus"]
     assert t.owner_in_use
+
+
+def test_one_slow_probe_under_load_does_not_kill_the_run(tmp_path):
+    t = transport(tmp_path, FakeProbe(reading(), Reading(time.monotonic(), error="TimeoutExpired"), reading()))
+    first = t.gate()
+    assert t.gate() is first  # transient probe timeout reuses the last good reading
+    t.gate()
+
+
+def test_a_long_probe_outage_still_closes_the_gate(tmp_path):
+    t = transport(tmp_path, FakeProbe(reading(), Reading(time.monotonic(), error="TimeoutExpired")))
+    t.gate()
+    t.last_good_at -= mobile.PROBE_GRACE_SECONDS + 1
+    with pytest.raises(mobile.GateClosed):
+        t.gate()

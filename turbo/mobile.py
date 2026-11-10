@@ -59,6 +59,9 @@ _NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
 _SAFE_GATE_REASONS = {"focus changed", "call state missing or active", "audio call state missing or active", "owner activity reading unavailable", "focus reading unavailable", "live probe unavailable", "missing or stale live reading", "owner_in_use", "insufficient free phone storage for isolated assets"}
 
 
+PROBE_GRACE_SECONDS = 30.0
+
+
 class GateClosed(RuntimeError):
     pass
 
@@ -276,6 +279,7 @@ class PhoneTransport:
         self.probe = probe or Probe(runner=self._probe_run)
         self.poll_seconds = poll_seconds
         self.focus = None
+        self.last_good, self.last_good_at = None, 0.0
         self.owner_in_use = False
         self.cleanup_verified = True
         self.has_launched = False
@@ -290,6 +294,12 @@ class PhoneTransport:
 
     def gate(self):
         reading = self.probe.read(self.device)
+        if getattr(reading, "error", None) and self.last_good is not None \
+                and time.monotonic() - self.last_good_at < PROBE_GRACE_SECONDS:
+            # One slow dumpsys under full CPU load is not a call or owner
+            # action; keep the last good reading briefly instead of killing
+            # the run. A probe outage longer than the grace still closes it.
+            return self.last_good
         status = admit(self.device, PHONE_SPEC, reading, previous_focus=self.focus)
         if (status.owner_state != "owner_idle" or not _finite(reading.owner_idle_s)
                 or reading.owner_idle_s < OWNER_IDLE_SECONDS):
@@ -300,6 +310,7 @@ class PhoneTransport:
             raise GateClosed("; ".join(status.reasons) or "owner_in_use")
         if self.focus is None:
             self.focus = reading.focus
+        self.last_good, self.last_good_at = reading, time.monotonic()
         return reading
 
     def telemetry(self):
