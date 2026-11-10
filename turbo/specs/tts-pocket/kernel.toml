@@ -13,7 +13,7 @@ cost = 1.0
 oracle_status = "ready"
 
 [resources]
-mem = 536870912  # measured host-worker peak 31 MB (z0live-fulltime MemoryPeak, 2026-11-09)
+mem = 134217728  # 4x measured host-worker peak 31 MB (z0live-fulltime MemoryPeak, 2026-11-09)
 cpus = 1
 gpu_mem = 0
 
