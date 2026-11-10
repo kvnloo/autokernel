@@ -95,8 +95,9 @@ reasons, and council flags. Foreground window names are not persisted there.
 | `groot-gpu` | 2 | Fresh MemAvailable and GPU-0 free memory; GPU 0 pinned for execution |
 | `groot-cpu` | 1 | Fresh MemAvailable and online CPU count |
 | `mbp` | 3 | Fresh installed fleet single-node probe; Kueue bench submission |
-| `s25` | 1 | Fresh battery, live HAL temperature, call, audio, activity and focus readings |
+| `s25` | 1 | Fresh call, audio, activity and focus readings |
 | `s22` | 1 | Same phone gates, with an explicit independent serial |
+| `tab` | 1 | Same phone gates (Lenovo TB350FU via `TAB_SERIAL`) |
 
 Groot requires at least 6 GiB MemAvailable and enough memory for the spec.
 Shared CPU/GPU reservations are subtracted conservatively. GPU-0 free memory
@@ -104,9 +105,9 @@ must cover the spec and other reserved GPU work. Every groot job is bounded by
 `systemd-run --user --scope -p MemoryMax=...` and a CPU quota. Source staging is
 followed by a second live reading immediately before launch.
 
-Phone `resources` bound the host worker, including its quality scorer. Each
-phone seed reserves 8 GiB and one host CPU as a configurable budget, not a
-measured footprint. These reservations share Groot's memory/CPU accounting;
+Phone `resources` bound the groot host worker, including its quality scorer.
+Each phone seed reserves 128 MiB (4x the measured 31 MB host-worker peak) and
+one host CPU, with a 2 GiB groot floor instead of the 6 GiB groot-job floor. These reservations share Groot's memory/CPU accounting;
 a phone launch needs both fresh host capacity and fresh phone telemetry. Its
 owned systemd scope disables CUDA so quality scoring cannot consume an
 unreserved GPU. The existing candidate still controls benchmark threads on
@@ -129,10 +130,12 @@ Only fleet-build's verified, explicit no-admission exit is automatically
 retryable. The implementation follows the installed fleet interface inspected
 at [.files commit bfa8252](https://github.com/kvnloo/.files/blob/bfa825249b80cce957d24ad724be0d8f11098bdf/scripts/fleet-build).
 
-Phone admission requires battery at least 30% or charging, AP at most 42 C,
-battery at most 38 C, and known idle telephony/audio call states. Unknown,
-nonfinite, stale, or cached-only thermal readings hold admission. A call or
-focus change interrupts work. Focus equality uses an opaque digest.
+Owner rule: phones carry no manual resource limits (battery, thermal, RAM, CPU,
+GPU); Android throttles and manages them. Battery and temperature are recorded
+as evidence only. Phone admission requires known idle telephony/audio call
+states and owner activity/focus readings. A call or a focus change on the
+top-focused (owner-facing) display interrupts work; agent virtual displays are
+ignored. Focus equality uses an opaque digest.
 
 Runs are tagged `owner_in_use` or `owner_idle`; owner activity is allowed for
 measurement, but only idle confirmation can KEEP or update calibration. The wrapper also monitors
