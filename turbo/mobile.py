@@ -551,7 +551,9 @@ def complete_records(bench, configs, records, directory, rounds):
         key = bench.OBJ_KEY[cfg["objective"]]
         for record in actual:
             tag = record["tag"]
-            if (record.get("errs") or record.get("contaminated")
+            # Owner activity during a round ("contaminated") labels the run
+            # owner_in_use (no KEEP) but never discards adb-only measurements.
+            if (record.get("errs")
                     or not _finite(record.get(key), True) or not _finite(record.get("audio_s"), True)):
                 return False
             wav = Path(directory) / "wav" / (tag + ".wav")
@@ -615,6 +617,8 @@ def run_worker(args, bench=None, probe=None):
                     for config in configs:
                         validate_config(config, args.track)
                     records, telemetry = original_measure(configs, rounds, measured_dir, log)
+                    if any(r.get("contaminated") for rs in records.values() for r in rs):
+                        transport.owner_in_use = True
                     if not complete_records(b, configs, records, measured_dir, rounds):
                         raise ValueError("incomplete, failed or contaminated phone measurements")
                     return records, telemetry

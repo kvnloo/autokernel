@@ -283,8 +283,10 @@ def test_incomplete_or_failed_output_cannot_pass_measurement_gate(tmp_path):
     exit_path.write_text("0\n")
     assert mobile.complete_records(b, [cfg], {"only": [record]}, tmp_path, 1)
     assert not mobile.complete_records(b, [cfg], {"only": [record, record]}, tmp_path, 1)
+    # Owner rule: owner activity labels the run owner_in_use (KEEP is refused
+    # there) but never discards complete adb-only measurements.
     record["contaminated"] = True
-    assert not mobile.complete_records(b, [cfg], {"only": [record]}, tmp_path, 1)
+    assert mobile.complete_records(b, [cfg], {"only": [record]}, tmp_path, 1)
 
 
 def test_quality_requires_complete_finite_scores_and_vad_has_no_keep_oracle():
