@@ -209,6 +209,24 @@ class Queue:
                 fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
         return row
 
+    def fail_cooldown(self, device: str, identifier: str, now: float) -> float:
+        """Seconds left before retrying a pair whose latest runs all FAILed.
+
+        Exponential: 60 s after one FAIL, doubling to a one-hour ceiling, so a
+        broken referee cannot hot-loop a slot while healthy specs wait.
+        """
+        streak, last = 0, 0.0
+        for row in self.rows():
+            if (row["device"], row["id"]) != (device, identifier):
+                continue
+            if row["decision"] == "FAIL":
+                streak, last = streak + 1, float(row.get("at") or 0)
+            else:
+                streak = 0
+        if not streak:
+            return 0.0
+        return max(0.0, last + min(60.0 * 2 ** (streak - 1), 3600.0) - now)
+
     def council_flags(self) -> list[dict[str, Any]]:
         """Return device/spec pairs with at least three consecutive non-KEEPs."""
         streaks: dict[tuple[str, str], int] = defaultdict(int)

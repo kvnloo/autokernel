@@ -348,6 +348,21 @@ def test_concurrent_appenders_preserve_every_record(queue):
     assert {row["epoch"] for row in rows} == set(range(1, 13))
 
 
+def test_repeated_fail_backs_off_exponentially_and_resets_on_any_result(queue):
+    assert queue.fail_cooldown("groot-cpu", "a", now=1000) == 0
+    queue.append(receipt(epoch=1, decision="FAIL", at=1000))
+    assert queue.fail_cooldown("groot-cpu", "a", now=1000) == 60
+    queue.append(receipt(epoch=2, decision="FAIL", at=1100))
+    queue.append(receipt(epoch=3, decision="FAIL", at=1200))
+    assert queue.fail_cooldown("groot-cpu", "a", now=1200) == 240
+    assert queue.fail_cooldown("mbp", "a", now=1200) == 0  # per device
+    for epoch in range(4, 12):
+        queue.append(receipt(epoch=epoch, decision="FAIL", at=2000))
+    assert queue.fail_cooldown("groot-cpu", "a", now=2000) == 3600  # capped
+    queue.append(receipt(epoch=12, decision="NOISE", at=2100))
+    assert queue.fail_cooldown("groot-cpu", "a", now=2100) == 0
+
+
 def test_council_streak_is_per_device_and_resets_only_on_keep(queue):
     for epoch, decision in enumerate(("FAIL", "NOISE", "REVERT"), 1):
         queue.append(receipt(epoch=epoch, decision=decision))

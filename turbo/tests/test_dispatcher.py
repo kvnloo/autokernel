@@ -33,6 +33,9 @@ class FakeQueue:
     def council_flags(self):
         return {}
 
+    def fail_cooldown(self, device, identifier, now):
+        return 0.0
+
 
 class FakeProcess:
     next_pid = 8000
