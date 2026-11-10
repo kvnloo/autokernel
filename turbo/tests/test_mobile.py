@@ -467,3 +467,10 @@ def test_streaming_tts_prepare_markers_after_first_audio_do_not_make_ttfa_negati
         "EV x START 1000", "EV x LOADED 2000", "EV x LOADED 3000", "EV x FIRST 5000",
         "EV x LOADED 9000", "EV x FIRST 9500", "EV x END 12000 10"]))["x"]
     assert (events["loaded"], events["first"]) == (3000, 5000)
+
+
+def test_tab_runs_only_the_armv82_build_because_i8mm_builds_sigill_there():
+    assert mobile.fit_device({"variant": "base", "id": "x"}, "tab")["variant"] == "armv82"
+    assert mobile.fit_device({"id": "x"}, "tab")["variant"] == "armv82"
+    assert mobile.fit_device({"variant": "armv86", "id": "x"}, "tab") is None
+    assert mobile.fit_device({"variant": "armv86", "id": "x"}, "s25")["variant"] == "armv86"

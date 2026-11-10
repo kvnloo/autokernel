@@ -51,6 +51,7 @@ TRACKS = {
 }
 LOCK_ROOT = Path("/tmp")
 ROUNDS = 2
+TAB_VARIANT = "armv82"
 PHONE_SPEC = SimpleNamespace(device_class="phone", devices=("s25", "s22", "tab"),
                              resources=SimpleNamespace(mem=1, cpus=1, gpu_mem=0))
 _NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
@@ -240,11 +241,23 @@ def load_bench(repo):
     return bench
 
 
-def select_candidate(bench, track, state, available=None):
+def fit_device(cfg, device):
+    """The tab (MT8781: dotprod+fp16, no i8mm/bf16) SIGILLs on every i8mm
+    build, so it runs only the armv82 variant; other ISA variants don't apply."""
+    if device != "tab" or cfg is None:
+        return cfg
+    if cfg.get("variant", "base") not in ("base", TAB_VARIANT):
+        return None
+    return dict(cfg, variant=TAB_VARIANT)
+
+
+def select_candidate(bench, track, state, available=None, device=None):
     """Baseline, A/A, then existing configurations and bounded thread changes."""
     if track not in TRACKS:
         raise ValueError("unsupported mobile track")
-    base = validate_config(bench.cfg_load(bench.ROOT / "candidates" / TRACKS[track]), track)
+    if device == "tab" and not (Path(bench.VARIANTS) / TAB_VARIANT / "audiocpp_cli").is_file():
+        device = None  # VAD runs on the base build until armv82 is staged
+    base = fit_device(validate_config(bench.cfg_load(bench.ROOT / "candidates" / TRACKS[track]), track), device)
     if track not in state["incumbents"]:
         return "baseline", base
     incumbent = validate_config(state["incumbents"][track]["cfg"], track)
@@ -255,8 +268,8 @@ def select_candidate(bench, track, state, available=None):
     candidates = []
     for path in sorted((bench.ROOT / "candidates").glob("*.json")):
         cfg = bench.cfg_load(path)
-        if cfg["track"] == track:
-            candidates.append(validate_config(cfg, track))
+        if cfg["track"] == track and fit_device(cfg, device) is not None:
+            candidates.append(validate_config(fit_device(cfg, device), track))
     # Measured configurations of the real baseline, not invented binaries.
     for threads in (2, 6, 8):
         cfg = copy.deepcopy(base)
@@ -608,7 +621,7 @@ def run_worker(args, bench=None, probe=None):
             transport = PhoneTransport(b, Device(args.device, "phone", 1, args.serial), run_dir, probe)
             transport.gate()
             transport.install_adapter()
-            phase, cfg = select_candidate(b, args.track, previous, transport.available)
+            phase, cfg = select_candidate(b, args.track, previous, transport.available, args.device)
             receipt.update(phase=phase, candidate=cfg["id"])
             if phase == "exhausted":
                 receipt.update(decision="NOISE", reason=EXHAUSTED)
