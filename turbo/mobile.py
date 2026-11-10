@@ -31,6 +31,7 @@ if __package__ in (None, ""):
     # Do not leave turbo/ on sys.path: its queue.py shadows stdlib queue.
     sys.path[0] = str(Path(__file__).resolve().parent.parent)
 
+from turbo.queue import EXHAUSTED
 from turbo.devices import (Device, Probe, OWNER_IDLE_SECONDS, admit,
                            adb_command, validate_phone_shell)
 
@@ -588,7 +589,7 @@ def run_worker(args, bench=None, probe=None):
             phase, cfg = select_candidate(b, args.track, previous, transport.available)
             receipt.update(phase=phase, candidate=cfg["id"])
             if phase == "exhausted":
-                receipt.update(decision="NOISE", reason="all available bounded candidates have been measured")
+                receipt.update(decision="NOISE", reason=EXHAUSTED)
             else:
                 _write(run_dir / "candidate.json", cfg)
                 rows = []

@@ -14,6 +14,8 @@ from typing import Any, Iterable, Mapping
 
 from .spec import DEVICE_CLASSES, Spec, SpecError
 
+EXHAUSTED = "all available bounded candidates have been measured"
+
 
 class LedgerError(ValueError):
     """Ledger evidence is malformed or violates a scheduling safety gate."""
@@ -222,6 +224,11 @@ class Queue:
             reason = str(row.get("reason") or "")
             if reason.startswith(("SIGTERM: cancelled", "dispatcher exiting")):
                 continue  # our own restart/preemption, not the spec's fault
+            if reason == EXHAUSTED:
+                # Nothing new to measure: an instant no-op run. Back off like a
+                # FAIL so the slot goes to specs with untested candidates.
+                streak, last = streak + 1, float(row.get("at") or 0)
+                continue
             if row["decision"] == "FAIL":
                 streak, last = streak + 1, float(row.get("at") or 0)
             else:

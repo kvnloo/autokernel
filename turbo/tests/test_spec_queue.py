@@ -363,7 +363,9 @@ def test_repeated_fail_backs_off_exponentially_and_resets_on_any_result(queue):
     queue.append(receipt(epoch=13, decision="FAIL", at=2200, reason="dispatcher exiting"))
     queue.append(receipt(epoch=14, decision="FAIL", at=2200, reason="SIGTERM: cancelled owned work"))
     assert queue.fail_cooldown("groot-cpu", "a", now=2200) == 0  # restarts don't count
-    assert queue.fail_cooldown("groot-cpu", "a", now=2100) == 0
+    queue.append(receipt(epoch=15, decision="NOISE", at=2300,
+                         reason="all available bounded candidates have been measured"))
+    assert queue.fail_cooldown("groot-cpu", "a", now=2300) == 60  # exhausted no-op backs off
 
 
 def test_council_streak_is_per_device_and_resets_only_on_keep(queue):
