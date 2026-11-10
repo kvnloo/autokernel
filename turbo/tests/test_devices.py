@@ -164,6 +164,19 @@ def test_samsung_multi_display_focus_is_read_not_unavailable():
     assert parse_phone(parts, 100).focus  # sleeping screen is a reading, not missing telemetry
 
 
+def test_agent_virtual_display_focus_changes_do_not_hold_the_phone():
+    parts = phone_parts()
+    base = ("  Display: mDisplayId=145 (organized)\n  mCurrentFocus={agent}\n"
+            "  Display: mDisplayId=0 (organized)\n  mCurrentFocus={owner}\n"
+            "WINDOW MANAGER WINDOWS\n  mTopFocusedDisplayId=0\n")
+    parts["window"] = base.format(agent="null", owner="Window{1 u0 launcher}")
+    first = parse_phone(parts, 100).focus
+    parts["window"] = base.format(agent="Window{2 u0 chatgpt}", owner="Window{1 u0 launcher}")
+    assert parse_phone(parts, 100).focus == first  # agent display churn is ignored
+    parts["window"] = base.format(agent="null", owner="Window{3 u0 owner-app}")
+    assert parse_phone(parts, 100).focus != first  # owner display change still holds
+
+
 def test_wifi_tablet_without_ap_sensor_or_telephony_is_readable():
     parts = phone_parts()
     parts["thermalservice"] = ("Current temperatures from HAL:\n"

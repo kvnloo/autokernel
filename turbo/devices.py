@@ -188,6 +188,13 @@ def parse_phone(parts: dict[str, str], measured_at: float) -> Reading:
     # Samsung lists every display; secondary/virtual ones (and a sleeping screen)
     # report null. The token covers all displays so any focus change still holds
     # the phone, and a null-only reading is a real state, not a missing one.
+    if displays:
+        # Agents drive virtual displays (ChatGPT driver on S22 display 145);
+        # only the owner-facing top-focused display decides a focus change.
+        sections = re.split(r"^\s*Display: mDisplayId=(\d+)\b.*$", window, flags=re.MULTILINE)
+        scoped = dict(zip(sections[1::2], sections[2::2]))
+        if displays[0] in scoped:
+            focuses = re.findall(r"^\s*mCurrentFocus=(.+)$", scoped[displays[0]], re.MULTILINE)[:1]
     if displays and focuses:
         focus = hashlib.sha256("\0".join([displays[0], *(f.strip() for f in focuses)]).encode()).hexdigest()
     registry = parts["telephony.registry"]
