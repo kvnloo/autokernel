@@ -452,3 +452,10 @@ def test_a_long_probe_outage_still_closes_the_gate(tmp_path):
     t.last_good_at -= mobile.PROBE_GRACE_SECONDS + 1
     with pytest.raises(mobile.GateClosed):
         t.gate()
+
+
+def test_streaming_tts_prepare_markers_after_first_audio_do_not_make_ttfa_negative(bench):
+    events = bench.parse_events("\n".join([
+        "EV x START 1000", "EV x LOADED 2000", "EV x LOADED 3000", "EV x FIRST 5000",
+        "EV x LOADED 9000", "EV x FIRST 9500", "EV x END 12000 10"]))["x"]
+    assert (events["loaded"], events["first"]) == (3000, 5000)

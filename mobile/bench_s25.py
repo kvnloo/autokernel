@@ -242,8 +242,11 @@ def parse_events(text):
         r = runs.setdefault(p[1], {"errs": []})
         if p[2] in ("START", "LOADED", "FIRST") and p[2].lower() not in r:
             r[p[2].lower()] = int(p[3])
-        elif p[2] == "LOADED":
-            r["loaded"] = int(p[3])  # last load-phase marker wins
+        elif p[2] == "LOADED" and "first" not in r:
+            # Last load-phase marker before first audio wins; streaming TTS
+            # re-prints prepare markers per text chunk after audio started
+            # (negative warm TTFA rejected every tts run, 2026-11-10).
+            r["loaded"] = int(p[3])
         elif p[2] == "WALL":
             r["wall_ms"] = float(p[3])
         elif p[2] == "END":
