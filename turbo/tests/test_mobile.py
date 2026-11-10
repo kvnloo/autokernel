@@ -426,3 +426,12 @@ def test_bench_lock_holder_reports_a_held_legacy_lock(tmp_path, monkeypatch):
         fcntl.flock(held, fcntl.LOCK_EX)
         assert "s25-bench.lock" in mobile.bench_lock_holder("s25")
     assert mobile.bench_lock_holder("s25") is None
+
+
+def test_display0_focus_change_labels_but_never_aborts_the_cli_bench(tmp_path):
+    # bench_s25.measure raises "ABORT focus changed" when telemetry focus differs
+    # across a round; owner rule says CLI runs are only labelled owner_in_use.
+    t = transport(tmp_path, FakeProbe(reading(focus="lockscreen"), reading(focus="launcher")))
+    before, after = t.telemetry(), t.telemetry()
+    assert before["focus"] == after["focus"]
+    assert t.owner_in_use

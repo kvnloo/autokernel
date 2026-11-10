@@ -308,7 +308,10 @@ class PhoneTransport:
                 "AP": r.ap_c, "BAT": r.battery_c, "SKIN": None,
                 "batt_dC": r.battery_c * 10, "owner_idle_s": r.owner_idle_s,
                 "awake": r.awake, "call_state": r.call_state, "audio_mode": r.audio_mode,
-                "focus": r.focus, "focus_display": None,
+                # Owner rule: display-0 focus changes label CLI runs (gate sets
+                # owner_in_use) but never stop them; a stable token keeps the
+                # bench's focus-change ABORT from killing adb-only work.
+                "focus": self.focus, "focus_display": None,
                 "charge_uAh": None, "current_uA": None, "voltage_mV": None,
                 "at": datetime.datetime.now().isoformat(timespec="seconds")}
 
