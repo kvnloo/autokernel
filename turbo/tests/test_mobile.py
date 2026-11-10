@@ -446,6 +446,14 @@ def test_one_slow_probe_under_load_does_not_kill_the_run(tmp_path):
     t.gate()
 
 
+def test_truncated_telephony_dump_under_load_is_a_probe_miss_but_a_real_call_still_closes(tmp_path):
+    t = transport(tmp_path, FakeProbe(reading(), reading(call_state=None), reading(call_state=1)))
+    first = t.gate()
+    assert t.gate() is first
+    with pytest.raises(mobile.GateClosed):
+        t.gate()
+
+
 def test_a_long_probe_outage_still_closes_the_gate(tmp_path):
     t = transport(tmp_path, FakeProbe(reading(), Reading(time.monotonic(), error="TimeoutExpired")))
     t.gate()

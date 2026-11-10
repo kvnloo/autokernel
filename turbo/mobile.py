@@ -294,7 +294,11 @@ class PhoneTransport:
 
     def gate(self):
         reading = self.probe.read(self.device)
-        if getattr(reading, "error", None) and self.last_good is not None \
+        # A dumpsys truncated under full load parses as a missing call/audio
+        # field (exit 0, no mCallState); that is a probe miss, not a call. A
+        # real call or audio mode (non-zero value) still closes immediately.
+        missing = getattr(reading, "call_state", 0) is None or getattr(reading, "audio_mode", 0) is None
+        if (getattr(reading, "error", None) or missing) and self.last_good is not None \
                 and time.monotonic() - self.last_good_at < PROBE_GRACE_SECONDS:
             # One slow dumpsys under full CPU load is not a call or owner
             # action; keep the last good reading briefly instead of killing
