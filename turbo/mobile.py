@@ -23,6 +23,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 from types import SimpleNamespace
 import uuid
 
@@ -52,6 +53,9 @@ ROUNDS = 2
 PHONE_SPEC = SimpleNamespace(device_class="phone", devices=("s25", "s22", "tab"),
                              resources=SimpleNamespace(mem=1, cpus=1, gpu_mem=0))
 _NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
+
+
+_SAFE_GATE_REASONS = {"focus changed", "call state missing or active", "audio call state missing or active", "owner activity reading unavailable", "focus reading unavailable", "live probe unavailable", "missing or stale live reading", "owner_in_use", "insufficient free phone storage for isolated assets"}
 
 
 class GateClosed(RuntimeError):
@@ -643,7 +647,12 @@ def run_worker(args, bench=None, probe=None):
             receipt["owner_state"] = "owner_idle"
     except (OSError, ValueError, KeyError, TypeError, RuntimeError, subprocess.SubprocessError, SystemExit) as exc:
         # Never persist arbitrary subprocess output, focus text or serials.
-        receipt.update(decision="FAIL", reason="phone worker stopped: " + type(exc).__name__)
+        # Raise site (file:line) only: diagnosable without leaking text.
+        tb = traceback.extract_tb(exc.__traceback__)[-1:] or [None]
+        site = f"@{Path(tb[0].filename).name}:{tb[0].lineno}" if tb[0] else ""
+        if isinstance(exc, GateClosed):
+            site += " " + ",".join(r for r in str(exc).split("; ") if r in _SAFE_GATE_REASONS)
+        receipt.update(decision="FAIL", reason="phone worker stopped: " + type(exc).__name__ + site)
         proposal = None
     finally:
         if transport is not None:
