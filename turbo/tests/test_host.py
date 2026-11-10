@@ -164,3 +164,9 @@ def test_custom_state_inside_repo_is_excluded_from_both_snapshots(tmp_path, stat
     assert not (run / "work/source" / state_relative).exists()
     assert not (run / "work/turbo/tmpstate").exists()
     assert json.loads((run / "work/launch.json").read_text())["command"] == ["python3", "./referee.py"]
+
+
+def test_host_exhausted_noise_keeps_the_reason_the_queue_backs_off_on(tmp_path):
+    from turbo.queue import EXHAUSTED
+    result = score(spec(), {"decision": "NOISE", "ci": None, "reason": EXHAUSTED}, tmp_path)
+    assert (result["decision"], result["reason"]) == ("NOISE", EXHAUSTED)

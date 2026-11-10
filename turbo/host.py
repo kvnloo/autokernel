@@ -21,6 +21,7 @@ import sys
 if __package__ in (None, ""):
     sys.path[0] = str(Path(__file__).resolve().parents[1])
 
+from turbo.queue import EXHAUSTED
 from turbo.spec import Spec
 
 
@@ -178,6 +179,8 @@ def score(spec, receipt, root, returncode=0):
                 result["decision"] = "KEEP"
         else:
             result["decision"] = decision
+            if decision == "NOISE" and receipt.get("reason") == EXHAUSTED:
+                result["reason"] = EXHAUSTED  # lets the queue back off no-op runs
     except (OSError, ValueError, TypeError, KeyError, ImportError) as exc:
         result["reason"] = str(exc)
     return result

@@ -1,0 +1,25 @@
+# Launch-config hill climb (num_warps/num_stages/literal BLOCK sizes) for autokernel kernels/flash_attention.py.
+# Scheduling weights are neutral policy defaults, not measured speedups.
+id = "gpu-flash-attention-launch"
+objective = "speed"
+metric = "kernel_latency_us"
+direction = "lower"
+device_class = "gpu"
+devices = ["groot-gpu"]
+referee = ["/mnt/zer0models/turbo-mode-20261019/venv/bin/python", "/mnt/zer0models/worktrees/autokernel-hc-turbo/turbo/referees/autokernel_gpu.py", "--kernel", "flash_attention", "--repo", "/mnt/zer0models/github/autokernel", "--state", "/mnt/zer0models/workspace/zer0/data/operations/hc-turbo-20261106/gpu-launch", "--python", "/mnt/zer0models/turbo-mode-20261019/venv/bin/python", "--pairs", "3", "--timeout", "400"]
+working_directory = "/mnt/zer0models/worktrees/autokernel-hc-turbo/turbo/referees"
+max_runtime = 3000
+amdahl_share = 1.0
+expected_gain = 1.0
+cost = 1.0
+oracle_status = "ready"
+
+[resources]
+mem = 3221225472  # torch+triton bench.py process
+cpus = 1
+gpu_mem = 1610612736
+
+[oracle]
+kind = "receipt"
+check = "bench.py correctness stages pass for incumbent and candidate in every alternating pair"
+checks = ["correctness_pass"]
