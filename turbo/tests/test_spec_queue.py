@@ -360,6 +360,9 @@ def test_repeated_fail_backs_off_exponentially_and_resets_on_any_result(queue):
         queue.append(receipt(epoch=epoch, decision="FAIL", at=2000))
     assert queue.fail_cooldown("groot-cpu", "a", now=2000) == 3600  # capped
     queue.append(receipt(epoch=12, decision="NOISE", at=2100))
+    queue.append(receipt(epoch=13, decision="FAIL", at=2200, reason="dispatcher exiting"))
+    queue.append(receipt(epoch=14, decision="FAIL", at=2200, reason="SIGTERM: cancelled owned work"))
+    assert queue.fail_cooldown("groot-cpu", "a", now=2200) == 0  # restarts don't count
     assert queue.fail_cooldown("groot-cpu", "a", now=2100) == 0
 
 

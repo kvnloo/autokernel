@@ -219,6 +219,9 @@ class Queue:
         for row in self.rows():
             if (row["device"], row["id"]) != (device, identifier):
                 continue
+            reason = str(row.get("reason") or "")
+            if reason.startswith(("SIGTERM: cancelled", "dispatcher exiting")):
+                continue  # our own restart/preemption, not the spec's fault
             if row["decision"] == "FAIL":
                 streak, last = streak + 1, float(row.get("at") or 0)
             else:
