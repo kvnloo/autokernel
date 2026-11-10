@@ -106,11 +106,9 @@ def test_shell_interpolated_candidate_fields_are_validated(bench, field, value):
 
 
 @pytest.mark.parametrize("changes", [
-    {"ap_c": None}, {"battery_c": None}, {"battery_pct": None},
-    {"charging": None}, {"call_state": None}, {"audio_mode": None},
+    {"call_state": None}, {"audio_mode": None},
     {"focus": None}, {"owner_idle_s": None}, {"awake": None},
-    {"call_state": 1}, {"audio_mode": 3}, {"ap_c": 42.1},
-    {"battery_c": 38.1}, {"battery_pct": 29},
+    {"call_state": 1}, {"audio_mode": 3},
 ])
 def test_phone_gate_fails_closed_on_missing_or_unsafe_readings(tmp_path, changes):
     phone = transport(tmp_path, FakeProbe(reading(**changes)))

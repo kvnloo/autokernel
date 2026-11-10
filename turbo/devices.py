@@ -293,14 +293,9 @@ def admit(device: Device, spec: Any, reading: Reading,
     if device.device_class == "phone":
         if not device.serial:
             reasons.append("phone serial is not configured")
-        if not _integer(reading.battery_pct) or reading.battery_pct > 100 or type(reading.charging) is not bool:
-            reasons.append("battery reading unavailable")
-        elif reading.battery_pct < 30 and not reading.charging:
-            reasons.append("battery below 30 percent and not charging")
-        if not _number(reading.ap_c) or not 0 < reading.ap_c <= 42:
-            reasons.append("AP temperature missing or above 42 C")
-        if not _number(reading.battery_c) or not 0 < reading.battery_c <= 38:
-            reasons.append("battery temperature missing or above 38 C")
+        # Owner rule: no manual phone resource limits (battery, thermal, RAM,
+        # CPU, GPU); Android throttles and manages those itself. Only owner
+        # presence (calls, audio, activity, focus) holds a phone.
         if not _integer(reading.call_state) or reading.call_state != 0:
             reasons.append("call state missing or active")
         if not _integer(reading.audio_mode) or reading.audio_mode != 0:

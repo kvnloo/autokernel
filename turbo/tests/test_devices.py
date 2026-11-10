@@ -44,17 +44,24 @@ def test_gpu_reservations_and_cpu_capacity_are_enforced():
 
 
 @pytest.mark.parametrize("changes", [
-    {"battery_pct": 29}, {"ap_c": 42.1}, {"battery_c": 38.1},
     {"call_state": 1}, {"call_state": 2}, {"audio_mode": 3},
-    {"ap_c": None}, {"ap_c": float("nan")}, {"battery_c": None},
     {"call_state": None}, {"audio_mode": None}, {"focus": None},
-    {"owner_idle_s": None}, {"awake": None}, {"charging": None},
-    {"battery_pct": True}, {"battery_pct": 101}, {"measured_at": 0},
+    {"owner_idle_s": None}, {"awake": None}, {"measured_at": 0},
 ])
 def test_phone_rejects_unsafe_or_unknown_reading(changes):
     result = admit(Device("s25", "phone", 1, "fake-s25"), spec("phone"),
                    phone_reading(**changes), now=100)
     assert not result.admitted and result.reasons
+
+
+@pytest.mark.parametrize("changes", [
+    {"battery_pct": 5, "charging": False}, {"ap_c": 55.0}, {"battery_c": 45.0},
+    {"ap_c": None}, {"battery_c": None}, {"battery_pct": None, "charging": None},
+])
+def test_owner_rule_no_manual_phone_resource_limits(changes):
+    result = admit(Device("s25", "phone", 1, "fake-s25"), spec("phone"),
+                   phone_reading(**changes), now=100)
+    assert result.admitted, result.reasons
 
 
 def test_charging_phone_and_owner_in_use_are_admitted_but_labelled():

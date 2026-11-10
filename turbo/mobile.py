@@ -332,7 +332,9 @@ class PhoneTransport:
     def install_adapter(self):
         b = self.bench
         b.SER, b.PD = self.device.serial, self.remote
-        b.OWNER_IDLE_S, b.MIN_BATT = int(OWNER_IDLE_SECONDS), 30
+        # Owner rule: Android manages battery/thermal; no manual limits.
+        b.OWNER_IDLE_S, b.MIN_BATT = int(OWNER_IDLE_SECONDS), 0
+        b.MAX_AP_C = b.MAX_BAT_C = float("inf")
         original_block = b.phone_block
 
         def block(jobs):
