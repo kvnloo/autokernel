@@ -99,7 +99,8 @@ class Dispatcher:
         host_spec = SimpleNamespace(device_class="cpu", devices=("groot-cpu",),
                                     resources=spec.resources)
         host_result = hardware.admit(host, host_spec, self.probe.read(host),
-                                     reserved_resources=self.reservations(host), now=self.clock())
+                                     reserved_resources=self.reservations(host), now=self.clock(),
+                                     headroom=hardware.PHONE_HOST_HEADROOM)
         return hardware.Admission(host_result.admitted,
             tuple("phone host worker: " + reason for reason in host_result.reasons),
             result.owner_state, result.focus)

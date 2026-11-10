@@ -178,6 +178,19 @@ def test_wifi_tablet_without_ap_sensor_or_telephony_is_readable():
     assert parse_phone(parts, 100).call_state is None  # a phone with unreadable call state stays held
 
 
+def test_phone_host_worker_needs_less_groot_headroom_than_groot_jobs():
+    from turbo.devices import PHONE_HOST_HEADROOM, GROOT_HEADROOM
+    tight = Reading(measured_at=100, mem_available=5 * GIB, cpus=8)
+    host = Device("groot-cpu", "cpu", 1)
+    small = spec("cpu")
+    small.resources.mem = GIB // 2
+    assert not admit(host, small, tight, now=100).admitted
+    assert admit(host, small, tight, now=100, headroom=PHONE_HOST_HEADROOM).admitted
+    starved = Reading(measured_at=100, mem_available=GIB, cpus=8)
+    assert not admit(host, small, starved, now=100, headroom=PHONE_HOST_HEADROOM).admitted
+    assert PHONE_HOST_HEADROOM < GROOT_HEADROOM
+
+
 def test_cached_temperatures_and_second_sim_call_fail_closed():
     parts = phone_parts()
     parts["thermalservice"] = "Cached temperatures:\nTemperature{mValue=20.0, mType=0, mName=AP, mStatus=0}\n"

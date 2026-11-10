@@ -21,6 +21,9 @@ from typing import Any, Callable, Iterable
 GIB = 1024 ** 3
 MIB = 1024 ** 2
 GROOT_HEADROOM = 6 * GIB
+# A phone run's host process is a tiny adb/referee supervisor (31 MB peak measured
+# 2026-11-09); the phone does the work. It keeps groot out of OOM, not 6 GiB idle.
+PHONE_HOST_HEADROOM = 2 * GIB
 OWNER_IDLE_SECONDS = 90.0  # mobile/bench_s25.py's confirmation window
 MAX_READING_AGE = 30.0
 
@@ -258,7 +261,7 @@ class Probe:
 
 def admit(device: Device, spec: Any, reading: Reading,
           reserved_resources: Iterable[Any] = (), previous_focus: str | None = None,
-          *, now: float | None = None) -> Admission:
+          *, now: float | None = None, headroom: int = GROOT_HEADROOM) -> Admission:
     """Fail closed. Reservations must include shared-host CPU and GPU slots."""
     reasons = []
     owner_state = None
@@ -310,7 +313,7 @@ def admit(device: Device, spec: Any, reading: Reading,
         else:
             mem = reading.mem_available - sum(r.mem for r in reservations)
             cpus = reading.cpus - sum(r.cpus for r in reservations)
-            need = max(GROOT_HEADROOM, res.mem) if device.name.startswith("groot-") else res.mem
+            need = max(headroom, res.mem) if device.name.startswith("groot-") else res.mem
             if mem < need:
                 reasons.append("insufficient MemAvailable after reservations")
             if cpus < res.cpus:
