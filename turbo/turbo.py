@@ -344,7 +344,7 @@ class Dispatcher:
                 candidates.sort(key=lambda spec: spec.id in self.seen)
                 launched = False
                 for spec in candidates:
-                    wait = self.queue.fail_cooldown(device.name, spec.id, self.clock())
+                    wait = self.queue.fail_cooldown(device.name, spec.id, self.wall_clock())
                     if wait > 0:
                         reasons.append(f"{spec.id}: cooling down {int(wait)} s after FAIL")
                         continue
