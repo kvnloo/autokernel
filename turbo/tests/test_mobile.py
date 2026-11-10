@@ -123,11 +123,10 @@ def test_owner_activity_is_sticky_even_if_phone_returns_idle(tmp_path):
     assert phone.owner_in_use
 
 
-def test_focus_change_aborts_without_persisting_foreground_text(tmp_path):
+def test_focus_change_labels_owner_in_use_without_stopping(tmp_path):
     phone = transport(tmp_path, FakeProbe(reading(), reading(focus="different-opaque-token")))
     phone.gate()
-    with pytest.raises(mobile.GateClosed, match="focus changed"):
-        phone.gate()
+    phone.gate()  # keeps running; the label alone blocks a KEEP
     assert phone.owner_in_use
 
 

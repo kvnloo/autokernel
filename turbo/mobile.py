@@ -352,7 +352,9 @@ class PhoneTransport:
         b = self.bench
         b.SER, b.PD = self.device.serial, self.remote
         # Owner rule: Android manages battery/thermal; no manual limits.
-        b.OWNER_IDLE_S, b.MIN_BATT = int(OWNER_IDLE_SECONDS), 0
+        # Screen tier: CLI runs go while the owner uses the phone (owner
+        # 2026-11-05/11-10); owner_in_use labels them so they never KEEP.
+        b.OWNER_IDLE_S, b.MIN_BATT = 0, 0
         b.MAX_AP_C = b.MAX_BAT_C = float("inf")
         original_block = b.phone_block
 

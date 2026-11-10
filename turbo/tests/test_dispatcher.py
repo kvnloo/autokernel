@@ -234,7 +234,8 @@ def test_safe_phone_is_held_when_host_quality_budget_is_unavailable(tmp_path):
     assert "phone host worker: insufficient MemAvailable" in report["devices"]["s25"]["skip_reasons"][0]
 
 
-def test_focus_change_cancels_only_owned_process_group(tmp_path, monkeypatch):
+def test_owner_focus_change_keeps_adb_cli_run_going(tmp_path, monkeypatch):
+    # Owner rule 2026-11-10: CLI hill climbs never touch display 0.
     dispatcher = make_dispatcher(tmp_path, [specification("phone", "phone")],
                                   [Device("s22", "phone", 1, "fake-s22")],
                                   runner=lambda *args, **kwargs: SimpleNamespace(returncode=0))
@@ -245,10 +246,8 @@ def test_focus_change_cancels_only_owned_process_group(tmp_path, monkeypatch):
     killed = []
     monkeypatch.setattr("turbo.turbo.os.killpg", lambda pid, sig: killed.append((pid, sig)))
     dispatcher.tick(fill=False)
-    assert [pid for pid, _ in killed] == [run.process.pid]
-    assert dispatcher.queue.history[0]["decision"] == "FAIL"
-    assert run.cancelled == "focus changed"
-    assert "s22" in dispatcher.phone_hold
+    assert killed == [] and run.cancelled is None
+    assert "s22" not in dispatcher.phone_hold
 
 
 def test_sigterm_cancels_exact_mbp_job_and_owned_observer(tmp_path, monkeypatch):

@@ -311,7 +311,9 @@ def admit(device: Device, spec: Any, reading: Reading,
         if not isinstance(reading.focus, str) or not reading.focus:
             reasons.append("focus reading unavailable")
         elif previous_focus is not None and reading.focus != previous_focus:
-            reasons.append("focus changed")
+            # Owner rule: hill climbs are adb CLI and never touch display 0, so
+            # owner activity labels the run (no KEEP) but never pauses it.
+            owner_state = "owner_in_use"
     elif device.name in ("groot-cpu", "groot-gpu", "mbp"):
         if not _integer(reading.mem_available, 1) or not _integer(reading.cpus, 1):
             reasons.append("host resource reading unavailable")

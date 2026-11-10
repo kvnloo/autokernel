@@ -76,7 +76,7 @@ def test_charging_phone_and_owner_in_use_are_admitted_but_labelled():
 def test_focus_change_holds_and_missing_serial_holds():
     dev = Device("s25", "phone", 1, "fake-s25")
     result = admit(dev, spec("phone"), phone_reading(), previous_focus="other-focus", now=100)
-    assert not result.admitted and "focus changed" in result.reasons
+    assert result.admitted and result.owner_state == "owner_in_use"  # labelled, not paused
     assert not admit(replace(dev, serial=None), spec("phone"), phone_reading(), now=100).admitted
 
 
