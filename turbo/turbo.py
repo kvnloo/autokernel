@@ -68,11 +68,11 @@ class Dispatcher:
         self.skips = {}
         holds_path = self.state / "holds.json"
         holds = json.loads(holds_path.read_text()) if holds_path.exists() else {}
-        if (not isinstance(holds, dict) or set(holds) - {"mbp", "s25", "s22"}
+        if (not isinstance(holds, dict) or set(holds) - {"mbp", "s25", "s22", "tab"}
                 or any(not isinstance(v, str) or not v for v in holds.values())):
             raise ValueError("invalid persistent device holds")
         self.remote_hold = holds.get("mbp")
-        self.phone_hold = {name: reason for name, reason in holds.items() if name in ("s25", "s22")}
+        self.phone_hold = {name: reason for name, reason in holds.items() if name in ("s25", "s22", "tab")}
         self.terminate = False
         self.draining = False
 
@@ -436,6 +436,7 @@ def main(argv=None):
     parser.add_argument("--state", type=Path, default=ROOT / "turbo/state")
     parser.add_argument("--s25-serial", default=os.environ.get("S25_SERIAL"))
     parser.add_argument("--s22-serial", default=os.environ.get("S22_SERIAL"))
+    parser.add_argument("--tab-serial", default=os.environ.get("TAB_SERIAL"))
     parser.add_argument("--interval", type=float, default=5)
     args = parser.parse_args(argv)
     state = args.state.resolve()
@@ -459,7 +460,7 @@ def main(argv=None):
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             parser.error("another dispatcher owns the fleet or this state directory")
-        fleet = hardware.default_devices(args.s25_serial, args.s22_serial)
+        fleet = hardware.default_devices(args.s25_serial, args.s22_serial, args.tab_serial)
         dispatcher = Dispatcher(Queue(args.specs, state), fleet, interval=args.interval)
 
         def terminate(_signum, _frame):

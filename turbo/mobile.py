@@ -49,7 +49,7 @@ TRACKS = {
 }
 LOCK_ROOT = Path("/tmp")
 ROUNDS = 2
-PHONE_SPEC = SimpleNamespace(device_class="phone", devices=("s25", "s22"),
+PHONE_SPEC = SimpleNamespace(device_class="phone", devices=("s25", "s22", "tab"),
                              resources=SimpleNamespace(mem=1, cpus=1, gpu_mem=0))
 _NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
 
@@ -142,11 +142,11 @@ def _digest(state):
 
 @contextmanager
 def phone_lock(state_root, device_name, before_release=None):
-    if device_name not in ("s25", "s22"):
+    if device_name not in ("s25", "s22", "tab"):
         raise ValueError("unsupported phone")
     directory = Path(state_root) / device_name
     directory.mkdir(parents=True, exist_ok=True)
-    legacy = LOCK_ROOT / ("s25-bench.lock" if device_name == "s25" else "hc-turbo-s22-bench.lock")
+    legacy = LOCK_ROOT / ("s25-bench.lock" if device_name == "s25" else f"hc-turbo-{device_name}-bench.lock")
     with legacy.open("a") as old_lock, (directory / "worker.lock").open("a") as lock:
         fcntl.flock(old_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -662,7 +662,7 @@ def run_worker(args, bench=None, probe=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--track", required=True, choices=tuple(TRACKS))
-    parser.add_argument("--device", required=True, choices=("s25", "s22"))
+    parser.add_argument("--device", required=True, choices=("s25", "s22", "tab"))
     parser.add_argument("--serial", required=True)
     parser.add_argument("--run-dir", required=True)
     parser.add_argument("--state-dir", required=True)

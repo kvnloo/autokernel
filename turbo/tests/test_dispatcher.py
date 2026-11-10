@@ -87,7 +87,7 @@ def make_dispatcher(tmp_path, specs=None, devices=None, **kwargs):
         specification(f"cpu-{i}") for i in range(5)] + [
         specification(f"phone-{i}", "phone") for i in range(3)]
     queue = FakeQueue(tmp_path, specs)
-    return Dispatcher(queue, devices or default_devices("fake-s25", "fake-s22"),
+    return Dispatcher(queue, devices or default_devices("fake-s25", "fake-s22", "fake-tab"),
                       probe=kwargs.pop("probe", FakeProbe()), popen=FakeProcess,
                       clock=lambda: 100, wall_clock=lambda: 1000,
                       phone_finalize=kwargs.pop("phone_finalize", lambda *args: None),
@@ -109,13 +109,13 @@ def complete(dispatcher, run, **changes):
 def test_fills_every_admitted_slot_without_exceeding_caps(tmp_path):
     dispatcher = make_dispatcher(tmp_path)
     report = dispatcher.tick()
-    expected = {"groot-gpu": 2, "groot-cpu": 1, "mbp": 3, "s25": 1, "s22": 1}
+    expected = {"groot-gpu": 2, "groot-cpu": 1, "mbp": 3, "s25": 1, "s22": 1, "tab": 1}
     assert Counter(r.device.name for r in dispatcher.active.values()) == expected
     assert {k: v["slots_used"] for k, v in report["devices"].items()} == expected
     # Selection + post-staging admission, including a host read for each phone.
-    assert len(dispatcher.probe.calls) == 20
+    assert len(dispatcher.probe.calls) == 24
     dispatcher.tick()
-    assert len(dispatcher.active) == 8
+    assert len(dispatcher.active) == 9
     for run in dispatcher.active.values():
         run.log.close()
         run.stderr.close()
@@ -132,7 +132,7 @@ def test_stop_file_drains_current_work_and_never_launches_replacements(tmp_path)
     for run in list(dispatcher.active.values()):
         complete(dispatcher, run, decision="NOISE", ci=None)
     report = dispatcher.tick()
-    assert not dispatcher.active and len(dispatcher.queue.history) == 8
+    assert not dispatcher.active and len(dispatcher.queue.history) == 9
     assert report["draining"] is True
     assert all(v["runs_per_hour"] == v["capacity"] for v in report["devices"].values())
 

@@ -151,6 +151,19 @@ def test_phone_telemetry_commands_are_shell_only_and_focus_is_opaque():
     assert admit(Device("s25", "phone", 1, "fake-s25"), spec("phone"), live, now=100).admitted
 
 
+def test_samsung_multi_display_focus_is_read_not_unavailable():
+    parts = phone_parts()
+    parts["window"] = ("mTopFocusedDisplayId=0\n  mCurrentFocus=null\n  mFocusedApp=null\n"
+                       "  mCurrentFocus=Window{b0c u0 launcher}\n")
+    live = parse_phone(parts, 100)
+    assert len(live.focus) == 64 and "launcher" not in live.focus
+    assert admit(Device("s22", "phone", 1, "fake"), spec("phone"), live, now=100).admitted
+    parts["window"] = parts["window"].replace("launcher", "other-app")
+    assert parse_phone(parts, 100).focus != live.focus  # a focus change still holds the phone
+    parts["window"] = "mTopFocusedDisplayId=0\n  mCurrentFocus=null\n  mCurrentFocus=null\n"
+    assert parse_phone(parts, 100).focus  # sleeping screen is a reading, not missing telemetry
+
+
 def test_cached_temperatures_and_second_sim_call_fail_closed():
     parts = phone_parts()
     parts["thermalservice"] = "Cached temperatures:\nTemperature{mValue=20.0, mType=0, mName=AP, mStatus=0}\n"
@@ -227,7 +240,7 @@ def test_fleet_cancellation_requires_exact_owned_submission_id():
 
 def test_exact_device_slot_caps():
     assert {d.name: d.capacity for d in default_devices("fake-s25", "fake-s22")} == {
-        "groot-gpu": 2, "groot-cpu": 1, "mbp": 3, "s25": 1, "s22": 1,
+        "groot-gpu": 2, "groot-cpu": 1, "mbp": 3, "s25": 1, "s22": 1, "tab": 1,
     }
 
 

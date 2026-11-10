@@ -30,6 +30,7 @@ DEVICE_CLASSES = {
     "mbp": "cpu",
     "s25": "phone",
     "s22": "phone",
+    "tab": "phone",
 }
 MOBILE_TRACKS = frozenset({
     "tts/pocket", "tts/phonon", "asr/moonshine_asr", "asr/parakeet_tdt",

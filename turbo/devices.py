@@ -73,18 +73,25 @@ class Admission:
     focus: str | None = None
 
 
+PHONES = ("s25", "s22", "tab")
+
+
 def default_devices(s25_serial: str | None = None,
-                    s22_serial: str | None = None) -> tuple[Device, ...]:
+                    s22_serial: str | None = None,
+                    tab_serial: str | None = None) -> tuple[Device, ...]:
     s25_serial = s25_serial or os.environ.get("S25_SERIAL")
     s22_serial = s22_serial or os.environ.get("S22_SERIAL")
-    if s25_serial and s25_serial == s22_serial:
-        raise ValueError("S25 and S22 must have distinct explicit adb serials")
+    tab_serial = tab_serial or os.environ.get("TAB_SERIAL")
+    serials = [s for s in (s25_serial, s22_serial, tab_serial) if s]
+    if len(serials) != len(set(serials)):
+        raise ValueError("S25, S22 and tab must have distinct explicit adb serials")
     return (
         Device("groot-gpu", "gpu", 2),
         Device("groot-cpu", "cpu", 1),
         Device("mbp", "cpu", 3),
         Device("s25", "phone", 1, s25_serial),
         Device("s22", "phone", 1, s22_serial),
+        Device("tab", "phone", 1, tab_serial),
     )
 
 
@@ -165,8 +172,11 @@ def parse_phone(parts: dict[str, str], measured_at: float) -> Reading:
     focuses = re.findall(r"^\s*mCurrentFocus=(.+)$", window, re.MULTILINE)
     # Store an opaque equality token, never the foreground package/window text.
     focus = None
-    if displays and focuses and focuses[0].strip().lower() not in ("null", "none"):
-        focus = hashlib.sha256((displays[0] + "\0" + focuses[0].strip()).encode()).hexdigest()
+    # Samsung lists every display; secondary/virtual ones (and a sleeping screen)
+    # report null. The token covers all displays so any focus change still holds
+    # the phone, and a null-only reading is a real state, not a missing one.
+    if displays and focuses:
+        focus = hashlib.sha256("\0".join([displays[0], *(f.strip() for f in focuses)]).encode()).hexdigest()
     calls = [int(x) for x in re.findall(r"\bmCallState=(\d+)\b", parts["telephony.registry"])]
     mode_names = {"MODE_NORMAL": 0, "MODE_RINGTONE": 1, "MODE_IN_CALL": 2,
                   "MODE_IN_COMMUNICATION": 3, "MODE_CALL_SCREENING": 4,
@@ -331,7 +341,7 @@ def launch_command(device: Device, spec: Any, command: Iterable[str],
                 "--timeout", str(int(math.ceil(spec.max_runtime))), "--wait", "0",
                 "--src", str(run_dir / "work"), "--fetch", "output", "--out", str(run_dir / "remote"),
                 "--", *command]
-    if device.device_class == "phone" and device.name in ("s25", "s22"):
+    if device.device_class == "phone" and device.name in PHONES:
         if Path(command[0]).name == "adb":
             raise ValueError("phone work must use the reviewed mobile worker")
         return ["systemd-run", "--user", "--scope", "--unit", scope_name(unique_token),
