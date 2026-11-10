@@ -28,7 +28,7 @@ def output(argv):
 
 
 def main(name):
-    if name not in {"omp", "armv86", "kleidiai", "vulkan", "opencl", "o3lto"}:
+    if name not in {"omp", "armv86", "armv82", "kleidiai", "vulkan", "opencl", "o3lto"}:
         raise ValueError("unknown variant")
     source = Path(os.environ["AUDIOCPP_SOURCE"]).resolve()
     ndk = Path(os.environ["ANDROID_NDK"]).resolve()
@@ -124,6 +124,11 @@ def main(name):
         elif name == "armv86":
             setflag("GGML_CPU_ARM_ARCH", "armv8.6-a+dotprod+fp16+i8mm+bf16")
             record["notes"].append("ARMv8.6 bf16 enabled; no SVE/SVE2/SME.")
+        elif name == "armv82":
+            # Lenovo TB350FU (MT8781, Cortex-A76/A55): dotprod+fp16, no i8mm/bf16;
+            # the i8mm base SIGILLs (exit 132) there.
+            setflag("GGML_CPU_ARM_ARCH", "armv8.2-a+dotprod+fp16")
+            record["notes"].append("ARMv8.2 dotprod+fp16 only; for cores without i8mm/bf16.")
         elif name == "kleidiai":
             cmake = (source / "external/ggml/src/ggml-cpu/CMakeLists.txt").read_text()
             if "if (GGML_CPU_KLEIDIAI)" not in cmake:

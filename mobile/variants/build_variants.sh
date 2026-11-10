@@ -16,6 +16,7 @@ fi
 build_one() { env -u PYTHONPATH -u PYTHONHOME python3 "$HERE/build_variant.py" "$1"; }
 build_omp() { build_one omp; }
 build_armv86() { build_one armv86; }
+build_armv82() { build_one armv82; }
 build_kleidiai() { build_one kleidiai; }
 build_vulkan() { build_one vulkan; }
 build_opencl() { build_one opencl; }
@@ -24,7 +25,7 @@ if [[ $# == 0 ]]; then set -- omp armv86 kleidiai vulkan opencl o3lto; fi
 status=0
 for variant in "$@"; do
     case "$variant" in
-        omp|armv86|kleidiai|vulkan|opencl|o3lto) "build_$variant" || status=1 ;;
+        omp|armv86|armv82|kleidiai|vulkan|opencl|o3lto) "build_$variant" || status=1 ;;
         *) printf 'Unknown variant: %s\n' "$variant" >&2; status=1 ;;
     esac
 done
