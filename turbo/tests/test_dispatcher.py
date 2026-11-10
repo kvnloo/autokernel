@@ -190,10 +190,10 @@ def test_owner_in_use_receipt_never_becomes_keep(tmp_path):
     dispatcher.tick(fill=False)
     row = dispatcher.queue.history[0]
     assert row["decision"] == "NOISE" and row["owner_state"] == "owner_in_use"
-    assert finalized[0][-1] == "FAIL"
+    assert finalized[0][-1] == "NOISE"  # kept and labelled, never KEEP
 
 
-def test_final_owner_activity_blocks_baseline_state_mutation(tmp_path):
+def test_final_owner_activity_labels_but_keeps_the_baseline(tmp_path):
     finalized = []
     dispatcher = make_dispatcher(tmp_path, [specification("phone", "phone")],
                                   [Device("s25", "phone", 1, "fake-s25")],
@@ -204,7 +204,7 @@ def test_final_owner_activity_blocks_baseline_state_mutation(tmp_path):
     dispatcher.probe.phone_changes = {"owner_idle_s": 0}
     dispatcher.tick(fill=False)
     assert dispatcher.queue.history[0]["owner_state"] == "owner_in_use"
-    assert finalized[0][-1] == "FAIL"
+    assert finalized[0][-1] == "NOISE"
 
 
 def test_phone_host_resources_share_groot_reservations(tmp_path):
@@ -388,3 +388,49 @@ def test_phone_busy_with_another_bench_loop_is_skipped_not_failed(tmp_path):
     assert not any(run.device.name == "s25" for run in dispatcher.active.values())
     assert dispatcher.skips["s25"] == ["lock held"]
     assert any(run.device.name == "s22" for run in dispatcher.active.values())
+
+
+def test_a_held_phone_clears_itself_once_owned_cleanup_verifies(tmp_path):
+    calls = []
+    def check(serial):
+        calls.append(serial)
+        if len(calls) == 1:
+            raise RuntimeError("phone unreachable")
+    (tmp_path / "state").mkdir(exist_ok=True)
+    dispatcher = make_dispatcher(tmp_path, [specification("phone", "phone")],
+                                 [Device("s25", "phone", 1, "fake-s25")], phone_hold_check=check)
+    dispatcher.phone_hold["s25"] = "owned phone cleanup unverified; inspect before clearing hold"
+    dispatcher.retry_phone_holds(every=0)
+    assert "s25" in dispatcher.phone_hold
+    dispatcher.retry_phone_holds(every=0)
+    assert "s25" not in dispatcher.phone_hold and calls == ["fake-s25", "fake-s25"]
+
+
+def test_clear_owned_phone_kills_only_dispatcher_paths_and_verifies():
+    from turbo.turbo import clear_owned_phone
+    seen, ps = [], ["  PID ARGS\n 4242 /data/local/tmp/hc-turbo/abc/bin/base/audiocpp_cli\n 77 /system/bin/surfaceflinger\n",
+                    "  PID ARGS\n 77 /system/bin/surfaceflinger\n"]
+    def runner(argv, **kw):
+        script = argv[-1]; seen.append(script)
+        out = ps[0] if script.startswith("ps") and len([x for x in seen if x.startswith("ps")]) == 1 else (ps[1] if script.startswith("ps") else "")
+        return SimpleNamespace(returncode=0, stdout=out)
+    clear_owned_phone("fake-s25", runner)
+    assert "kill -TERM 4242 2>/dev/null || true" in seen
+    assert not any(" 77" in s for s in seen if s.startswith("kill"))
+    assert seen[-1].startswith("rm -rf /data/local/tmp/hc-turbo/*")
+
+
+def test_editing_an_active_spec_keeps_its_contract_instead_of_exiting(tmp_path):
+    dispatcher = make_dispatcher(tmp_path, [specification("phone", "phone")],
+                                 [Device("s25", "phone", 1, "fake-s25")])
+    dispatcher.tick()
+    run = next(iter(dispatcher.active.values()))
+    original = dispatcher.queue.reload
+    def edited():
+        original()
+        dispatcher.queue.specs[run.spec.id] = SimpleNamespace(**{**vars(run.spec), "devices": ("s25", "tab")}) \
+            if hasattr(run.spec, "__dict__") else run.spec
+    dispatcher.queue.reload = edited
+    dispatcher.tick()
+    assert dispatcher.queue.specs[run.spec.id] == run.spec
+    run.log.close(); run.stderr.close()

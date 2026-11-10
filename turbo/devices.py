@@ -420,6 +420,10 @@ def fleet_terminal_exit(returncode: int, log: str, job_id: str) -> bool:
                           log, re.MULTILINE)
     terminals = list(re.finditer(rf"^fleet: job {re.escape(job_id)} on mbp exited (\d+)$",
                                  log, re.MULTILINE))
+    # fleet-kueue prints "exited 75" after an expired admission wait too, but
+    # leaves the Job queued; it later ran orphaned (two hc-1 copies at once).
+    if re.search(rf"^fleet: admission wait expired for {re.escape(job_id)}$", log, re.MULTILINE):
+        return False
     return (submitted is not None and len(terminals) == 1
             and terminals[0].start() > submitted.end()
             and 0 <= int(terminals[0][1]) <= 255)

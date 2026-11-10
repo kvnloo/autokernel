@@ -334,3 +334,10 @@ def test_terminal_mbp_evidence_must_follow_exact_owned_submission():
     assert not fleet_terminal_exit(1, submitted + f"fleet: job {other} on mbp exited 1\n", job)
     assert not fleet_terminal_exit(1, submitted + "worker says " + terminal, job)
     assert not fleet_terminal_exit(None, submitted + terminal, job)
+
+
+def test_expired_admission_is_not_terminal_so_the_queued_job_gets_cancelled():
+    job = "fleet-mbp-19a427f7bb6f422d"
+    log = (f"fleet: job {job} -> mbp (Kueue bench-lanes); log x; stage y\n"
+           f"fleet: admission wait expired for {job}\nfleet: job {job} on mbp exited 75\n")
+    assert not fleet_terminal_exit(75, log, job)

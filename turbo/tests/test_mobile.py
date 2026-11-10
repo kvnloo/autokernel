@@ -353,13 +353,25 @@ def test_parent_keep_commits_once_and_stale_proposal_is_rejected(tmp_path, bench
     assert json.loads((state / "s25" / "state.json").read_text()) == saved
 
 
-@pytest.mark.parametrize("owner_state,parent_decision", [
-    ("owner_in_use", "KEEP"), ("owner_idle", "FAIL"),
-])
-def test_unsafe_or_failed_finalization_never_commits(tmp_path, bench, owner_state, parent_decision):
-    run, state, track, before, candidate = proposal_files(tmp_path, bench, owner_state=owner_state)
-    mobile.finalize(run, state, "s25", parent_decision)
+def test_failed_finalization_never_commits(tmp_path, bench):
+    run, state, track, before, candidate = proposal_files(tmp_path, bench, owner_state="owner_idle")
+    mobile.finalize(run, state, "s25", "FAIL")
     assert json.loads((state / "s25" / "state.json").read_text()) == before
+
+
+def test_owner_in_use_keep_is_kept_as_traversal_but_never_replaces_the_incumbent(tmp_path, bench):
+    run, state, track, before, candidate = proposal_files(tmp_path, bench, owner_state="owner_in_use")
+    mobile.finalize(run, state, "s25", "KEEP")
+    saved = json.loads((state / "s25" / "state.json").read_text())
+    assert saved["incumbents"] == before["incumbents"]
+    assert candidate["id"] in saved["seen"][track]
+
+
+def test_owner_in_use_baseline_is_kept_labelled_not_rerun_forever(tmp_path, bench):
+    run, state, track, before, candidate = proposal_files(tmp_path, bench, phase="baseline",
+                                                         worker_decision="NOISE", owner_state="owner_in_use")
+    mobile.finalize(run, state, "s25", "NOISE")
+    assert json.loads((state / "s25" / "state.json").read_text())["incumbents"][track]["cfg"] == candidate
 
 
 def test_safe_baseline_initializes_with_noise_not_keep(tmp_path, bench):

@@ -192,7 +192,6 @@ replace a newer incumbent. Failed/cancelled runs and absent proposals are no-ops
     proposal = _json(proposal_path, {})
     receipt = _json(Path(run_dir) / "result.json", {})
     if (proposal.get("device") != device_name or proposal.get("safe") is not True
-            or receipt.get("owner_state") != "owner_idle"
             or receipt.get("cleanup_verified") is not True):
         return
     if decision not in ("KEEP", "REVERT", "NOISE"):
@@ -212,7 +211,10 @@ replace a newer incumbent. Failed/cancelled runs and absent proposals are no-ops
         for key in ("noise", "seen"):
             updated[key] = proposed[key]
         need = max(.03, current["noise"].get(track, {}).get("ratio_halfwidth", .05))
+        # Owner-in-use measurements are kept (calibration, baseline, seen);
+        # only replacing an incumbent with a KEEP requires owner_idle.
         promote = (decision == "KEEP" and receipt.get("decision") == "KEEP"
+                   and receipt.get("owner_state") == "owner_idle"
                    and receipt.get("oracle_passed") is True and valid_ci(receipt.get("ci"))
                    and receipt["ci"]["hi"] < 1 - need)
         initialize = (decision == "NOISE" and proposal.get("phase") == "baseline"

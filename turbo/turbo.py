@@ -27,6 +27,32 @@ from turbo.queue import Queue
 ROOT = Path(__file__).resolve().parents[1]
 
 
+HC_REMOTE = "/data/local/tmp/hc-turbo"
+
+
+def clear_owned_phone(serial, runner=subprocess.run):
+    """Stop processes running from this dispatcher's own remote tree, remove
+    the tree, and verify; raises while the phone is unreachable."""
+    def sh(script):
+        result = runner(hardware.adb_command(serial, "shell", script), capture_output=True,
+                        text=True, timeout=20, stdin=subprocess.DEVNULL)
+        if result.returncode != 0 or not isinstance(result.stdout, str):
+            raise RuntimeError("phone unreachable")
+        return result.stdout
+
+    def owned():
+        return [int(line.split(None, 1)[0]) for line in sh("ps -A -o PID,ARGS").splitlines()
+                if HC_REMOTE + "/" in line and line.split(None, 1)[0].isdigit()
+                and int(line.split(None, 1)[0]) > 1]
+
+    for sig in ("TERM", "KILL"):
+        for pid in owned():
+            sh(f"kill -{sig} {pid} 2>/dev/null || true")
+    if owned():
+        raise RuntimeError("owned phone processes remain")
+    sh(f"rm -rf {HC_REMOTE}/* && echo cleared")
+
+
 def finalize_phone(directory, state, device, decision):
     from turbo.mobile import finalize
     finalize(directory, state, device, decision)
@@ -57,8 +83,9 @@ class Dispatcher:
     def __init__(self, queue, devices, probe=None, repo=ROOT, *, popen=subprocess.Popen,
                  runner=subprocess.run, clock=time.monotonic, wall_clock=time.time,
                  prepare=stage, phone_finalize=finalize_phone, interval=5.0,
-                 bench_busy=bench_lock_holder):
+                 bench_busy=bench_lock_holder, phone_hold_check=None):
         self.bench_busy = bench_busy
+        self.phone_hold_check = phone_hold_check or (lambda serial: clear_owned_phone(serial, runner))
         self.queue = queue
         self.devices = tuple(devices)
         self.probe = probe or hardware.Probe()
@@ -82,6 +109,7 @@ class Dispatcher:
         self.phone_hold = {name: reason for name, reason in holds.items() if name in ("s25", "s22", "tab")}
         self.terminate = False
         self.draining = False
+        self.hold_checked = {}
 
     def eligible(self, spec, device):
         return (spec.device_class == device.device_class
@@ -288,7 +316,10 @@ class Dispatcher:
             try:
                 # Activity can begin after the worker exits. In that case even
                 # baseline/noise calibration must not mutate durable state.
-                final_decision = result["decision"] if run.owner_state == "owner_idle" else "FAIL"
+                # Owner rule: measurements taken while the owner used the phone
+                # are kept and labelled; only KEEP (already demoted to NOISE
+                # above) needs owner_idle. Dropping them re-ran baselines forever.
+                final_decision = result["decision"]
                 self.phone_finalize(run.directory, self.state / "mobile", run.device.name, final_decision)
             except (OSError, ValueError, TypeError, KeyError, RuntimeError) as exc:
                 result.update(decision="FAIL", reason="phone state finalization: " + str(exc))
@@ -413,6 +444,25 @@ class Dispatcher:
         atomic_json(self.state / "status.json", report)
         return report
 
+    def retry_phone_holds(self, every=60.0):
+        """A cleanup hold clears itself once the phone is reachable and no
+        process or directory of this dispatcher remains on it."""
+        now = self.clock()
+        for name in list(self.phone_hold):
+            if now - self.hold_checked.get(name, -every) < every:
+                continue
+            self.hold_checked[name] = now
+            device = next((d for d in self.devices if d.name == name), None)
+            if device is None or not device.serial or any(r.device.name == name for r in self.active.values()):
+                continue
+            try:
+                self.phone_hold_check(device.serial)
+            except (OSError, ValueError, RuntimeError, subprocess.SubprocessError):
+                continue
+            reason = self.phone_hold.pop(name)
+            with (self.state / "holds-cleared.jsonl").open("a") as log:
+                log.write(json.dumps({"at": self.wall_clock(), "device": name, "hold": reason}) + "\n")
+
     def tick(self, fill=True):
         self.draining = self.draining or self.terminate or (self.state / "STOP").exists()
         self.reap()
@@ -425,9 +475,13 @@ class Dispatcher:
                 # their final receipts; the exception prevents new launches.
                 self.queue.specs = previous
                 raise
-            if any(self.queue.specs.get(run.spec.id) != run.spec for run in self.active.values()):
-                self.queue.specs = previous
-                raise ValueError("an active spec changed; draining is required before changing its contract")
+            # An edited spec keeps its admitted contract until its in-flight
+            # run reaps (active ids are never relaunched meanwhile); exiting
+            # here cancelled every device's work on a one-line spec edit.
+            for run in self.active.values():
+                if self.queue.specs.get(run.spec.id) != run.spec:
+                    self.queue.specs[run.spec.id] = run.spec
+            self.retry_phone_holds()
             self.fill()
         return self.status()
 
