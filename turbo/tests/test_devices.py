@@ -164,6 +164,20 @@ def test_samsung_multi_display_focus_is_read_not_unavailable():
     assert parse_phone(parts, 100).focus  # sleeping screen is a reading, not missing telemetry
 
 
+def test_wifi_tablet_without_ap_sensor_or_telephony_is_readable():
+    parts = phone_parts()
+    parts["thermalservice"] = ("Current temperatures from HAL:\n"
+                               "\tTemperature{mValue=30.0, mType=0, mName=CPU, mStatus=0}\n"
+                               "\tTemperature{mValue=24.7, mType=3, mName=SKIN, mStatus=0}\n"
+                               "Current cooling devices from HAL:\n")
+    parts["telephony.registry"] = "last known state:\n  mDefaultPhoneId=-1\n  mDefaultSubId=-1\n"
+    live = parse_phone(parts, 100)
+    assert live.ap_c == 30.0 and live.call_state == 0
+    assert admit(Device("tab", "phone", 1, "fake-tab"), spec("phone"), live, now=100).admitted
+    parts["telephony.registry"] = "last known state:\n  mDefaultPhoneId=0\n"
+    assert parse_phone(parts, 100).call_state is None  # a phone with unreadable call state stays held
+
+
 def test_cached_temperatures_and_second_sim_call_fail_closed():
     parts = phone_parts()
     parts["thermalservice"] = "Cached temperatures:\nTemperature{mValue=20.0, mType=0, mName=AP, mStatus=0}\n"

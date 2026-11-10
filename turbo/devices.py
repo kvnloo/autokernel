@@ -163,6 +163,16 @@ def parse_phone(parts: dict[str, str], measured_at: float) -> Reading:
                     ap_values.append(float(fields["mValue"]))
                 except (KeyError, ValueError):
                     ap_values.append(float("nan"))
+        if not ap_values:
+            # Non-Samsung SoCs (Lenovo TB350FU) name the application processor
+            # "CPU"; Android's TEMPERATURE_TYPE_CPU is mType=0 on both.
+            for record in re.findall(r"Temperature\{([^}]*)\}", current):
+                fields = dict(re.findall(r"(m\w+)=([^,}]+)", record))
+                if fields.get("mType", "").strip() == "0":
+                    try:
+                        ap_values.append(float(fields["mValue"]))
+                    except (KeyError, ValueError):
+                        ap_values.append(float("nan"))
     ap = max(ap_values) if ap_values and all(_number(v) for v in ap_values) else None
     power = parts["power"]
     idle = re.search(r"lastUserActivityTime=\d+\s+\((\d+) ms ago\)", power)
@@ -177,7 +187,10 @@ def parse_phone(parts: dict[str, str], measured_at: float) -> Reading:
     # the phone, and a null-only reading is a real state, not a missing one.
     if displays and focuses:
         focus = hashlib.sha256("\0".join([displays[0], *(f.strip() for f in focuses)]).encode()).hexdigest()
-    calls = [int(x) for x in re.findall(r"\bmCallState=(\d+)\b", parts["telephony.registry"])]
+    registry = parts["telephony.registry"]
+    calls = [int(x) for x in re.findall(r"\bmCallState=(\d+)\b", registry)]
+    if not calls and re.search(r"^\s*mDefaultPhoneId=-1\s*$", registry, re.MULTILINE):
+        calls = [0]  # Wi-Fi-only device: no phone, so no call can be active.
     mode_names = {"MODE_NORMAL": 0, "MODE_RINGTONE": 1, "MODE_IN_CALL": 2,
                   "MODE_IN_COMMUNICATION": 3, "MODE_CALL_SCREENING": 4,
                   "MODE_CALL_REDIRECT": 5, "MODE_COMMUNICATION_REDIRECT": 6}
