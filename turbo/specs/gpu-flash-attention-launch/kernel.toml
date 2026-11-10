@@ -6,7 +6,7 @@ metric = "kernel_latency_us"
 direction = "lower"
 device_class = "gpu"
 devices = ["groot-gpu"]
-referee = ["/mnt/zer0models/turbo-mode-20261019/venv/bin/python", "/mnt/zer0models/worktrees/autokernel-hc-turbo/turbo/referees/autokernel_gpu.py", "--kernel", "flash_attention", "--repo", "/mnt/zer0models/github/autokernel", "--state", "/mnt/zer0models/workspace/zer0/data/operations/hc-turbo-20261106/gpu-launch", "--python", "/mnt/zer0models/turbo-mode-20261019/venv/bin/python", "--pairs", "3", "--timeout", "400"]
+referee = ["/usr/bin/python3", "/mnt/zer0models/worktrees/autokernel-hc-turbo/turbo/referees/autokernel_gpu.py", "--kernel", "flash_attention", "--repo", "/mnt/zer0models/github/autokernel", "--state", "/mnt/zer0models/workspace/zer0/data/operations/hc-turbo-20261106/gpu-launch", "--python", "/mnt/zer0models/cache/venvs/decision-index/bin/python", "--pairs", "3", "--timeout", "400"]
 working_directory = "/mnt/zer0models/worktrees/autokernel-hc-turbo/turbo/referees"
 max_runtime = 3000
 amdahl_share = 1.0
@@ -15,7 +15,7 @@ cost = 1.0
 oracle_status = "ready"
 
 [resources]
-mem = 3221225472  # torch+triton bench.py process
+mem = 2147483648  # measured bench.py peak RSS 1.7 GB (flash_attention, 2026-11-10)
 cpus = 1
 gpu_mem = 1610612736
 
