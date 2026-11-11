@@ -27,6 +27,16 @@ from turbo.queue import Queue
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def code_version():
+    """HEAD of the checkout the dispatcher and its per-run workers execute."""
+    try:
+        out = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True,
+                             text=True, timeout=10)
+        return out.stdout.strip() or None if out.returncode == 0 else None
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
 HC_REMOTE = "/data/local/tmp/hc-turbo"
 
 
@@ -328,7 +338,8 @@ class Dispatcher:
                  "run_dir": str(run.directory), "run": str(run.directory),
                  "at": self.wall_clock(), "oracle_status": run.spec.oracle_status,
                  "oracle_passed": result["oracle_passed"], "reason": result.get("reason", ""),
-                 "owner_state": run.owner_state, "cancelled": run.cancelled}
+                 "owner_state": run.owner_state, "cancelled": run.cancelled,
+                 "code": code_version()}
         self.queue.append(entry)
         self.last[run.device.name] = result["decision"]
         del self.active[run.token]
@@ -390,7 +401,7 @@ class Dispatcher:
                 candidates.sort(key=lambda spec: spec.id in self.seen)
                 launched = False
                 for spec in candidates:
-                    wait = self.queue.fail_cooldown(device.name, spec.id, self.wall_clock())
+                    wait = self.queue.fail_cooldown(device.name, spec.id, self.wall_clock(), code_version())
                     if wait > 0:
                         reasons.append(f"{spec.id}: cooling down {int(wait)} s after FAIL")
                         continue

@@ -211,15 +211,19 @@ class Queue:
                 fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
         return row
 
-    def fail_cooldown(self, device: str, identifier: str, now: float) -> float:
+    def fail_cooldown(self, device: str, identifier: str, now: float, code: str | None = None) -> float:
         """Seconds left before retrying a pair whose latest runs all FAILed.
 
         Exponential: 60 s after one FAIL, doubling to a one-hour ceiling, so a
-        broken referee cannot hot-loop a slot while healthy specs wait.
+        broken referee cannot hot-loop a slot while healthy specs wait. Only
+        rows from the running code count: a deployed fix (new HEAD) retries at
+        once instead of idling the device on the old bug's streak.
         """
         streak, last = 0, 0.0
         for row in self.rows():
             if (row["device"], row["id"]) != (device, identifier):
+                continue
+            if code is not None and row.get("code") != code:
                 continue
             reason = str(row.get("reason") or "")
             if reason.startswith(("SIGTERM: cancelled", "dispatcher exiting")):

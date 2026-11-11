@@ -33,7 +33,7 @@ class FakeQueue:
     def council_flags(self):
         return {}
 
-    def fail_cooldown(self, device, identifier, now):
+    def fail_cooldown(self, device, identifier, now, code=None):
         return 0.0
 
 

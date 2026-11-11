@@ -368,6 +368,15 @@ def test_repeated_fail_backs_off_exponentially_and_resets_on_any_result(queue):
     assert queue.fail_cooldown("groot-cpu", "a", now=2300) == 60  # exhausted no-op backs off
 
 
+def test_a_deployed_fix_retries_at_once_instead_of_serving_the_old_bugs_streak(queue):
+    for epoch in range(1, 9):
+        queue.append(receipt(epoch=epoch, decision="FAIL", at=1000, code="old"))
+    assert queue.fail_cooldown("groot-cpu", "a", now=1000, code="old") == 3600
+    assert queue.fail_cooldown("groot-cpu", "a", now=1000, code="new") == 0
+    queue.append(receipt(epoch=9, decision="FAIL", at=1100, code="new"))
+    assert queue.fail_cooldown("groot-cpu", "a", now=1100, code="new") == 60
+
+
 def test_council_streak_is_per_device_and_resets_only_on_keep(queue):
     for epoch, decision in enumerate(("FAIL", "NOISE", "REVERT"), 1):
         queue.append(receipt(epoch=epoch, decision=decision))
