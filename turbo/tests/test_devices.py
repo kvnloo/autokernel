@@ -208,9 +208,26 @@ def test_phone_host_worker_needs_less_groot_headroom_than_groot_jobs():
     small.resources.mem = GIB // 2
     assert not admit(host, small, tight, now=100).admitted
     assert admit(host, small, tight, now=100, headroom=PHONE_HOST_HEADROOM).admitted
-    starved = Reading(measured_at=100, mem_available=GIB, cpus=8)
+    starved = Reading(measured_at=100, mem_available=256 * 1024 ** 2, cpus=8)
     assert not admit(host, small, starved, now=100, headroom=PHONE_HOST_HEADROOM).admitted
     assert PHONE_HOST_HEADROOM < GROOT_HEADROOM
+
+
+def test_a_busy_groot_does_not_idle_a_phone():
+    # Live 2026-11-10 19:00: 5.6 GB available, hc-1 (2 GiB) + a GPU run (2 GiB) + two phone
+    # host workers (128 MiB each) reserved. The tablet's 128 MiB-capped host worker was
+    # refused and the tablet sat idle although the phone does the work.
+    from turbo.devices import PHONE_HOST_HEADROOM
+    host = Device("groot-cpu", "cpu", 1)
+    phone_host = spec("cpu")
+    phone_host.resources.mem = 128 * 1024 ** 2
+    busy = Reading(measured_at=100, mem_available=5600 * 1024 ** 2, cpus=20)
+    reserved = [SimpleNamespace(mem=2 * GIB, cpus=1, gpu_mem=0),
+                SimpleNamespace(mem=2 * GIB, cpus=1, gpu_mem=2 * GIB),
+                SimpleNamespace(mem=128 * 1024 ** 2, cpus=1, gpu_mem=0),
+                SimpleNamespace(mem=128 * 1024 ** 2, cpus=1, gpu_mem=0)]
+    assert admit(host, phone_host, busy, reserved, now=100,
+                 headroom=PHONE_HOST_HEADROOM).admitted
 
 
 def test_cached_temperatures_and_second_sim_call_fail_closed():

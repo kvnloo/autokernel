@@ -22,8 +22,10 @@ GIB = 1024 ** 3
 MIB = 1024 ** 2
 GROOT_HEADROOM = 6 * GIB
 # A phone run's host process is a tiny adb/referee supervisor (31 MB peak measured
-# 2026-11-09); the phone does the work. It keeps groot out of OOM, not 6 GiB idle.
-PHONE_HOST_HEADROOM = 2 * GIB
+# 2026-11-09; 12-15 MB RSS live 2026-11-10) whose scope is hard-capped at the spec's
+# MemoryMax (128 MiB). The phone does the work, so a busy groot must not idle a phone:
+# keep only enough margin that the capped scope cannot push groot into OOM.
+PHONE_HOST_HEADROOM = 512 * MIB
 OWNER_IDLE_SECONDS = 90.0  # mobile/bench_s25.py's confirmation window
 MAX_READING_AGE = 30.0
 
