@@ -486,3 +486,11 @@ def test_tab_runs_only_the_armv82_build_because_i8mm_builds_sigill_there():
     assert mobile.fit_device({"id": "x"}, "tab")["variant"] == "armv82"
     assert mobile.fit_device({"variant": "armv86", "id": "x"}, "tab") is None
     assert mobile.fit_device({"variant": "armv86", "id": "x"}, "s25")["variant"] == "armv86"
+
+
+def test_slow_device_sets_a_tts_baseline_and_candidates_climb_against_the_incumbent(bench):
+    slow = {"ok": 12, "n": 12, "rtf": {"p90": 2.13}}
+    assert bench.gates(slow, {}, "tts", slot="only") == []
+    assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 2.0}}, {}, "tts", inc_summary=slow) == []
+    assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 2.6}}, {}, "tts", inc_summary=slow)
+    assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 0.9}}, {}, "tts", inc_summary={"rtf": {"p90": 0.5}})
