@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import time
 from typing import Any, Callable, Iterable
 
@@ -369,7 +370,11 @@ def launch_command(device: Device, spec: Any, command: Iterable[str],
     if device.device_class == "phone" and device.name in PHONES:
         if Path(command[0]).name == "adb":
             raise ValueError("phone work must use the reviewed mobile worker")
-        return ["systemd-run", "--user", "--scope", "--unit", scope_name(unique_token),
+        # k3s owns the phone slot (z0.dev/phone-<name>); the work is the same adb run.
+        return [sys.executable, str(Path(__file__).with_name("k3s_phone.py")),
+                "--phone", device.name, "--token", unique_token,
+                "--deadline", str(int(math.ceil(spec.max_runtime))), "--",
+                "systemd-run", "--user", "--scope", "--unit", scope_name(unique_token),
                 "-p", f"MemoryMax={spec.resources.mem}",
                 "-p", f"CPUQuota={spec.resources.cpus * 100}%", "--",
                 "env", "CUDA_VISIBLE_DEVICES=", *command]

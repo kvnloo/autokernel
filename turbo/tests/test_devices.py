@@ -273,13 +273,18 @@ def test_launch_commands_enforce_scope_and_mbp_checkpoint_route(tmp_path):
     assert mbp[mbp.index("--wait") + 1] == "0"
 
 
-@pytest.mark.parametrize("name", ["s25", "s22"])
+@pytest.mark.parametrize("name", ["s25", "s22", "tab"])
 def test_phone_host_worker_is_scoped_and_cannot_select_cuda(tmp_path, name):
     command = ["python3", "-m", "turbo.mobile", "--device", name,
                "--serial", "fake-" + name, "--track", "tts/phonon"]
     argv = launch_command(Device(name, "phone", 1, "fake-" + name),
                           spec("phone", mem=8 * GIB, cpus=1), command,
                           tmp_path, "owned-phone-" + name)
+    # k3s holds the phone's slot for the whole run; the scoped adb worker is unchanged.
+    assert argv[1].endswith("turbo/k3s_phone.py")
+    assert argv[2:6] == ["--phone", name, "--token", "owned-phone-" + name]
+    lease, argv = argv[:9], argv[9:]
+    assert lease[8] == "--"
     assert argv[:5] == ["systemd-run", "--user", "--scope", "--unit",
                         "hc-turbo-owned-phone-" + name + ".scope"]
     assert argv[5:9] == ["-p", "MemoryMax=8589934592", "-p", "CPUQuota=100%"]
@@ -358,3 +363,16 @@ def test_expired_admission_is_not_terminal_so_the_queued_job_gets_cancelled():
     log = (f"fleet: job {job} -> mbp (Kueue bench-lanes); log x; stage y\n"
            f"fleet: admission wait expired for {job}\nfleet: job {job} on mbp exited 75\n")
     assert not fleet_terminal_exit(75, log, job)
+
+
+def test_k3s_phone_lease_requests_exactly_that_phones_slot_on_groot():
+    from turbo.k3s_phone import pod_manifest
+    pod = pod_manifest("tab", "ABC123", 900, 4242)
+    c = pod["spec"]["containers"][0]
+    assert c["resources"]["requests"]["z0.dev/phone-tab"] == "1"
+    assert c["resources"]["limits"]["z0.dev/phone-tab"] == "1"
+    assert not any(k.startswith("z0.dev/phone-s") for k in c["resources"]["requests"])
+    assert pod["spec"]["nodeSelector"] == {"kubernetes.io/hostname": "groot"}
+    assert pod["spec"]["activeDeadlineSeconds"] == 900
+    assert pod["metadata"]["labels"] == {"app": "hc-turbo", "z0.dev/phone": "tab"}
+    assert pod["metadata"]["name"] == "hc-tab-abc123"
