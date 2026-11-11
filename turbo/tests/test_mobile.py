@@ -76,7 +76,7 @@ def test_candidate_traversal_remembers_seen_and_stops_at_real_bound(bench):
     state["noise"][track] = {"ratio_ci": {"lo": .98, "mid": 1, "hi": 1.02},
                              "ratio_halfwidth": .02}
     ids = []
-    for _ in range(10):
+    for _ in range(40):
         phase, cfg = mobile.select_candidate(bench, track, state, lambda cfg: True)
         if phase == "exhausted":
             break
@@ -85,7 +85,7 @@ def test_candidate_traversal_remembers_seen_and_stops_at_real_bound(bench):
         ids.append(cfg["id"])
         state["seen"].setdefault(track, []).append(cfg["id"])
     assert phase == "exhausted"
-    assert len(ids) == 3
+    assert len(ids) == len(mobile.neighbours(base, track)) == 7  # t1..t8 minus the incumbent's
 
 
 @pytest.mark.parametrize("field,value", [
@@ -494,3 +494,17 @@ def test_slow_device_sets_a_tts_baseline_and_candidates_climb_against_the_incumb
     assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 2.0}}, {}, "tts", inc_summary=slow) == []
     assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 2.6}}, {}, "tts", inc_summary=slow)
     assert bench.gates({"ok": 12, "n": 12, "rtf": {"p90": 0.9}}, {}, "tts", inc_summary={"rtf": {"p90": 0.5}})
+
+
+def test_neighbours_refill_from_the_incumbent_so_a_keep_opens_new_work():
+    base = {"id": "pocket-base", "track": "tts/pocket", "lane": "tts", "family": "pocket",
+            "model": "PocketTTS-GGUF/english", "threads": 4, "variant": "armv82", "objective": "ttfa_warm"}
+    first = mobile.neighbours(base, "tts/pocket", "tab")
+    ids = [c["id"] for c in first]
+    assert len(ids) == len(set(ids)) and "pocket-base-turbo-t2" in ids and "pocket-base-turbo-t2-mc0" in ids
+    assert all(c["variant"] == "armv82" for c in first)
+    assert not any(c["threads"] > 2 for c in first if c.get("cpu_mask") == "c0")
+    kept = next(c for c in first if c["id"] == "pocket-base-turbo-t2-mc0")
+    second = {c["id"] for c in mobile.neighbours(kept, "tts/pocket", "tab")}
+    assert "pocket-base-turbo-t2-mc0" not in second and "pocket-base-turbo-t4" in second
+    assert all("-turbo-t" in i and i.count("-turbo-") == 1 for i in second)

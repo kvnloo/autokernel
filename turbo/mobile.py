@@ -253,6 +253,40 @@ def fit_device(cfg, device):
     return dict(cfg, variant=TAB_VARIANT)
 
 
+# Core-cluster affinity masks per SoC (None = let the scheduler place threads).
+CORE_MASKS = {
+    "s25": ("c0", "3f"),        # SD8 Elite: 6-7 prime, 0-5 performance
+    "s22": ("f0", "0f", "70", "80"),  # Exynos 2200: 4-6 A710, 7 X2, 0-3 A510
+    "tab": ("c0", "3f", "fc"),  # MT8781: 6-7 A76, 0-5 A55
+}
+_TURBO_SUFFIX = re.compile(r"(?:-turbo-t\d+(?:-m[0-9a-f]+)?)+$")
+
+
+def neighbours(incumbent, track, device=None):
+    """Thread-count x core-affinity neighbours of the CURRENT incumbent.
+
+    Anchored on the incumbent, so every KEEP opens a fresh neighbourhood and a
+    device's queue refills from its own results instead of running dry after
+    one fixed list. Same binary and model; only placement changes.
+    """
+    root = _TURBO_SUFFIX.sub("", incumbent["id"])
+    out = []
+    for mask in (None,) + CORE_MASKS.get(device, ()):
+        width = bin(int(mask, 16)).count("1") if mask else 8
+        for threads in range(1, width + 1):
+            if threads == incumbent.get("threads") and mask == incumbent.get("cpu_mask"):
+                continue
+            cfg = copy.deepcopy(incumbent)
+            cfg.pop("cpu_mask", None)
+            suffix = f"-turbo-t{threads}"
+            if mask:
+                cfg["cpu_mask"], suffix = mask, suffix + f"-m{mask}"
+            cfg.update(id=root + suffix, threads=threads,
+                       hypothesis=f"{threads} threads on cores {mask or 'any'} vs incumbent {incumbent['id']}")
+            out.append(validate_config(cfg, track))
+    return out
+
+
 def select_candidate(bench, track, state, available=None, device=None):
     """Baseline, A/A, then existing configurations and bounded thread changes."""
     if track not in TRACKS:
@@ -272,12 +306,7 @@ def select_candidate(bench, track, state, available=None, device=None):
         cfg = bench.cfg_load(path)
         if cfg["track"] == track and fit_device(cfg, device) is not None:
             candidates.append(validate_config(fit_device(cfg, device), track))
-    # Measured configurations of the real baseline, not invented binaries.
-    for threads in (2, 6, 8):
-        cfg = copy.deepcopy(base)
-        cfg.update(id=base["id"] + f"-turbo-t{threads}", threads=threads,
-                   hypothesis=f"Measure {threads} CPU threads against the current incumbent")
-        candidates.append(validate_config(cfg, track))
+    candidates.extend(neighbours(incumbent, track, device))
     for cfg in candidates:
         if cfg["id"] not in seen and (available is None or available(cfg)):
             return "run", cfg
