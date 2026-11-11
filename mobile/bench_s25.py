@@ -242,8 +242,11 @@ def parse_events(text):
         r = runs.setdefault(p[1], {"errs": []})
         if p[2] in ("START", "LOADED", "FIRST") and p[2].lower() not in r:
             r[p[2].lower()] = int(p[3])
-        elif p[2] == "LOADED":
-            r["loaded"] = int(p[3])  # last load-phase marker wins
+        elif p[2] == "LOADED" and "first" not in r:
+            # Last load-phase marker before first audio wins; streaming TTS
+            # re-prints prepare markers per text chunk after audio started
+            # (negative warm TTFA rejected every tts run, 2026-11-10).
+            r["loaded"] = int(p[3])
         elif p[2] == "WALL":
             r["wall_ms"] = float(p[3])
         elif p[2] == "END":
@@ -446,12 +449,24 @@ def new_run_dir(tag):
     return d
 
 
-def gates(summary, qual, lane, inc_qual=None, slot="cand"):
+REALTIME_RTF_P90 = 0.85
+
+
+def gates(summary, qual, lane, inc_qual=None, slot="cand", inc_summary=None):
     fails = []
     if summary["ok"] < 0.9 * summary["n"]:
         fails.append(f"only {summary['ok']}/{summary['n']} runs ok")
-    if lane == "tts" and (summary.get("rtf") or {}).get("p90", 9) > 0.85:
-        fails.append(f"rtf p90 {summary.get('rtf',{}).get('p90')} > 0.85 (not real time with margin)")
+    rtf = (summary.get("rtf") or {}).get("p90")
+    if lane == "tts" and slot != "only":
+        # Real time is the target, not an entry ticket: a slow device (tab
+        # RTF ~2) still sets a baseline and climbs; a candidate fails only
+        # past real time AND slower than the incumbent it would replace.
+        inc_rtf = ((inc_summary or {}).get("rtf") or {}).get("p90")
+        bar = max(REALTIME_RTF_P90, inc_rtf * 1.05) if isinstance(inc_rtf, (int, float)) else REALTIME_RTF_P90
+        if not isinstance(rtf, (int, float)) or rtf > bar:
+            fails.append(f"rtf p90 {rtf} > {bar:.2f} (not real time and slower than incumbent)")
+    elif lane == "tts" and not isinstance(rtf, (int, float)):
+        fails.append("rtf missing")
     qs = (qual or {}).get("slots", {}).get(slot)
     if qs and inc_qual:
         if qs.get("wer") is not None and inc_qual.get("wer") is not None and qs["wer"] > inc_qual["wer"] + 0.02:
@@ -499,7 +514,7 @@ def cmd_run(a):
     ci = paired_ratio_ci(recs["inc"], recs["cand"], key)
     qual = quality(d, ["inc", "cand"], c["lane"])
     iq = (qual.get("slots") or {}).get("inc") or inc[c["track"]].get("quality")
-    fails = gates(sc, qual, c["lane"], inc_qual=iq, slot="cand")
+    fails = gates(sc, qual, c["lane"], inc_qual=iq, slot="cand", inc_summary=si)
     if a.tier == "screen":
         bad = [f for f in fails if not f.startswith("rtf")]
         decision = "PROMISING" if ci and not bad and ci["mid"] <= 0.85 else "SCREEN_NO"

@@ -1,0 +1,24 @@
+# Scheduling weights are neutral policy defaults, not measured speedups.
+id = "asr-qwen3"
+objective = "speed"
+metric = "proc_ms"
+direction = "lower"
+device_class = "phone"
+devices = ["s25","s22","tab"]  # tab runs the armv82 (dotprod+fp16) build; see turbo/mobile.py fit_device
+referee = ["python3","{repo}/turbo/mobile.py","--track","asr/qwen3_asr"]
+max_runtime = 3600
+amdahl_share = 1.0
+expected_gain = 1.0
+cost = 1.0
+oracle_status = "ready"
+
+[resources]
+mem = 134217728  # 4x measured host-worker peak 31 MB (z0live-fulltime MemoryPeak, 2026-11-09)
+cpus = 1
+gpu_mem = 0
+
+[oracle]
+kind = "mobile"
+check = "Existing fixed mobile referee, complete artifacts and quality gates, idle-only confirmation"
+track = "asr/qwen3_asr"
+

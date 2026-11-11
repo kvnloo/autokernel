@@ -1,0 +1,25 @@
+# Scheduling weights are neutral policy defaults, not measured speedups.
+id = "hc-1-physarum-csr"
+objective = "speed"
+metric = "runtime_seconds"
+direction = "lower"
+device_class = "cpu"
+devices = ["mbp","groot-cpu"]  # owner rule: CPU work goes to MBP; referee bootstraps its own numpy/scipy venv
+referee = ["bash","/mnt/zer0models/workspace/zer0/data/operations/z19-research-20261105/hc1/repo/run_hc1.sh"]
+working_directory = "/mnt/zer0models/workspace/zer0/data/operations/z19-research-20261105/hc1/repo"
+max_runtime = 3600
+amdahl_share = 1.0
+expected_gain = 1.0
+cost = 1.0
+oracle_status = "ready"
+
+[resources]
+mem = 2147483648
+cpus = 1
+gpu_mem = 0
+
+[oracle]
+kind = "receipt"
+check = "A/A then A/B; identical tube and backbone sets; D within the referee's CG tolerance"
+checks = ["aa_passed", "tube_sets_equal", "backbone_sets_equal", "d_within_cg_tolerance"]
+
